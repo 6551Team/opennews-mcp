@@ -171,7 +171,9 @@ Subscribe to real-time crypto news updates.
   - Value: Array of news type codes (e.g., `["Bloomberg", "CoinDesk"]`)
   - Empty array `[]` means all news types under that engine
   - Use `list_news_types` tool to get available codes
-- `coins`: Array of coin symbols to filter (e.g., `["BTC", "ETH"]`)
+- `coins`: Array of coin symbols (e.g., `["BTC", "ETH"]`)
+  - Filter news by specific coins
+  - Empty array `[]` or omit to receive all coins
 - `hasCoin`: Boolean, if true only receive news with coin tags
 
 ### Unsubscribe
