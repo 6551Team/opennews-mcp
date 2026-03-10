@@ -125,6 +125,121 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ---
 
+## WebSocket 실시간 구독
+
+**엔드포인트**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
+
+실시간 암호화폐 뉴스 업데이트를 구독합니다.
+
+### 뉴스 구독
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "news.subscribe",
+  "params": {
+    "engineTypes": {
+      "news": ["Bloomberg", "CoinDesk"],
+      "onchain": []
+    },
+    "coins": ["BTC", "ETH"],
+    "hasCoin": true
+  }
+}
+```
+
+**응답**:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "success": true,
+    "filters": {
+      "engineTypes": {...},
+      "coins": [...],
+      "hasCoin": true
+    }
+  }
+}
+```
+
+**필터 매개변수** (모두 선택사항):
+- `engineTypes`: 엔진 유형에서 뉴스 유형 코드로의 매핑 객체
+  - 키: 엔진 유형 (예: `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`)
+  - 값: 뉴스 유형 코드 배열 (예: `["Bloomberg", "CoinDesk"]`)
+  - 빈 배열 `[]`은 해당 엔진의 모든 뉴스 유형을 의미
+  - `list_news_types` 도구로 사용 가능한 코드 확인
+- `coins`: 코인 심볼 배열 (예: `["BTC", "ETH"]`)
+- `hasCoin`: 불리언, true일 경우 코인 태그가 있는 뉴스만 수신
+
+### 구독 취소
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "news.unsubscribe"
+}
+```
+
+### 서버 푸시 - 뉴스 업데이트
+
+필터와 일치하는 새 뉴스가 있으면 서버가 푸시:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "기사 제목 또는 내용",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "match": "title"
+      }
+    ],
+    "ts": 1708473600000
+  }
+}
+```
+
+### 서버 푸시 - AI 뉴스 업데이트
+
+AI 분석이 있는 뉴스 (구독한 경우):
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.ai_update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "기사 제목",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [...],
+    "aiRating": {
+      "score": 85,
+      "grade": "A",
+      "signal": "long",
+      "status": "done",
+      "summary": "중국어 요약",
+      "enSummary": "English summary"
+    },
+    "ts": 1708473600000
+  }
+}
+```
+
+---
+
 ## 데이터 구조
 
 각 기사:

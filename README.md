@@ -125,6 +125,121 @@ Also supports `config.json` in project root (env vars take precedence):
 
 ---
 
+## WebSocket Real-time Subscriptions
+
+**Endpoint**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
+
+Subscribe to real-time crypto news updates.
+
+### Subscribe to News
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "news.subscribe",
+  "params": {
+    "engineTypes": {
+      "news": ["Bloomberg", "CoinDesk"],
+      "onchain": []
+    },
+    "coins": ["BTC", "ETH"],
+    "hasCoin": true
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "success": true,
+    "filters": {
+      "engineTypes": {...},
+      "coins": [...],
+      "hasCoin": true
+    }
+  }
+}
+```
+
+**Filter Parameters** (all optional):
+- `engineTypes`: Object mapping engine type to news type codes
+  - Key: Engine type (e.g., `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`)
+  - Value: Array of news type codes (e.g., `["Bloomberg", "CoinDesk"]`)
+  - Empty array `[]` means all news types under that engine
+  - Use `list_news_types` tool to get available codes
+- `coins`: Array of coin symbols to filter (e.g., `["BTC", "ETH"]`)
+- `hasCoin`: Boolean, if true only receive news with coin tags
+
+### Unsubscribe
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "news.unsubscribe"
+}
+```
+
+### Server Push - News Update
+
+When new news matches your filters, the server pushes:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "Article title or content",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "match": "title"
+      }
+    ],
+    "ts": 1708473600000
+  }
+}
+```
+
+### Server Push - AI News Update
+
+For news with AI analysis (if subscribed):
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.ai_update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "Article title",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [...],
+    "aiRating": {
+      "score": 85,
+      "grade": "A",
+      "signal": "long",
+      "status": "done",
+      "summary": "Chinese summary",
+      "enSummary": "English summary"
+    },
+    "ts": 1708473600000
+  }
+}
+```
+
+---
+
 ## Data Structure
 
 Each article returns:

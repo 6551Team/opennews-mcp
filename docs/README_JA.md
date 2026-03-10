@@ -125,6 +125,121 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ---
 
+## WebSocket リアルタイム購読
+
+**エンドポイント**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
+
+リアルタイムの暗号通貨ニュース更新を購読します。
+
+### ニュースを購読
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "news.subscribe",
+  "params": {
+    "engineTypes": {
+      "news": ["Bloomberg", "CoinDesk"],
+      "onchain": []
+    },
+    "coins": ["BTC", "ETH"],
+    "hasCoin": true
+  }
+}
+```
+
+**レスポンス**:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "success": true,
+    "filters": {
+      "engineTypes": {...},
+      "coins": [...],
+      "hasCoin": true
+    }
+  }
+}
+```
+
+**フィルタパラメータ**（すべてオプション）：
+- `engineTypes`: エンジンタイプからニュースタイプコードへのマッピングオブジェクト
+  - キー：エンジンタイプ（例：`"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`）
+  - 値：ニュースタイプコードの配列（例：`["Bloomberg", "CoinDesk"]`）
+  - 空配列 `[]` はそのエンジン下のすべてのニュースタイプを意味します
+  - `list_news_types` ツールで利用可能なコードを取得できます
+- `coins`: 通貨シンボルの配列（例：`["BTC", "ETH"]`）
+- `hasCoin`: ブール値、true の場合は通貨タグ付きニュースのみ受信
+
+### 購読解除
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "news.unsubscribe"
+}
+```
+
+### サーバープッシュ - ニュース更新
+
+フィルタに一致する新しいニュースがあると、サーバーがプッシュ：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "記事のタイトルまたは内容",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "match": "title"
+      }
+    ],
+    "ts": 1708473600000
+  }
+}
+```
+
+### サーバープッシュ - AI ニュース更新
+
+AI 分析付きニュース（購読している場合）：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.ai_update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "記事のタイトル",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [...],
+    "aiRating": {
+      "score": 85,
+      "grade": "A",
+      "signal": "long",
+      "status": "done",
+      "summary": "中国語の要約",
+      "enSummary": "English summary"
+    },
+    "ts": 1708473600000
+  }
+}
+```
+
+---
+
 ## データ構造
 
 各記事：

@@ -125,6 +125,121 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ---
 
+## WebSocket 实时订阅
+
+**端点**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
+
+订阅实时加密货币新闻更新。
+
+### 订阅新闻
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "news.subscribe",
+  "params": {
+    "engineTypes": {
+      "news": ["Bloomberg", "CoinDesk"],
+      "onchain": []
+    },
+    "coins": ["BTC", "ETH"],
+    "hasCoin": true
+  }
+}
+```
+
+**响应**:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "success": true,
+    "filters": {
+      "engineTypes": {...},
+      "coins": [...],
+      "hasCoin": true
+    }
+  }
+}
+```
+
+**过滤参数**（全部可选）：
+- `engineTypes`: 引擎类型到新闻类型代码的映射对象
+  - 键：引擎类型（如 `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`）
+  - 值：新闻类型代码数组（如 `["Bloomberg", "CoinDesk"]`）
+  - 空数组 `[]` 表示该引擎下的所有新闻类型
+  - 使用 `list_news_types` 工具获取可用代码
+- `coins`: 币种符号数组（如 `["BTC", "ETH"]`）
+- `hasCoin`: 布尔值，为 true 时只接收带币种标签的新闻
+
+### 取消订阅
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "news.unsubscribe"
+}
+```
+
+### 服务器推送 - 新闻更新
+
+当有新闻匹配你的过滤条件时，服务器推送：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "文章标题或内容",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "match": "title"
+      }
+    ],
+    "ts": 1708473600000
+  }
+}
+```
+
+### 服务器推送 - AI 新闻更新
+
+对于有 AI 分析的新闻（如果订阅）：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "news.ai_update",
+  "params": {
+    "id": "unique-article-id",
+    "text": "文章标题",
+    "newsType": "Bloomberg",
+    "engineType": "news",
+    "link": "https://...",
+    "coins": [...],
+    "aiRating": {
+      "score": 85,
+      "grade": "A",
+      "signal": "long",
+      "status": "done",
+      "summary": "中文摘要",
+      "enSummary": "English summary"
+    },
+    "ts": 1708473600000
+  }
+}
+```
+
+---
+
 ## 数据结构
 
 每篇文章返回：
