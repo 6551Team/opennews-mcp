@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  暗号通貨ニュース集約 · AI 評価 · トレーディングシグナル · リアルタイム更新
+  72+ リアルタイムデータソース · 5 エンジンカテゴリ · AI 評価 · トレーディングシグナル
 </p>
 
 <p align="center">
@@ -54,6 +54,20 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 ---
 
+## データソース — 5カテゴリ 72+ ソース
+
+| カテゴリ | 数量 | 主なソース |
+|---------|------|-----------|
+| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase、Phoenixnews など |
+| **Listing** | 9 | Binance、Coinbase、OKX、Bybit、Upbit、Bithumb、Robinhood、Hyperliquid、Aster |
+| **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
+| **Meme** | 1 | Twitter ミームコインソーシャルセンチメント |
+| **Market** | 6 | Price Change、Funding Rate、Funding Rate Difference、Large Liquidation、Market Trends、OI Change |
+
+すべての記事は **AI 分析済み** — 影響度スコア（0-100）、トレーディングシグナル（long/short/neutral）、中英バイリンガル要約付き。
+
+---
+
 ## 何ができる？
 
 接続後、AI アシスタントに話しかけるだけ：
@@ -75,17 +89,17 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 | カテゴリ | ツール | 説明 |
 |---------|--------|------|
-| ディスカバリー | `get_news_sources` | 全ニュースソースカテゴリツリー |
-| | `list_news_types` | 利用可能なソースコード一覧 |
-| 検索 | `get_latest_news` | 最新記事 |
-| | `search_news` | キーワード検索 |
-| | `search_news_by_coin` | 通貨別（BTC, ETH, SOL...） |
-| | `get_news_by_source` | エンジンタイプとソース別 |
-| | `get_news_by_engine` | タイプ別（news, listing, onchain, meme, market） |
-| | `search_news_advanced` | 高度な検索（複数フィルタ） |
-| AI | `get_high_score_news` | スコア >= 閾値の記事 |
-| | `get_news_by_signal` | シグナル別：long / short / neutral |
-| リアルタイム | `subscribe_latest_news` | WebSocket リアルタイム収集 |
+| ディスカバリー | `get_news_sources` | 完全エンジンツリー — 5カテゴリ 72+ ソースとメタデータ |
+| | `list_news_types` | フィルタ用ソースコードのフラットリスト |
+| 検索 | `get_latest_news` | 72+ ソースから最新記事を取得 |
+| | `search_news` | 全ソース横断キーワード検索 |
+| | `search_news_by_coin` | 通貨別（BTC, ETH, SOL...）全ソース横断 |
+| | `get_news_by_source` | 特定ソース指定（例：engine_type="news", news_type="Bloomberg"） |
+| | `get_news_by_engine` | カテゴリ別：news, listing, onchain, meme, market |
+| | `search_news_advanced` | 複合フィルタ：通貨 + キーワード + エンジンタイプ |
+| AI | `get_high_score_news` | 高 AI 影響度スコア記事（0-100 スケール） |
+| | `get_news_by_signal` | AI トレーディングシグナル別：long / short / neutral |
+| リアルタイム | `subscribe_latest_news` | WebSocket ライブフィード、通貨・エンジンタイプフィルタ対応 |
 
 ---
 

@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  암호화폐 뉴스 집계 · AI 평가 · 트레이딩 시그널 · 실시간 업데이트
+  72+ 실시간 데이터 소스 · 5개 엔진 카테고리 · AI 평가 · 트레이딩 시그널
 </p>
 
 <p align="center">
@@ -54,6 +54,20 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 ---
 
+## 데이터 소스 — 5개 카테고리 72+ 소스
+
+| 카테고리 | 수량 | 주요 소스 |
+|---------|------|----------|
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews 등 |
+| **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
+| **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
+| **Meme** | 1 | Twitter 밈코인 소셜 센티먼트 |
+| **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
+
+모든 기사는 **AI 분석** 완료 — 영향도 점수(0-100), 트레이딩 시그널(long/short/neutral), 중영 이중 언어 요약 포함.
+
+---
+
 ## 무엇을 할 수 있나요?
 
 연결 후 AI 어시스턴트에게 말하기만 하면 됩니다:
@@ -75,17 +89,17 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 | 카테고리 | 도구 | 설명 |
 |---------|------|------|
-| 디스커버리 | `get_news_sources` | 전체 뉴스 소스 카테고리 트리 |
-| | `list_news_types` | 사용 가능한 소스 코드 목록 |
-| 검색 | `get_latest_news` | 최신 기사 |
-| | `search_news` | 키워드 검색 |
-| | `search_news_by_coin` | 코인별 (BTC, ETH, SOL...) |
-| | `get_news_by_source` | 엔진 유형과 소스별 |
-| | `get_news_by_engine` | 유형별 (news, listing, onchain, meme, market) |
-| | `search_news_advanced` | 고급 검색 (다중 필터) |
-| AI | `get_high_score_news` | 점수 >= 임계값 기사 |
-| | `get_news_by_signal` | 시그널별: long / short / neutral |
-| 실시간 | `subscribe_latest_news` | WebSocket 실시간 수집 |
+| 디스커버리 | `get_news_sources` | 완전한 엔진 트리 — 5개 카테고리 72+ 소스 및 메타데이터 |
+| | `list_news_types` | 필터용 소스 코드 플랫 리스트 |
+| 검색 | `get_latest_news` | 72+ 소스에서 최신 기사 조회 |
+| | `search_news` | 전체 소스 대상 키워드 검색 |
+| | `search_news_by_coin` | 코인별 (BTC, ETH, SOL...) 전체 소스 대상 |
+| | `get_news_by_source` | 특정 소스 지정 (예: engine_type="news", news_type="Bloomberg") |
+| | `get_news_by_engine` | 카테고리별: news, listing, onchain, meme, market |
+| | `search_news_advanced` | 복합 필터: 코인 + 키워드 + 엔진 유형 조합 |
+| AI | `get_high_score_news` | 높은 AI 영향도 점수 기사 (0-100 스케일) |
+| | `get_news_by_signal` | AI 트레이딩 시그널별: long / short / neutral |
+| 실시간 | `subscribe_latest_news` | WebSocket 라이브 피드, 코인 및 엔진 유형 필터 지원 |
 
 ---
 

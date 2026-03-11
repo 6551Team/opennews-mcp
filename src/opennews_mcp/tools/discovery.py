@@ -9,10 +9,27 @@ from opennews_mcp.app import mcp
 async def get_news_sources(ctx: Context) -> dict:
     """Get all available news source categories and their metadata.
 
-    Returns a tree structure with engine types (news, listing, onchain, meme, market)
-    and their sub-categories (Bloomberg, Reuters, Binance, etc.).
+    This platform aggregates 72+ real-time data sources across 5 engine categories:
 
-    Use this first to understand what news sources are available before searching.
+    NEWS (53 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business,
+      CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch,
+      Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social,
+      U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley (MS NOW),
+      PR Newswire, Coinbase, Phoenixnews, and more.
+
+    LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood,
+      Hyperliquid, Aster — new token listing announcements from major exchanges.
+
+    ONCHAIN (3 sources): Hyperliquid Whale Trade, Hyperliquid Large Position,
+      KOL Trade — on-chain whale & KOL activity alerts.
+
+    MEME (1 source): Twitter — meme coin social sentiment tracking.
+
+    MARKET (6 sources): Price Change, Funding Rate, Funding Rate Difference,
+      Large Liquidation, Market Trends, OI Change — quantitative market anomaly signals.
+
+    Returns a tree structure with all engine types and their sub-categories.
+    Use this first to discover what sources are available before searching.
     """
     api = ctx.request_context.lifespan_context.api
 
@@ -55,6 +72,7 @@ async def list_news_types(ctx: Context) -> dict:
     Returns a flat list of news source codes that can be used with
     the newsType parameter in search_news.
     """
+    # See get_news_sources for the full 72+ source catalog.
     api = ctx.request_context.lifespan_context.api
 
     try:

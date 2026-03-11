@@ -1,6 +1,6 @@
 ---
 name: opennews
-description: Crypto news search, AI ratings, trading signals, and real-time updates via the OpenNews 6551 API. Supports keyword search, coin filtering, source filtering, AI score ranking, and WebSocket live feeds.
+description: "Real-time crypto & financial news aggregator — 72+ data sources across 5 categories (News: Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X + 47 more; Listing: Binance, Coinbase, OKX + 6 more; OnChain: whale & KOL trades; Meme: social sentiment; Market: price/funding/liquidation alerts). AI-analyzed with impact score, trading signals, and bilingual summaries."
 
 user-invocable: true
 metadata:
@@ -26,11 +26,21 @@ metadata:
 
 # OpenNews Crypto News Skill
 
-Query crypto news from the 6551 platform REST API. All endpoints require a Bearer token via `$OPENNEWS_TOKEN`.
+Real-time crypto & financial news aggregator powered by 6551.io — **72+ data sources** across 5 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
 
 **Get your token**: https://6551.io/mcp
 
 **Base URL**: `https://ai.6551.io`
+
+## Data Sources — 72+ Sources Across 5 Categories
+
+| Category | Count | Key Sources |
+|----------|-------|-------------|
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews, and more |
+| **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
+| **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
+| **Meme** | 1 | Twitter meme coin social sentiment |
+| **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
 
 ## Authentication
 
@@ -45,14 +55,14 @@ Authorization: Bearer $OPENNEWS_TOKEN
 
 ### 1. Get News Sources
 
-Fetch all available news source categories organized by engine type.
+Fetch the full engine tree with all 5 categories and 72+ sources.
 
 ```bash
 curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   "https://ai.6551.io/open/news_type"
 ```
 
-Returns a tree with engine types (`news`, `listing`, `onchain`, `meme`, `market`) and their sub-categories.
+Returns a tree with engine types (`news` — 53 sources, `listing` — 9 exchanges, `onchain` — 3 whale/KOL trackers, `meme` — 1 sentiment source, `market` — 6 anomaly signals) and their sub-categories.
 
 ### 2. Search News
 
@@ -71,7 +81,7 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 curl -s -X POST "https://ai.6551.io/open/news_search" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"q": "bitcoin ETF", "limit": 10, "page": 1}'
+  -d '{"q": "bitcoin OR ETF", "limit": 10, "page": 1}'
 ```
 
 **Search by coin symbol:**
@@ -108,6 +118,8 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 | `coins`      | string[]                  | no       | Filter by coin symbols (e.g. `["BTC","ETH"]`) |
 | `engineTypes`| map[string][]string       | no       | Filter by engine and news types               |
 | `hasCoin`    | boolean                   | no       | Only return news with associated coins        |
+
+Important: You need to understand the user's query intent and perform word segmentation, then combine them using OR/AND to form search keywords, supporting both Chinese and English.
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "name": "opennews",
   "version": "0.1.0",
-  "description": "Crypto news search, AI ratings, trading signals, and real-time updates via the OpenNews 6551 API",
+  "description": "72+ real-time crypto & financial news sources across 5 categories (News, Listing, OnChain, Meme, Market) with AI ratings, trading signals, and bilingual summaries via the OpenNews 6551 API",
   "author": "0xfaskety",
   "license": "MIT",
   "homepage": "https://github.com/0xfaskety/opennews-mcp",
@@ -22,6 +22,14 @@
     "ai-ratings",
     "signals",
     "blockchain",
-    "defi"
+    "defi",
+    "bloomberg",
+    "reuters",
+    "onchain",
+    "whale-tracking",
+    "market-signals",
+    "exchange-listings",
+    "meme-coins",
+    "real-time"
   ]
 }

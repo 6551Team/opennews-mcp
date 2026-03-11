@@ -33,8 +33,29 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 
 
 # ---------- FastMCP instance ----------
+_INSTRUCTIONS = """\
+OpenNews MCP — Real-time crypto & financial news aggregator powered by 6551.io.
+
+Aggregates 72+ data sources across 5 engine categories:
+- NEWS (53 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, \
+CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, \
+Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, \
+TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews, and more.
+- LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, \
+Hyperliquid, Aster — new token listing announcements.
+- ONCHAIN (3 sources): Hyperliquid Whale Trade, Hyperliquid Large Position, \
+KOL Trade — on-chain whale & KOL activity.
+- MEME (1 source): Twitter meme coin social sentiment.
+- MARKET (6 sources): Price Change, Funding Rate, Funding Rate Difference, \
+Large Liquidation, Market Trends, OI Change — quantitative market signals.
+
+All articles are AI-analyzed with impact score (0-100), trading signal (long/short/neutral), \
+and bilingual summaries (EN/ZH).
+"""
+
 mcp = FastMCP(
     "opennews-6551",
+    instructions=_INSTRUCTIONS,
     lifespan=app_lifespan,
     json_response=True,
 )

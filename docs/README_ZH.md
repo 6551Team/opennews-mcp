@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  加密货币新闻聚合 · AI 评分 · 交易信号 · 实时更新
+  72+ 实时数据源 · 5 大引擎类别 · AI 评分 · 交易信号
 </p>
 
 <p align="center">
@@ -54,6 +54,20 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 ---
 
+## 数据源 — 5 大类别 72+ 数据源
+
+| 类别 | 数量 | 主要来源 |
+|------|------|----------|
+| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase、凤凰新闻等 |
+| **Listing** | 9 | Binance、Coinbase、OKX、Bybit、Upbit、Bithumb、Robinhood、Hyperliquid、Aster |
+| **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
+| **Meme** | 1 | Twitter meme 币社交情绪 |
+| **Market** | 6 | Price Change、Funding Rate、Funding Rate Difference、Large Liquidation、Market Trends、OI Change |
+
+所有文章均经 **AI 分析**，包含影响力评分（0-100）、交易信号（long/short/neutral）及中英双语摘要。
+
+---
+
 ## 功能介绍
 
 连接后，直接告诉你的 AI 助手：
@@ -75,17 +89,17 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 | 分类 | 工具 | 描述 |
 |------|------|------|
-| 发现 | `get_news_sources` | 获取所有新闻来源分类树 |
-| | `list_news_types` | 所有可用的新闻来源代码 |
-| 搜索 | `get_latest_news` | 最新文章 |
-| | `search_news` | 关键词搜索 |
-| | `search_news_by_coin` | 按币种搜索 (BTC, ETH, SOL...) |
-| | `get_news_by_source` | 按引擎类型和来源搜索 |
-| | `get_news_by_engine` | 按类型搜索 (news, listing, onchain, meme, market) |
-| | `search_news_advanced` | 高级搜索（多条件筛选） |
-| AI | `get_high_score_news` | 评分 >= 阈值的文章 |
-| | `get_news_by_signal` | 按信号搜索: long / short / neutral |
-| 实时 | `subscribe_latest_news` | WebSocket 实时采集 |
+| 发现 | `get_news_sources` | 完整引擎树 — 5 大类别 72+ 数据源及元数据 |
+| | `list_news_types` | 所有来源代码的扁平列表，用于过滤 |
+| 搜索 | `get_latest_news` | 跨 72+ 数据源获取最新文章 |
+| | `search_news` | 跨所有数据源全文关键词搜索 |
+| | `search_news_by_coin` | 按币种搜索 (BTC, ETH, SOL...) 跨所有数据源 |
+| | `get_news_by_source` | 按特定来源搜索 (如 engine_type="news", news_type="Bloomberg") |
+| | `get_news_by_engine` | 按类别搜索: news, listing, onchain, meme, market |
+| | `search_news_advanced` | 多条件组合: 币种 + 关键词 + 引擎类型 |
+| AI | `get_high_score_news` | 高 AI 影响力评分文章 (0-100 分制) |
+| | `get_news_by_signal` | 按 AI 交易信号: long / short / neutral |
+| 实时 | `subscribe_latest_news` | WebSocket 实时推送，支持币种和引擎类型过滤 |
 
 ---
 

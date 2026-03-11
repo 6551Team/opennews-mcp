@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  Crypto News Aggregation · AI Ratings · Trading Signals · Real-time Updates
+  72+ Real-time Data Sources · 5 Engine Categories · AI Ratings · Trading Signals
 </p>
 
 <p align="center">
@@ -54,6 +54,20 @@ Steps:
 
 ---
 
+## Data Sources — 72+ Sources Across 5 Categories
+
+| Category | Count | Key Sources |
+|----------|-------|-------------|
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews, and more |
+| **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
+| **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
+| **Meme** | 1 | Twitter meme coin social sentiment |
+| **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
+
+All articles are **AI-analyzed** with impact score (0-100), trading signal (long/short/neutral), and bilingual summaries (EN/ZH).
+
+---
+
 ## What Can It Do?
 
 After connecting, just tell your AI assistant:
@@ -75,17 +89,17 @@ After connecting, just tell your AI assistant:
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| Discovery | `get_news_sources` | Get all news source category tree |
-| | `list_news_types` | All available news source codes |
-| Search | `get_latest_news` | Latest articles |
-| | `search_news` | Keyword search |
-| | `search_news_by_coin` | By coin (BTC, ETH, SOL...) |
-| | `get_news_by_source` | By engine type and source |
-| | `get_news_by_engine` | By type (news, listing, onchain, meme, market) |
-| | `search_news_advanced` | Advanced search (multiple filters) |
-| AI | `get_high_score_news` | Articles with score >= threshold |
-| | `get_news_by_signal` | By signal: long / short / neutral |
-| Real-time | `subscribe_latest_news` | WebSocket real-time collection |
+| Discovery | `get_news_sources` | Full engine tree — all 5 categories and 72+ sources with metadata |
+| | `list_news_types` | Flat list of all source codes for filtering |
+| Search | `get_latest_news` | Latest articles across all 72+ sources |
+| | `search_news` | Full-text keyword search across all sources |
+| | `search_news_by_coin` | By coin (BTC, ETH, SOL...) across all sources |
+| | `get_news_by_source` | By specific source (e.g. engine_type="news", news_type="Bloomberg") |
+| | `get_news_by_engine` | By category: news, listing, onchain, meme, market |
+| | `search_news_advanced` | Multi-filter: coins + keywords + engine types combined |
+| AI | `get_high_score_news` | High AI impact score articles (0-100 scale) |
+| | `get_news_by_signal` | By AI trading signal: long / short / neutral |
+| Real-time | `subscribe_latest_news` | WebSocket live feed with coin & engine type filters |
 
 ---
 
