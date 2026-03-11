@@ -21,7 +21,7 @@ metadata:
       - darwin
       - linux
       - win32
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # OpenNews Crypto News Skill
