@@ -24,12 +24,24 @@ API_BASE_URL = os.environ.get("OPENNEWS_API_BASE") or _cfg.get("api_base_url", "
 WSS_URL      = os.environ.get("OPENNEWS_WSS_URL")  or _cfg.get("wss_url", "")
 API_TOKEN    = os.environ.get("OPENNEWS_TOKEN")    or _cfg.get("api_token", "")
 
-# 检查 token 是否配置
-if not API_TOKEN:
-    raise ValueError(
-        "OPENNEWS_TOKEN 未配置。请前往 https://6551.io/mcp 申请 API Token，"
-        "然后设置环境变量 OPENNEWS_TOKEN 或在 config.json 中配置 api_token。"
-    )
+# Token 状态检查（可选）
+HAS_TOKEN = bool(API_TOKEN)
+
+TOKEN_REQUIRED_MSG = (
+    "此工具需要 API Token 才能使用。\n"
+    "请前往 https://6551.io/mcp 免费申请 Token，\n"
+    "然后设置环境变量 OPENNEWS_TOKEN 或在 config.json 中填写 api_token。\n\n"
+    "This tool requires an API token. "
+    "Get your free token at https://6551.io/mcp, "
+    "then set OPENNEWS_TOKEN env var or add api_token to config.json."
+)
+
+
+def require_token() -> dict | None:
+    """检查是否配置了 token，未配置时返回错误信息。"""
+    if not HAS_TOKEN:
+        return {"success": False, "error": TOKEN_REQUIRED_MSG}
+    return None
 
 # ---------- Safety ----------
 MAX_ROWS = int(os.environ.get("OPENNEWS_MAX_ROWS", 0) or _cfg.get("max_rows", 100))

@@ -7,7 +7,8 @@ from pathlib import Path
 
 from mcp.server.fastmcp import FastMCP
 
-from opennews_mcp.api_client import NewsAPIClient, NewsWSClient
+from opennews_mcp.api_client import FreeNewsAPIClient, NewsAPIClient, NewsWSClient
+from opennews_mcp.config import HAS_TOKEN
 
 # Knowledge directory (project root / knowledge)
 KNOWLEDGE_DIR = Path(__file__).resolve().parent.parent.parent / "knowledge"
@@ -16,20 +17,25 @@ KNOWLEDGE_DIR = Path(__file__).resolve().parent.parent.parent / "knowledge"
 @dataclass
 class AppContext:
     """Shared application state available to all tools via ctx."""
-    api: NewsAPIClient
-    ws: NewsWSClient
+    free_api: FreeNewsAPIClient
+    api: NewsAPIClient | None = None
+    ws: NewsWSClient | None = None
 
 
 @asynccontextmanager
 async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     """Manage the API client lifecycle."""
-    api = NewsAPIClient()
-    ws = NewsWSClient()
+    free_api = FreeNewsAPIClient()
+    api = NewsAPIClient() if HAS_TOKEN else None
+    ws = NewsWSClient() if HAS_TOKEN else None
     try:
-        yield AppContext(api=api, ws=ws)
+        yield AppContext(free_api=free_api, api=api, ws=ws)
     finally:
-        await api.close()
-        await ws.close()
+        await free_api.close()
+        if api:
+            await api.close()
+        if ws:
+            await ws.close()
 
 
 # ---------- FastMCP instance ----------

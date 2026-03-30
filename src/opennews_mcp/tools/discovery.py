@@ -3,6 +3,7 @@
 from mcp.server.fastmcp import Context
 
 from opennews_mcp.app import mcp
+from opennews_mcp.config import require_token
 
 
 @mcp.tool()
@@ -31,6 +32,8 @@ async def get_news_sources(ctx: Context) -> dict:
     Returns a tree structure with all engine types and their sub-categories.
     Use this first to discover what sources are available before searching.
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
 
     try:
@@ -72,6 +75,8 @@ async def list_news_types(ctx: Context) -> dict:
     Returns a flat list of news source codes that can be used with
     the newsType parameter in search_news.
     """
+    if (err := require_token()):
+        return err
     # See get_news_sources for the full 72+ source catalog.
     api = ctx.request_context.lifespan_context.api
 

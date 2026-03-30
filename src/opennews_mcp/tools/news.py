@@ -8,7 +8,7 @@ Uses POST /open/news_search as the primary data source.
 from mcp.server.fastmcp import Context
 
 from opennews_mcp.app import mcp
-from opennews_mcp.config import clamp_limit, make_serializable, MAX_ROWS
+from opennews_mcp.config import clamp_limit, make_serializable, MAX_ROWS, require_token
 
 
 @mcp.tool()
@@ -21,6 +21,8 @@ async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
     Args:
         limit: Maximum number of articles to return (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
@@ -45,6 +47,8 @@ async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
         keyword: Search term (e.g. "bitcoin", "SEC", "ETF").
         limit: Maximum results (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
@@ -69,6 +73,8 @@ async def search_news_by_coin(coin: str, ctx: Context, limit: int = 10) -> dict:
         coin: Coin symbol or name (e.g. "BTC", "ETH", "SOL", "TRUMP").
         limit: Maximum results (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
@@ -99,6 +105,8 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
               "Large Liquidation", "Market Trends", "OI Change".
         limit: Maximum results (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
@@ -127,6 +135,8 @@ async def get_news_by_engine(engine_type: str, ctx: Context, limit: int = 10) ->
         engine_type: The engine type code.
         limit: Maximum results (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
@@ -161,6 +171,8 @@ async def search_news_advanced(
         has_coin: If true, only return news that have associated coins.
         limit: Maximum results (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
 
@@ -203,6 +215,8 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
         min_score: Minimum score threshold (default 70).
         limit: Maximum results to return (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
@@ -235,6 +249,8 @@ async def get_news_by_signal(signal: str, ctx: Context, limit: int = 10) -> dict
         signal: The signal type: "long" (bullish), "short" (bearish), or "neutral".
         limit: Maximum results (default 10, max 100).
     """
+    if (err := require_token()):
+        return err
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:

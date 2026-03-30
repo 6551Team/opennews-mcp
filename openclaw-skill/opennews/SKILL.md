@@ -1,15 +1,15 @@
 ---
 name: opennews
-description: "Real-time crypto & financial news aggregator — 72+ data sources across 5 categories (News: Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X + 47 more; Listing: Binance, Coinbase, OKX + 6 more; OnChain: whale & KOL trades; Meme: social sentiment; Market: price/funding/liquidation alerts). AI-analyzed with impact score, trading signals, and bilingual summaries."
+description: "Real-time crypto & financial news aggregator — 72+ data sources across 5 categories (News: Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X + 47 more; Listing: Binance, Coinbase, OKX + 6 more; OnChain: whale & KOL trades; Meme: social sentiment; Market: price/funding/liquidation alerts). AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
 
 user-invocable: true
 metadata:
   openclaw:
     requires:
-      env:
-        - OPENNEWS_TOKEN
       bins:
         - curl
+    optionalEnv:
+      - OPENNEWS_TOKEN
     primaryEnv: OPENNEWS_TOKEN
     emoji: "\U0001F4F0"
     install:
@@ -21,7 +21,7 @@ metadata:
       - darwin
       - linux
       - win32
-  version: 1.0.1
+  version: 1.0.2
 ---
 
 # OpenNews Crypto News Skill
@@ -41,6 +41,86 @@ Real-time crypto & financial news aggregator powered by 6551.io — **72+ data s
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter meme coin social sentiment |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
+
+## Free Tools (No Token Required)
+
+Two tools are available **without** an API token:
+
+### 1. Get News Categories
+
+Get all available news categories and subcategories.
+
+```bash
+curl -s "https://ai.6551.io/open/free_categories"
+```
+
+### 2. Get Hot News
+
+Get hot news articles and trending tweets by category.
+
+```bash
+curl -s "https://ai.6551.io/open/free_hot?category=macro"
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| category | string | Yes | Category key from free_categories (e.g., `macro`, `crypto`, `defi`) |
+| subcategory | string | No | Subcategory key for filtered results |
+
+**Example categories:**
+- `macro` - Macro economics and policy
+- `crypto` - Cryptocurrency news
+- `blockchain` - Blockchain technology
+- `defi` - DeFi updates
+- `nft` - NFT news
+- `market` - Market analysis
+
+**Response structure:**
+```json
+{
+  "success": true,
+  "category": "crypto",
+  "subcategory": "defi",
+  "news": {
+    "success": true,
+    "count": 10,
+    "items": [
+      {
+        "id": 123,
+        "title": "DeFi Protocol Reaches $1B TVL",
+        "source": "CoinDesk",
+        "link": "https://...",
+        "score": 85,
+        "grade": "A",
+        "signal": "bullish",
+        "summary_zh": "...",
+        "summary_en": "...",
+        "coins": ["BTC", "ETH"],
+        "published_at": "2026-03-17T10:00:00Z"
+      }
+    ]
+  },
+  "tweets": {
+    "success": true,
+    "count": 5,
+    "items": [
+      {
+        "author": "Vitalik Buterin",
+        "handle": "VitalikButerin",
+        "content": "...",
+        "url": "https://...",
+        "metrics": { "likes": 1000, "retweets": 200, "replies": 50 },
+        "posted_at": "2026-03-17T09:00:00Z",
+        "relevance": "high"
+      }
+    ]
+  }
+}
+```
+
+### Get API Token for Full Access
+
+To access all 72+ sources with AI analysis, trading signals, and real-time WebSocket updates, get your API token at https://6551.io/mcp
 
 ## Authentication
 
@@ -151,7 +231,26 @@ Important: You need to understand the user's query intent and perform word segme
 
 ## Common Workflows
 
-### Quick Market Overview
+### Free Tools (No Token Required)
+
+**Get all categories:**
+```bash
+curl -s "https://ai.6551.io/open/free_categories"
+```
+
+**Get hot crypto news:**
+```bash
+curl -s "https://ai.6551.io/open/free_hot?category=macro"
+```
+
+**Get DeFi subcategory news:**
+```bash
+curl -s "https://ai.6551.io/open/free_hot?category=macro&subcategory=defi"
+```
+
+### Premium Tools (Requires API Token)
+
+**Quick Market Overview:**
 ```bash
 curl -s -X POST "https://ai.6551.io/open/news_search" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
@@ -169,6 +268,24 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 
 ## Notes
 
-- Get your API token at https://6551.io/mcp
+### Free vs. Premium Features
+
+**Free (no token required):**
+- `get_news_categories` - Browse available news categories
+- `get_hot_news` - Get hot news by category
+
+**Premium (requires API token from https://6551.io/mcp):**
+- Full access to 72+ data sources
+- AI analysis with impact scores (0-100), grades (A-F), and trading signals (long/short/neutral)
+- Advanced search by keyword, coin, source, or engine type
+- Real-time WebSocket news streaming
+- Bilingual summaries (English & Chinese)
+- Market anomaly signals (liquidations, funding rates, OI changes)
+
+### API Limits
+
 - Rate limits apply; max 100 results per request
 - AI ratings may not be available on all articles (check `status == "done"`)
+- **Free API data is cached and updated periodically** - not real-time
+- If data is still being generated, a 503 response may be returned
+- Get your API token at https://6551.io/mcp for full access
