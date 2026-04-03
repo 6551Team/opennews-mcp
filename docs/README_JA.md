@@ -66,6 +66,118 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 すべての記事は **AI 分析済み** — 影響度スコア（0-100）、トレーディングシグナル（long/short/neutral）、中英バイリンガル要約付き。
 
+<details>
+<summary><b>News — 53 ソース</b>（engineType: "news"）— プレミアム金融・暗号メディア、政府機関、ソーシャルプラットフォーム</summary>
+
+| ソースコード | 説明 |
+|-------------|------|
+| Bloomberg | ブルームバーグ — トップクラスの金融ニュース |
+| Reuters | ロイター — グローバル通信社 |
+| Financial Times | フィナンシャル・タイムズ — プレミアムビジネスニュース |
+| CNBC | CNBC — 金融テレビ |
+| CNN | CNN — 米国ニュースネットワーク |
+| BBC | BBC — 英国放送協会 |
+| Fox Business | Fox Business — 米国金融ニュース |
+| CoinDesk | CoinDesk — 大手暗号メディア |
+| Cointelegraph | Cointelegraph — 暗号メディア |
+| The Block | The Block — 暗号データ＆ジャーナリズム |
+| Blockworks | Blockworks — 暗号ネイティブメディア |
+| Decrypt | Decrypt — 暗号＆Web3メディア |
+| DlNews | DL News — 暗号調査報道 |
+| A16Z | a16z（Andreessen Horowitz）— 大手暗号VC |
+| TechCrunch | TechCrunch — テック＆スタートアップニュース |
+| Wired | Wired — テックジャーナリズム |
+| Politico | Politico — 米欧政治ニュース |
+| Business Insider | Business Insider |
+| Twitter/X | Twitter/X 暗号インフルエンサーの投稿 |
+| X / Twitter Profile | Twitter/X プロフィール変更（名前・自己紹介更新） |
+| Telegram | Telegram チャンネル |
+| Weibo | Weibo（微博）— 中国ソーシャルメディア |
+| Truth Social | Truth Social — トランプのソーシャルプラットフォーム |
+| U.S. Treasury | 米国財務省 — 公式声明 |
+| U.S. Trade Representative | USTR — 通商政策発表 |
+| ECB | 欧州中央銀行 — 公式コミュニケーション |
+| TASS | TASS — ロシア国営通信社 |
+| Interfax | Interfax — ロシア通信社 |
+| Handelsblatt | Handelsblatt — ドイツビジネス新聞 |
+| Hadelsblatt | Hadelsblatt — ドイツビジネス |
+| Welt | Welt — ドイツ新聞 |
+| Telegraph | テレグラフ — 英国ニュース |
+| MS NOW | モルガン・スタンレー NOW — 機関投資家リサーチ |
+| Ambrey | Ambrey — 海事＆地政学インテリジェンス |
+| PR Newswire | PR Newswire — プレスリリース |
+| Coinbase | Coinbase アナウンス＆ブログ |
+| Binance | Binance アナウンス＆ブログ |
+| Phoenixnews | フェニックスニュース |
+| jin10 | 金十データ — 中国金融速報 |
+| The Big Whale | The Big Whale — 欧州暗号メディア |
+| The Verge | The Verge — テックメディア |
+| Techinasia | Tech in Asia — アジアテックニュース |
+| Medium | Medium ブログ |
+| Chainwire | Chainwire — 暗号プレスリリース |
+| Token Relations | トークン関係＆パートナーシップ |
+| Crypto Narratives | 暗号ナラティブトラッキング |
+| Crypto in America | 米国暗号業界カバレッジ |
+| 6551News | 6551 プラットフォームオリジナル分析 |
+| BWEnews | BWE ニュースワイヤー |
+| AGGRNEWS | アグリゲートニュースフィード |
+| dbnews | DB ニュース |
+| Tree | Tree ニュース |
+| Velo | Velo データインテリジェンス |
+
+</details>
+
+<details>
+<summary><b>Listing — 9 ソース</b>（engineType: "listing"）— 主要取引所のトークン上場アナウンス</summary>
+
+| ソースコード | 説明 |
+|-------------|------|
+| Binance | Binance 新トークン上場 |
+| Coinbase | Coinbase 新トークン上場 |
+| OKX | OKX 新トークン上場 |
+| Bybit | Bybit 新トークン上場 |
+| Upbit | Upbit（韓国取引所）上場 |
+| Bithumb | Bithumb（韓国取引所）上場 |
+| Robinhood | Robinhood 暗号上場 |
+| Hyperliquid | Hyperliquid パーペチュアル上場 |
+| Aster | Aster 取引所上場 |
+
+</details>
+
+<details>
+<summary><b>OnChain — 3 ソース</b>（engineType: "onchain"）— ホエール＆KOLのオンチェーン活動</summary>
+
+| ソースコード | 説明 |
+|-------------|------|
+| Hyperliquid Whale Trade | Hyperliquid ホエール取引アラート |
+| Hyperliquid Large Position | Hyperliquid 大口ポジション変動 |
+| KOL Trade | KOL（キーオピニオンリーダー）オンチェーン取引 |
+
+</details>
+
+<details>
+<summary><b>Meme — 1 ソース</b>（engineType: "meme"）— ミームコインソーシャルセンチメントトラッキング</summary>
+
+| ソースコード | 説明 |
+|-------------|------|
+| Twitter | Twitter/X ミームコイン議論＆バイラル投稿 |
+
+</details>
+
+<details>
+<summary><b>Market — 6 ソース</b>（engineType: "market"）— マーケット異常検出＆クオンツシグナル</summary>
+
+| ソースコード | 説明 |
+|-------------|------|
+| Price Change | 大幅な価格変動（急騰/急落） |
+| Funding Rate | ファンディングレート異常（パーペチュアル先物） |
+| Funding Rate Difference | 取引所間ファンディングレート乖離 |
+| Large Liquidation | 大口清算イベント |
+| Market Trends | 全体的な市場トレンド変化 |
+| OI Change | 建玉の大幅変動 |
+
+</details>
+
 ---
 
 ## 何ができる？
@@ -100,6 +212,8 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | AI | `get_high_score_news` | 高 AI 影響度スコア記事（0-100 スケール） |
 | | `get_news_by_signal` | AI トレーディングシグナル別：long / short / neutral |
 | リアルタイム | `subscribe_latest_news` | WebSocket ライブフィード、通貨・エンジンタイプフィルタ対応 |
+
+> 詳細な使用ガイドとサンプルについては、[ナレッジガイド](../knowledge/guide.md) をご覧ください。
 
 ---
 

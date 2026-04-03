@@ -66,6 +66,118 @@ Steps:
 
 All articles are **AI-analyzed** with impact score (0-100), trading signal (long/short/neutral), and bilingual summaries (EN/ZH).
 
+<details>
+<summary><b>News — 53 sources</b> (engineType: "news") — Premium financial & crypto media, government agencies, social platforms</summary>
+
+| Source Code | Description |
+|-------------|-------------|
+| Bloomberg | Bloomberg — top-tier financial news |
+| Reuters | Reuters — global wire service |
+| Financial Times | Financial Times — premium business news |
+| CNBC | CNBC — financial television |
+| CNN | CNN — US news network |
+| BBC | BBC — British Broadcasting Corporation |
+| Fox Business | Fox Business — US financial news |
+| CoinDesk | CoinDesk — leading crypto media |
+| Cointelegraph | Cointelegraph — crypto media |
+| The Block | The Block — crypto data & journalism |
+| Blockworks | Blockworks — crypto-native media |
+| Decrypt | Decrypt — crypto & web3 media |
+| DlNews | DL News — crypto investigative journalism |
+| A16Z | a16z (Andreessen Horowitz) — leading crypto VC |
+| TechCrunch | TechCrunch — tech & startup news |
+| Wired | Wired magazine — tech journalism |
+| Politico | Politico — US & EU political news |
+| Business Insider | Business Insider |
+| Twitter/X | Twitter/X posts from crypto influencers |
+| X / Twitter Profile | Twitter/X profile changes (name, bio updates) |
+| Telegram | Telegram channels |
+| Weibo | Weibo — Chinese social media |
+| Truth Social | Truth Social — Trump's social platform |
+| U.S. Treasury | U.S. Treasury Department — official statements |
+| U.S. Trade Representative | USTR — trade policy announcements |
+| ECB | European Central Bank — official communications |
+| TASS | TASS — Russian state news agency |
+| Interfax | Interfax — Russian news agency |
+| Handelsblatt | Handelsblatt — German business newspaper |
+| Hadelsblatt | Hadelsblatt — German business |
+| Welt | Welt — German newspaper |
+| Telegraph | The Telegraph — UK news |
+| MS NOW | Morgan Stanley NOW — institutional research |
+| Ambrey | Ambrey — maritime & geopolitical intelligence |
+| PR Newswire | PR Newswire — press releases |
+| Coinbase | Coinbase announcements & blog |
+| Binance | Binance announcements & blog |
+| Phoenixnews | Phoenix news |
+| jin10 | Jin10 — Chinese financial data flash news |
+| The Big Whale | The Big Whale — European crypto media |
+| The Verge | The Verge — tech media |
+| Techinasia | Tech in Asia — Asian tech news |
+| Medium | Medium blog posts |
+| Chainwire | Chainwire — crypto press releases |
+| Token Relations | Token relations & partnerships |
+| Crypto Narratives | Crypto narrative tracking |
+| Crypto in America | Crypto in America coverage |
+| 6551News | 6551 platform original analysis |
+| BWEnews | BWE news wire |
+| AGGRNEWS | Aggregated news feed |
+| dbnews | DB news |
+| Tree | Tree news |
+| Velo | Velo data intelligence |
+
+</details>
+
+<details>
+<summary><b>Listing — 9 sources</b> (engineType: "listing") — Token listing announcements from major exchanges</summary>
+
+| Source Code | Description |
+|-------------|-------------|
+| Binance | Binance new token listings |
+| Coinbase | Coinbase new token listings |
+| OKX | OKX new token listings |
+| Bybit | Bybit new token listings |
+| Upbit | Upbit (Korean exchange) listings |
+| Bithumb | Bithumb (Korean exchange) listings |
+| Robinhood | Robinhood crypto listings |
+| Hyperliquid | Hyperliquid perp listings |
+| Aster | Aster exchange listings |
+
+</details>
+
+<details>
+<summary><b>OnChain — 3 sources</b> (engineType: "onchain") — On-chain activity from whales and key opinion leaders</summary>
+
+| Source Code | Description |
+|-------------|-------------|
+| Hyperliquid Whale Trade | Hyperliquid whale trade alerts |
+| Hyperliquid Large Position | Hyperliquid large position changes |
+| KOL Trade | KOL (Key Opinion Leader) on-chain trades |
+
+</details>
+
+<details>
+<summary><b>Meme — 1 source</b> (engineType: "meme") — Meme coin social sentiment tracking</summary>
+
+| Source Code | Description |
+|-------------|-------------|
+| Twitter | Twitter/X meme coin discussions & viral posts |
+
+</details>
+
+<details>
+<summary><b>Market — 6 sources</b> (engineType: "market") — Market anomaly detection and quantitative signals</summary>
+
+| Source Code | Description |
+|-------------|-------------|
+| Price Change | Significant price movements (pumps/dumps) |
+| Funding Rate | Funding rate anomalies (perp futures) |
+| Funding Rate Difference | Cross-exchange funding rate divergences |
+| Large Liquidation | Large liquidation events |
+| Market Trends | Overall market trend shifts |
+| OI Change | Open interest significant changes |
+
+</details>
+
 ---
 
 ## What Can It Do?
@@ -100,6 +212,8 @@ After connecting, just tell your AI assistant:
 | AI | `get_high_score_news` | High AI impact score articles (0-100 scale) |
 | | `get_news_by_signal` | By AI trading signal: long / short / neutral |
 | Real-time | `subscribe_latest_news` | WebSocket live feed with coin & engine type filters |
+
+> For a comprehensive usage guide with detailed examples, see [Knowledge Guide](./knowledge/guide.md).
 
 ---
 

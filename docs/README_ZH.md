@@ -66,6 +66,118 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 所有文章均经 **AI 分析**，包含影响力评分（0-100）、交易信号（long/short/neutral）及中英双语摘要。
 
+<details>
+<summary><b>News — 53 个来源</b>（engineType: "news"）— 顶级财经与加密媒体、政府机构、社交平台</summary>
+
+| 来源代码 | 描述 |
+|----------|------|
+| Bloomberg | 彭博社 — 顶级财经新闻 |
+| Reuters | 路透社 — 全球通讯社 |
+| Financial Times | 金融时报 — 高端商业新闻 |
+| CNBC | CNBC — 财经电视 |
+| CNN | CNN — 美国新闻网 |
+| BBC | BBC — 英国广播公司 |
+| Fox Business | Fox Business — 美国财经新闻 |
+| CoinDesk | CoinDesk — 头部加密媒体 |
+| Cointelegraph | Cointelegraph — 加密媒体 |
+| The Block | The Block — 加密数据与新闻 |
+| Blockworks | Blockworks — 加密原生媒体 |
+| Decrypt | Decrypt — 加密与 web3 媒体 |
+| DlNews | DL News — 加密调查新闻 |
+| A16Z | a16z（Andreessen Horowitz）— 头部加密 VC |
+| TechCrunch | TechCrunch — 科技与创业新闻 |
+| Wired | Wired — 科技杂志 |
+| Politico | Politico — 美欧政治新闻 |
+| Business Insider | Business Insider |
+| Twitter/X | Twitter/X 加密 KOL 动态 |
+| X / Twitter Profile | Twitter/X 个人资料变更（用户名、简介更新） |
+| Telegram | Telegram 频道 |
+| Weibo | 微博 — 中国社交媒体 |
+| Truth Social | Truth Social — 特朗普社交平台 |
+| U.S. Treasury | 美国财政部 — 官方声明 |
+| U.S. Trade Representative | 美国贸易代表办公室 — 贸易政策公告 |
+| ECB | 欧洲央行 — 官方通讯 |
+| TASS | 塔斯社 — 俄罗斯国家通讯社 |
+| Interfax | 国际文传电讯社 — 俄罗斯通讯社 |
+| Handelsblatt | 德国商报 |
+| Hadelsblatt | Hadelsblatt — 德国商业 |
+| Welt | 世界报 — 德国报纸 |
+| Telegraph | 每日电讯报 — 英国新闻 |
+| MS NOW | 摩根士丹利 NOW — 机构研究 |
+| Ambrey | Ambrey — 海事与地缘政治情报 |
+| PR Newswire | 美通社 — 新闻稿发布 |
+| Coinbase | Coinbase 公告与博客 |
+| Binance | Binance 公告与博客 |
+| Phoenixnews | 凤凰新闻 |
+| jin10 | 金十数据 — 财经快讯 |
+| The Big Whale | The Big Whale — 欧洲加密媒体 |
+| The Verge | The Verge — 科技媒体 |
+| Techinasia | Tech in Asia — 亚洲科技新闻 |
+| Medium | Medium 博客 |
+| Chainwire | Chainwire — 加密新闻稿 |
+| Token Relations | 代币合作与关系 |
+| Crypto Narratives | 加密叙事追踪 |
+| Crypto in America | 美国加密行业报道 |
+| 6551News | 6551 平台原创分析 |
+| BWEnews | BWE 新闻线 |
+| AGGRNEWS | 聚合新闻源 |
+| dbnews | DB 新闻 |
+| Tree | Tree 新闻 |
+| Velo | Velo 数据情报 |
+
+</details>
+
+<details>
+<summary><b>Listing — 9 个来源</b>（engineType: "listing"）— 主要交易所代币上新公告</summary>
+
+| 来源代码 | 描述 |
+|----------|------|
+| Binance | 币安新币上线 |
+| Coinbase | Coinbase 新币上线 |
+| OKX | OKX 新币上线 |
+| Bybit | Bybit 新币上线 |
+| Upbit | Upbit（韩国交易所）上新 |
+| Bithumb | Bithumb（韩国交易所）上新 |
+| Robinhood | Robinhood 加密货币上线 |
+| Hyperliquid | Hyperliquid 永续合约上线 |
+| Aster | Aster 交易所上新 |
+
+</details>
+
+<details>
+<summary><b>OnChain — 3 个来源</b>（engineType: "onchain"）— 巨鲸与 KOL 链上活动</summary>
+
+| 来源代码 | 描述 |
+|----------|------|
+| Hyperliquid Whale Trade | Hyperliquid 巨鲸交易预警 |
+| Hyperliquid Large Position | Hyperliquid 大额持仓变动 |
+| KOL Trade | KOL（意见领袖）链上交易 |
+
+</details>
+
+<details>
+<summary><b>Meme — 1 个来源</b>（engineType: "meme"）— Meme 币社交情绪追踪</summary>
+
+| 来源代码 | 描述 |
+|----------|------|
+| Twitter | Twitter/X meme 币讨论与病毒式传播 |
+
+</details>
+
+<details>
+<summary><b>Market — 6 个来源</b>（engineType: "market"）— 市场异动检测与量化信号</summary>
+
+| 来源代码 | 描述 |
+|----------|------|
+| Price Change | 价格剧烈波动（暴涨/暴跌） |
+| Funding Rate | 资金费率异常（永续合约） |
+| Funding Rate Difference | 跨交易所资金费率差异 |
+| Large Liquidation | 大额清算事件 |
+| Market Trends | 整体市场趋势变化 |
+| OI Change | 未平仓合约量显著变化 |
+
+</details>
+
 ---
 
 ## 功能介绍
@@ -100,6 +212,8 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | AI | `get_high_score_news` | 高 AI 影响力评分文章 (0-100 分制) |
 | | `get_news_by_signal` | 按 AI 交易信号: long / short / neutral |
 | 实时 | `subscribe_latest_news` | WebSocket 实时推送，支持币种和引擎类型过滤 |
+
+> 完整使用指南和详细示例，请查看 [知识指南](../knowledge/guide.md)。
 
 ---
 

@@ -66,6 +66,118 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 모든 기사는 **AI 분석** 완료 — 영향도 점수(0-100), 트레이딩 시그널(long/short/neutral), 중영 이중 언어 요약 포함.
 
+<details>
+<summary><b>News — 53개 소스</b> (engineType: "news") — 프리미엄 금융 및 암호화폐 미디어, 정부 기관, 소셜 플랫폼</summary>
+
+| 소스 코드 | 설명 |
+|----------|------|
+| Bloomberg | 블룸버그 — 최상위 금융 뉴스 |
+| Reuters | 로이터 — 글로벌 통신사 |
+| Financial Times | 파이낸셜 타임스 — 프리미엄 비즈니스 뉴스 |
+| CNBC | CNBC — 금융 방송 |
+| CNN | CNN — 미국 뉴스 네트워크 |
+| BBC | BBC — 영국 방송 공사 |
+| Fox Business | Fox Business — 미국 금융 뉴스 |
+| CoinDesk | CoinDesk — 선도적 암호화폐 미디어 |
+| Cointelegraph | Cointelegraph — 암호화폐 미디어 |
+| The Block | The Block — 암호화폐 데이터 및 저널리즘 |
+| Blockworks | Blockworks — 암호화폐 네이티브 미디어 |
+| Decrypt | Decrypt — 암호화폐 및 Web3 미디어 |
+| DlNews | DL News — 암호화폐 탐사 보도 |
+| A16Z | a16z (Andreessen Horowitz) — 선도적 암호화폐 VC |
+| TechCrunch | TechCrunch — 테크 및 스타트업 뉴스 |
+| Wired | Wired — 테크 저널리즘 |
+| Politico | Politico — 미국 및 EU 정치 뉴스 |
+| Business Insider | Business Insider |
+| Twitter/X | Twitter/X 암호화폐 인플루언서 게시물 |
+| X / Twitter Profile | Twitter/X 프로필 변경 (이름, 자기소개 업데이트) |
+| Telegram | Telegram 채널 |
+| Weibo | Weibo (微博) — 중국 소셜 미디어 |
+| Truth Social | Truth Social — 트럼프 소셜 플랫폼 |
+| U.S. Treasury | 미국 재무부 — 공식 성명 |
+| U.S. Trade Representative | USTR — 무역 정책 발표 |
+| ECB | 유럽중앙은행 — 공식 커뮤니케이션 |
+| TASS | TASS — 러시아 국영 통신사 |
+| Interfax | Interfax — 러시아 통신사 |
+| Handelsblatt | Handelsblatt — 독일 비즈니스 신문 |
+| Hadelsblatt | Hadelsblatt — 독일 비즈니스 |
+| Welt | Welt — 독일 신문 |
+| Telegraph | 텔레그래프 — 영국 뉴스 |
+| MS NOW | 모건 스탠리 NOW — 기관 리서치 |
+| Ambrey | Ambrey — 해양 및 지정학 인텔리전스 |
+| PR Newswire | PR Newswire — 보도자료 |
+| Coinbase | Coinbase 공지 및 블로그 |
+| Binance | Binance 공지 및 블로그 |
+| Phoenixnews | 피닉스 뉴스 |
+| jin10 | 진스 데이터 — 중국 금융 속보 |
+| The Big Whale | The Big Whale — 유럽 암호화폐 미디어 |
+| The Verge | The Verge — 테크 미디어 |
+| Techinasia | Tech in Asia — 아시아 테크 뉴스 |
+| Medium | Medium 블로그 |
+| Chainwire | Chainwire — 암호화폐 보도자료 |
+| Token Relations | 토큰 관계 및 파트너십 |
+| Crypto Narratives | 암호화폐 내러티브 추적 |
+| Crypto in America | 미국 암호화폐 산업 보도 |
+| 6551News | 6551 플랫폼 오리지널 분석 |
+| BWEnews | BWE 뉴스 와이어 |
+| AGGRNEWS | 통합 뉴스 피드 |
+| dbnews | DB 뉴스 |
+| Tree | Tree 뉴스 |
+| Velo | Velo 데이터 인텔리전스 |
+
+</details>
+
+<details>
+<summary><b>Listing — 9개 소스</b> (engineType: "listing") — 주요 거래소 토큰 상장 공지</summary>
+
+| 소스 코드 | 설명 |
+|----------|------|
+| Binance | Binance 신규 토큰 상장 |
+| Coinbase | Coinbase 신규 토큰 상장 |
+| OKX | OKX 신규 토큰 상장 |
+| Bybit | Bybit 신규 토큰 상장 |
+| Upbit | Upbit (한국 거래소) 상장 |
+| Bithumb | Bithumb (한국 거래소) 상장 |
+| Robinhood | Robinhood 암호화폐 상장 |
+| Hyperliquid | Hyperliquid 무기한 선물 상장 |
+| Aster | Aster 거래소 상장 |
+
+</details>
+
+<details>
+<summary><b>OnChain — 3개 소스</b> (engineType: "onchain") — 고래 및 KOL 온체인 활동</summary>
+
+| 소스 코드 | 설명 |
+|----------|------|
+| Hyperliquid Whale Trade | Hyperliquid 고래 거래 알림 |
+| Hyperliquid Large Position | Hyperliquid 대형 포지션 변동 |
+| KOL Trade | KOL (핵심 오피니언 리더) 온체인 거래 |
+
+</details>
+
+<details>
+<summary><b>Meme — 1개 소스</b> (engineType: "meme") — 밈코인 소셜 센티먼트 추적</summary>
+
+| 소스 코드 | 설명 |
+|----------|------|
+| Twitter | Twitter/X 밈코인 논의 및 바이럴 게시물 |
+
+</details>
+
+<details>
+<summary><b>Market — 6개 소스</b> (engineType: "market") — 시장 이상 감지 및 퀀트 시그널</summary>
+
+| 소스 코드 | 설명 |
+|----------|------|
+| Price Change | 대폭 가격 변동 (급등/급락) |
+| Funding Rate | 펀딩비 이상 (무기한 선물) |
+| Funding Rate Difference | 거래소 간 펀딩비 차이 |
+| Large Liquidation | 대형 청산 이벤트 |
+| Market Trends | 전체 시장 추세 변화 |
+| OI Change | 미결제약정 대폭 변동 |
+
+</details>
+
 ---
 
 ## 무엇을 할 수 있나요?
@@ -100,6 +212,8 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | AI | `get_high_score_news` | 높은 AI 영향도 점수 기사 (0-100 스케일) |
 | | `get_news_by_signal` | AI 트레이딩 시그널별: long / short / neutral |
 | 실시간 | `subscribe_latest_news` | WebSocket 라이브 피드, 코인 및 엔진 유형 필터 지원 |
+
+> 자세한 사용 가이드와 예제는 [지식 가이드](../knowledge/guide.md)를 참조하세요.
 
 ---
 
