@@ -64,6 +64,7 @@ Premium financial & crypto media, government agencies, social platforms:
 | Handelsblatt | Handelsblatt — German business newspaper |
 | Ambrey | Ambrey — maritime & geopolitical intelligence |
 | ECB | European Central Bank — official communications |
+| jin10 | 金十数据快讯 |
 
 ### 2. Listing — 9 sources (engineType: "listing")
 Token listing announcements from major exchanges:
