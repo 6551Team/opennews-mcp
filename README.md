@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  72+ Real-time Data Sources · 5 Engine Categories · AI Ratings · Trading Signals
+  84+ Real-time Data Sources · 6 Engine Categories · AI Ratings · Trading Signals
 </p>
 
 <p align="center">
@@ -54,7 +54,7 @@ Steps:
 
 ---
 
-## Data Sources — 72+ Sources Across 5 Categories
+## Data Sources — 84+ Sources Across 6 Categories
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
@@ -63,6 +63,7 @@ Steps:
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter meme coin social sentiment |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
+| **Prediction** | 12 | CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE, CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE |
 
 All articles are **AI-analyzed** with impact score (0-100), trading signal (long/short/neutral), and bilingual summaries (EN/ZH).
 
@@ -178,6 +179,26 @@ All articles are **AI-analyzed** with impact score (0-100), trading signal (long
 
 </details>
 
+<details>
+<summary><b>Prediction — 12 sources</b> (engineType: "prediction") — AI-powered prediction and correlation signals</summary>
+
+| Source Code | Description |
+|-------------|-------------|
+| CORRELATION_LOGICAL | Logical correlation analysis |
+| SMART_MONEY_TRADE | Smart money trade tracking |
+| PRICE_SPIKE | Price spike detection |
+| CLUSTER_ENTRY | Cluster entry signals |
+| WHALE_POSITION | Whale position monitoring |
+| NEW_WALLET_TRADE | New wallet trade detection |
+| INSIDER_PATTERN | Insider pattern recognition |
+| CORRELATION_NARRATIVE | Narrative correlation analysis |
+| CORRELATION_HEDGE | Hedge correlation analysis |
+| CORRELATION_ENTITY_GEO | Geopolitical entity correlation |
+| CORRELATION_CAUSAL | Causal correlation analysis |
+| SETTLEMENT_ARBITRAGE | Settlement arbitrage signals |
+
+</details>
+
 ---
 
 ## What Can It Do?
@@ -201,13 +222,13 @@ After connecting, just tell your AI assistant:
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| Discovery | `get_news_sources` | Full engine tree — all 5 categories and 72+ sources with metadata |
+| Discovery | `get_news_sources` | Full engine tree — all 6 categories and 84+ sources with metadata |
 | | `list_news_types` | Flat list of all source codes for filtering |
-| Search | `get_latest_news` | Latest articles across all 72+ sources |
+| Search | `get_latest_news` | Latest articles across all 84+ sources |
 | | `search_news` | Full-text keyword search across all sources |
 | | `search_news_by_coin` | By coin (BTC, ETH, SOL...) across all sources |
 | | `get_news_by_source` | By specific source (e.g. engine_type="news", news_type="Bloomberg") |
-| | `get_news_by_engine` | By category: news, listing, onchain, meme, market |
+| | `get_news_by_engine` | By category: news, listing, onchain, meme, market, prediction |
 | | `search_news_advanced` | Multi-filter: coins + keywords + engine types combined |
 | AI | `get_high_score_news` | High AI impact score articles (0-100 scale) |
 | | `get_news_by_signal` | By AI trading signal: long / short / neutral |
@@ -295,7 +316,7 @@ Subscribe to real-time crypto news updates.
 
 **Filter Parameters** (all optional):
 - `engineTypes`: Object mapping engine type to news type codes
-  - Key: Engine type (e.g., `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`)
+  - Key: Engine type (e.g., `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`, `"prediction"`)
   - Value: Array of news type codes (e.g., `["Bloomberg", "CoinDesk"]`)
   - Empty array `[]` means all news types under that engine
   - Use `list_news_types` tool to get available codes

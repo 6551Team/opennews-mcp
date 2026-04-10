@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  72+ 실시간 데이터 소스 · 5개 엔진 카테고리 · AI 평가 · 트레이딩 시그널
+  84+ 실시간 데이터 소스 · 6개 엔진 카테고리 · AI 평가 · 트레이딩 시그널
 </p>
 
 <p align="center">
@@ -54,7 +54,7 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 ---
 
-## 데이터 소스 — 5개 카테고리 72+ 소스
+## 데이터 소스 — 6개 카테고리 84+ 소스
 
 | 카테고리 | 수량 | 주요 소스 |
 |---------|------|----------|
@@ -63,6 +63,7 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter 밈코인 소셜 센티먼트 |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
+| **Prediction** | 12 | CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE, CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE |
 
 모든 기사는 **AI 분석** 완료 — 영향도 점수(0-100), 트레이딩 시그널(long/short/neutral), 중영 이중 언어 요약 포함.
 
@@ -178,6 +179,26 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 </details>
 
+<details>
+<summary><b>Prediction — 12개 소스</b> (engineType: "prediction") — AI 예측 및 상관관계 시그널</summary>
+
+| 소스 코드 | 설명 |
+|----------|------|
+| CORRELATION_LOGICAL | 논리적 상관관계 분석 |
+| SMART_MONEY_TRADE | 스마트 머니 거래 추적 |
+| PRICE_SPIKE | 가격 급변 감지 |
+| CLUSTER_ENTRY | 클러스터 진입 시그널 |
+| WHALE_POSITION | 고래 포지션 모니터링 |
+| NEW_WALLET_TRADE | 신규 지갑 거래 감지 |
+| INSIDER_PATTERN | 내부자 패턴 인식 |
+| CORRELATION_NARRATIVE | 내러티브 상관관계 분석 |
+| CORRELATION_HEDGE | 헤지 상관관계 분석 |
+| CORRELATION_ENTITY_GEO | 지정학적 엔티티 상관관계 |
+| CORRELATION_CAUSAL | 인과 상관관계 분석 |
+| SETTLEMENT_ARBITRAGE | 결제 차익거래 시그널 |
+
+</details>
+
 ---
 
 ## 무엇을 할 수 있나요?
@@ -201,13 +222,13 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 | 카테고리 | 도구 | 설명 |
 |---------|------|------|
-| 디스커버리 | `get_news_sources` | 완전한 엔진 트리 — 5개 카테고리 72+ 소스 및 메타데이터 |
+| 디스커버리 | `get_news_sources` | 완전한 엔진 트리 — 6개 카테고리 84+ 소스 및 메타데이터 |
 | | `list_news_types` | 필터용 소스 코드 플랫 리스트 |
-| 검색 | `get_latest_news` | 72+ 소스에서 최신 기사 조회 |
+| 검색 | `get_latest_news` | 84+ 소스에서 최신 기사 조회 |
 | | `search_news` | 전체 소스 대상 키워드 검색 |
 | | `search_news_by_coin` | 코인별 (BTC, ETH, SOL...) 전체 소스 대상 |
 | | `get_news_by_source` | 특정 소스 지정 (예: engine_type="news", news_type="Bloomberg") |
-| | `get_news_by_engine` | 카테고리별: news, listing, onchain, meme, market |
+| | `get_news_by_engine` | 카테고리별: news, listing, onchain, meme, market, prediction |
 | | `search_news_advanced` | 복합 필터: 코인 + 키워드 + 엔진 유형 조합 |
 | AI | `get_high_score_news` | 높은 AI 영향도 점수 기사 (0-100 스케일) |
 | | `get_news_by_signal` | AI 트레이딩 시그널별: long / short / neutral |
@@ -295,7 +316,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 **필터 매개변수** (모두 선택사항):
 - `engineTypes`: 엔진 유형에서 뉴스 유형 코드로의 매핑 객체
-  - 키: 엔진 유형 (예: `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`)
+  - 키: 엔진 유형 (예: `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`, `"prediction"`)
   - 값: 뉴스 유형 코드 배열 (예: `["Bloomberg", "CoinDesk"]`)
   - 빈 배열 `[]`은 해당 엔진의 모든 뉴스 유형을 의미
   - `list_news_types` 도구로 사용 가능한 코드 확인

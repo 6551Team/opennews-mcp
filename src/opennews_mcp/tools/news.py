@@ -1,7 +1,8 @@
-"""News content tools — search and retrieve news from 72+ sources via REST API.
+"""News content tools — search and retrieve news from 84+ sources via REST API.
 
-Covers 5 engine categories: news (53 premium media & social sources), listing (9 exchanges),
-onchain (whale & KOL trades), meme (social sentiment), market (6 anomaly signals).
+Covers 6 engine categories: news (53 premium media & social sources), listing (9 exchanges),
+onchain (whale & KOL trades), meme (social sentiment), market (6 anomaly signals),
+prediction (12 AI prediction signals).
 Uses POST /open/news_search as the primary data source.
 """
 
@@ -15,8 +16,8 @@ from opennews_mcp.config import clamp_limit, make_serializable, MAX_ROWS, requir
 async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
     """Get the most recent crypto news articles, newest first.
 
-    Returns news from 72+ sources across all 5 categories (news, listing, onchain,
-    meme, market) with title text, source, link, related coins, AI rating, and tags.
+    Returns news from 84+ sources across all 6 categories (news, listing, onchain,
+    meme, market, prediction) with title text, source, link, related coins, AI rating, and tags.
 
     Args:
         limit: Maximum number of articles to return (default 10, max 100).
@@ -40,8 +41,8 @@ async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
 async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
     """Search crypto news by keyword in text content.
 
-    Searches across all 72+ sources including Bloomberg, Reuters, CoinDesk,
-    Twitter/X, on-chain alerts, exchange listings, and market signals.
+    Searches across all 84+ sources including Bloomberg, Reuters, CoinDesk,
+    Twitter/X, on-chain alerts, exchange listings, market signals, and AI predictions.
 
     Args:
         keyword: Search term (e.g. "bitcoin", "SEC", "ETF").
@@ -66,8 +67,8 @@ async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
 async def search_news_by_coin(coin: str, ctx: Context, limit: int = 10) -> dict:
     """Search news related to a specific cryptocurrency coin/token.
 
-    Finds all mentions across 72+ sources: media coverage, exchange listings,
-    whale trades, meme sentiment, and market anomalies for the given coin.
+    Finds all mentions across 84+ sources: media coverage, exchange listings,
+    whale trades, meme sentiment, market anomalies, and AI predictions for the given coin.
 
     Args:
         coin: Coin symbol or name (e.g. "BTC", "ETH", "SOL", "TRUMP").
@@ -95,7 +96,7 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
     Use get_news_sources first to see available engine types and news type codes.
 
     Args:
-        engine_type: The engine type (e.g. "news", "listing", "onchain", "meme", "market").
+        engine_type: The engine type (e.g. "news", "listing", "onchain", "meme", "market", "prediction").
         news_type: The news source code (e.g. "Bloomberg", "Reuters", "Coindesk").
             For listing: "Binance", "Coinbase", "OKX", "Bybit", "Upbit", "Bithumb",
               "Robinhood", "Hyperliquid", "Aster".
@@ -103,6 +104,10 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
             For meme: "Twitter".
             For market: "Price Change", "Funding Rate", "Funding Rate Difference",
               "Large Liquidation", "Market Trends", "OI Change".
+            For prediction: "CORRELATION_LOGICAL", "SMART_MONEY_TRADE", "PRICE_SPIKE",
+              "CLUSTER_ENTRY", "WHALE_POSITION", "NEW_WALLET_TRADE", "INSIDER_PATTERN",
+              "CORRELATION_NARRATIVE", "CORRELATION_HEDGE", "CORRELATION_ENTITY_GEO",
+              "CORRELATION_CAUSAL", "SETTLEMENT_ARBITRAGE".
         limit: Maximum results (default 10, max 100).
     """
     if (err := require_token()):
@@ -124,12 +129,13 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
 async def get_news_by_engine(engine_type: str, ctx: Context, limit: int = 10) -> dict:
     """Get news articles filtered by engine type.
 
-    Engine types: "news", "listing", "onchain", "meme", "market".
+    Engine types: "news", "listing", "onchain", "meme", "market", "prediction".
       - "news": 53 sources — Bloomberg, Reuters, FT, CNBC, CNN, BBC, CoinDesk, Twitter/X, etc.
       - "listing": 9 exchanges — Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, etc.
       - "onchain": Whale trades & KOL activity on Hyperliquid.
       - "meme": Meme coin social sentiment from Twitter.
       - "market": Price changes, funding rates, liquidations, OI changes, market trends.
+      - "prediction": 12 AI prediction signals — smart money, whale positions, correlations, etc.
 
     Args:
         engine_type: The engine type code.
@@ -162,12 +168,12 @@ async def search_news_advanced(
     """Advanced news search with multiple filters.
 
     Combines coin, keyword, engine type, and source filters for precise queries
-    across the full 72+ source catalog.
+    across the full 84+ source catalog.
 
     Args:
         coins: Comma-separated coin symbols (e.g. "BTC,ETH").
         keyword: Optional search keyword.
-        engine_types: Engine type filter in format "type1:cat1,cat2;type2:cat3" (e.g. "news:Bloomberg,Reuters;listing:").
+        engine_types: Engine type filter in format "type1:cat1,cat2;type2:cat3" (e.g. "news:Bloomberg,Reuters;listing:;prediction:").
         has_coin: If true, only return news that have associated coins.
         limit: Maximum results (default 10, max 100).
     """
@@ -209,7 +215,7 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
     """Get highly-rated news articles (by AI score), sorted by score descending.
 
     AI scores range 0-100 and reflect potential market impact.
-    All articles from 72+ sources are AI-analyzed with score, grade, signal, and summary.
+    All articles from 84+ sources are AI-analyzed with score, grade, signal, and summary.
 
     Args:
         min_score: Minimum score threshold (default 70).
@@ -243,7 +249,7 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
 async def get_news_by_signal(signal: str, ctx: Context, limit: int = 10) -> dict:
     """Get news filtered by trading signal type.
 
-    Each article from 72+ sources is AI-analyzed for trading direction.
+    Each article from 84+ sources is AI-analyzed for trading direction.
 
     Args:
         signal: The signal type: "long" (bullish), "short" (bearish), or "neutral".

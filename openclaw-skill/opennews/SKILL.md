@@ -1,6 +1,6 @@
 ---
 name: opennews
-description: "Real-time crypto & financial news aggregator — 72+ data sources across 5 categories (News: Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X + 47 more; Listing: Binance, Coinbase, OKX + 6 more; OnChain: whale & KOL trades; Meme: social sentiment; Market: price/funding/liquidation alerts). AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
+description: "Real-time crypto & financial news aggregator — 84+ data sources across 6 categories (News: Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X + 47 more; Listing: Binance, Coinbase, OKX + 6 more; OnChain: whale & KOL trades; Meme: social sentiment; Market: price/funding/liquidation alerts; Prediction: 12 AI prediction signals). AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
 
 user-invocable: true
 metadata:
@@ -26,13 +26,13 @@ metadata:
 
 # OpenNews Crypto News Skill
 
-Real-time crypto & financial news aggregator powered by 6551.io — **72+ data sources** across 5 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
+Real-time crypto & financial news aggregator powered by 6551.io — **84+ data sources** across 6 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
 
 **Get your token**: https://6551.io/mcp
 
 **Base URL**: `https://ai.6551.io`
 
-## Data Sources — 72+ Sources Across 5 Categories
+## Data Sources — 84+ Sources Across 6 Categories
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
@@ -41,6 +41,7 @@ Real-time crypto & financial news aggregator powered by 6551.io — **72+ data s
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter meme coin social sentiment |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
+| **Prediction** | 12 | CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE, CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE |
 
 ## Authentication
 
@@ -55,14 +56,14 @@ Authorization: Bearer $OPENNEWS_TOKEN
 
 ### 1. Get News Sources
 
-Fetch the full engine tree with all 5 categories and 72+ sources.
+Fetch the full engine tree with all 6 categories and 84+ sources.
 
 ```bash
 curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   "https://ai.6551.io/open/news_type"
 ```
 
-Returns a tree with engine types (`news` — 53 sources, `listing` — 9 exchanges, `onchain` — 3 whale/KOL trackers, `meme` — 1 sentiment source, `market` — 6 anomaly signals) and their sub-categories.
+Returns a tree with engine types (`news` — 53 sources, `listing` — 9 exchanges, `onchain` — 3 whale/KOL trackers, `meme` — 1 sentiment source, `market` — 6 anomaly signals, `prediction` — 12 AI prediction signals) and their sub-categories.
 
 ### 2. Search News
 
@@ -253,7 +254,7 @@ curl -s -X GET "https://ai.6551.io/open/free_hot?category=macro&subcategory=defi
 
 ## Notes
 
-- **Primary API**: Get your token at https://6551.io/mcp for full access to 72+ sources with advanced search
+- **Primary API**: Get your token at https://6551.io/mcp for full access to 84+ sources with advanced search
 - **Free API**: Use free endpoints as fallback when token is unavailable (limited to curated hot news)
 - Rate limits apply; max 100 results per request for authenticated API
 - AI ratings may not be available on all articles (check `status == "done"`)

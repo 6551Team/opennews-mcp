@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  72+ 实时数据源 · 5 大引擎类别 · AI 评分 · 交易信号
+  84+ 实时数据源 · 6 大引擎类别 · AI 评分 · 交易信号
 </p>
 
 <p align="center">
@@ -54,7 +54,7 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 ---
 
-## 数据源 — 5 大类别 72+ 数据源
+## 数据源 — 6 大类别 84+ 数据源
 
 | 类别 | 数量 | 主要来源 |
 |------|------|----------|
@@ -63,6 +63,7 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
 | **Meme** | 1 | Twitter meme 币社交情绪 |
 | **Market** | 6 | Price Change、Funding Rate、Funding Rate Difference、Large Liquidation、Market Trends、OI Change |
+| **Prediction** | 12 | CORRELATION_LOGICAL（相关性-逻辑）、SMART_MONEY_TRADE（聪明钱交易）、PRICE_SPIKE（价格异动）、CLUSTER_ENTRY（集群进场）、WHALE_POSITION（鲸鱼持仓）、NEW_WALLET_TRADE（新钱包交易）、INSIDER_PATTERN（内幕模式）、CORRELATION_NARRATIVE（相关性-叙述）、CORRELATION_HEDGE（相关性-对冲）、CORRELATION_ENTITY_GEO（相关性-地缘）、CORRELATION_CAUSAL（相关性-因果）、SETTLEMENT_ARBITRAGE（套利） |
 
 所有文章均经 **AI 分析**，包含影响力评分（0-100）、交易信号（long/short/neutral）及中英双语摘要。
 
@@ -178,6 +179,26 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 </details>
 
+<details>
+<summary><b>Prediction — 12 个来源</b>（engineType: "prediction"）— AI 预测与相关性信号</summary>
+
+| 来源代码 | 描述 |
+|----------|------|
+| CORRELATION_LOGICAL | 相关性（逻辑） |
+| SMART_MONEY_TRADE | 聪明钱交易 |
+| PRICE_SPIKE | 价格异动 |
+| CLUSTER_ENTRY | 集群进场 |
+| WHALE_POSITION | 鲸鱼持仓 |
+| NEW_WALLET_TRADE | 新钱包交易 |
+| INSIDER_PATTERN | 内幕模式 |
+| CORRELATION_NARRATIVE | 相关性（叙述） |
+| CORRELATION_HEDGE | 相关性（对冲） |
+| CORRELATION_ENTITY_GEO | 相关性（地缘） |
+| CORRELATION_CAUSAL | 相关性（因果） |
+| SETTLEMENT_ARBITRAGE | 套利 |
+
+</details>
+
 ---
 
 ## 功能介绍
@@ -201,13 +222,13 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 | 分类 | 工具 | 描述 |
 |------|------|------|
-| 发现 | `get_news_sources` | 完整引擎树 — 5 大类别 72+ 数据源及元数据 |
+| 发现 | `get_news_sources` | 完整引擎树 — 6 大类别 84+ 数据源及元数据 |
 | | `list_news_types` | 所有来源代码的扁平列表，用于过滤 |
-| 搜索 | `get_latest_news` | 跨 72+ 数据源获取最新文章 |
+| 搜索 | `get_latest_news` | 跨 84+ 数据源获取最新文章 |
 | | `search_news` | 跨所有数据源全文关键词搜索 |
 | | `search_news_by_coin` | 按币种搜索 (BTC, ETH, SOL...) 跨所有数据源 |
 | | `get_news_by_source` | 按特定来源搜索 (如 engine_type="news", news_type="Bloomberg") |
-| | `get_news_by_engine` | 按类别搜索: news, listing, onchain, meme, market |
+| | `get_news_by_engine` | 按类别搜索: news, listing, onchain, meme, market, prediction |
 | | `search_news_advanced` | 多条件组合: 币种 + 关键词 + 引擎类型 |
 | AI | `get_high_score_news` | 高 AI 影响力评分文章 (0-100 分制) |
 | | `get_news_by_signal` | 按 AI 交易信号: long / short / neutral |
@@ -295,7 +316,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 **过滤参数**（全部可选）：
 - `engineTypes`: 引擎类型到新闻类型代码的映射对象
-  - 键：引擎类型（如 `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`）
+  - 键：引擎类型（如 `"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`, `"prediction"`）
   - 值：新闻类型代码数组（如 `["Bloomberg", "CoinDesk"]`）
   - 空数组 `[]` 表示该引擎下的所有新闻类型
   - 使用 `list_news_types` 工具获取可用代码

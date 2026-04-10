@@ -10,7 +10,7 @@ from opennews_mcp.config import require_token
 async def get_news_sources(ctx: Context) -> dict:
     """Get all available news source categories and their metadata.
 
-    This platform aggregates 72+ real-time data sources across 5 engine categories:
+    This platform aggregates 84+ real-time data sources across 6 engine categories:
 
     NEWS (53 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business,
       CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch,
@@ -28,6 +28,11 @@ async def get_news_sources(ctx: Context) -> dict:
 
     MARKET (6 sources): Price Change, Funding Rate, Funding Rate Difference,
       Large Liquidation, Market Trends, OI Change — quantitative market anomaly signals.
+
+    PREDICTION (12 sources): CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE,
+      CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN,
+      CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO,
+      CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE — AI-powered prediction signals.
 
     Returns a tree structure with all engine types and their sub-categories.
     Use this first to discover what sources are available before searching.
@@ -77,7 +82,7 @@ async def list_news_types(ctx: Context) -> dict:
     """
     if (err := require_token()):
         return err
-    # See get_news_sources for the full 72+ source catalog.
+    # See get_news_sources for the full 84+ source catalog.
     api = ctx.request_context.lifespan_context.api
 
     try:

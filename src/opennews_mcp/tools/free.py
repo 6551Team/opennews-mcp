@@ -1,7 +1,7 @@
 """Free news tools — no token required, access via /open/free_* endpoints.
 
 These tools provide basic news access without authentication.
-For full features (72+ sources, AI analysis, real-time WebSocket), get a free token at https://6551.io/mcp.
+For full features (84+ sources, AI analysis, real-time WebSocket), get a free token at https://6551.io/mcp.
 """
 
 from mcp.server.fastmcp import Context

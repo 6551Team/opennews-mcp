@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  72+ リアルタイムデータソース · 5 エンジンカテゴリ · AI 評価 · トレーディングシグナル
+  84+ リアルタイムデータソース · 6 エンジンカテゴリ · AI 評価 · トレーディングシグナル
 </p>
 
 <p align="center">
@@ -54,7 +54,7 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 ---
 
-## データソース — 5カテゴリ 72+ ソース
+## データソース — 6カテゴリ 84+ ソース
 
 | カテゴリ | 数量 | 主なソース |
 |---------|------|-----------|
@@ -63,6 +63,7 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
 | **Meme** | 1 | Twitter ミームコインソーシャルセンチメント |
 | **Market** | 6 | Price Change、Funding Rate、Funding Rate Difference、Large Liquidation、Market Trends、OI Change |
+| **Prediction** | 12 | CORRELATION_LOGICAL、SMART_MONEY_TRADE、PRICE_SPIKE、CLUSTER_ENTRY、WHALE_POSITION、NEW_WALLET_TRADE、INSIDER_PATTERN、CORRELATION_NARRATIVE、CORRELATION_HEDGE、CORRELATION_ENTITY_GEO、CORRELATION_CAUSAL、SETTLEMENT_ARBITRAGE |
 
 すべての記事は **AI 分析済み** — 影響度スコア（0-100）、トレーディングシグナル（long/short/neutral）、中英バイリンガル要約付き。
 
@@ -178,6 +179,26 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 </details>
 
+<details>
+<summary><b>Prediction — 12 ソース</b>（engineType: "prediction"）— AI予測＆相関シグナル</summary>
+
+| ソースコード | 説明 |
+|-------------|------|
+| CORRELATION_LOGICAL | 論理的相関分析 |
+| SMART_MONEY_TRADE | スマートマネー取引追跡 |
+| PRICE_SPIKE | 価格急変検出 |
+| CLUSTER_ENTRY | クラスターエントリーシグナル |
+| WHALE_POSITION | ホエールポジション監視 |
+| NEW_WALLET_TRADE | 新規ウォレット取引検出 |
+| INSIDER_PATTERN | インサイダーパターン認識 |
+| CORRELATION_NARRATIVE | ナラティブ相関分析 |
+| CORRELATION_HEDGE | ヘッジ相関分析 |
+| CORRELATION_ENTITY_GEO | 地政学エンティティ相関 |
+| CORRELATION_CAUSAL | 因果相関分析 |
+| SETTLEMENT_ARBITRAGE | 決済アービトラージシグナル |
+
+</details>
+
 ---
 
 ## 何ができる？
@@ -201,13 +222,13 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 | カテゴリ | ツール | 説明 |
 |---------|--------|------|
-| ディスカバリー | `get_news_sources` | 完全エンジンツリー — 5カテゴリ 72+ ソースとメタデータ |
+| ディスカバリー | `get_news_sources` | 完全エンジンツリー — 6カテゴリ 84+ ソースとメタデータ |
 | | `list_news_types` | フィルタ用ソースコードのフラットリスト |
-| 検索 | `get_latest_news` | 72+ ソースから最新記事を取得 |
+| 検索 | `get_latest_news` | 84+ ソースから最新記事を取得 |
 | | `search_news` | 全ソース横断キーワード検索 |
 | | `search_news_by_coin` | 通貨別（BTC, ETH, SOL...）全ソース横断 |
 | | `get_news_by_source` | 特定ソース指定（例：engine_type="news", news_type="Bloomberg"） |
-| | `get_news_by_engine` | カテゴリ別：news, listing, onchain, meme, market |
+| | `get_news_by_engine` | カテゴリ別：news, listing, onchain, meme, market, prediction |
 | | `search_news_advanced` | 複合フィルタ：通貨 + キーワード + エンジンタイプ |
 | AI | `get_high_score_news` | 高 AI 影響度スコア記事（0-100 スケール） |
 | | `get_news_by_signal` | AI トレーディングシグナル別：long / short / neutral |
@@ -295,7 +316,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 **フィルタパラメータ**（すべてオプション）：
 - `engineTypes`: エンジンタイプからニュースタイプコードへのマッピングオブジェクト
-  - キー：エンジンタイプ（例：`"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`）
+  - キー：エンジンタイプ（例：`"news"`, `"onchain"`, `"listing"`, `"meme"`, `"market"`, `"prediction"`）
   - 値：ニュースタイプコードの配列（例：`["Bloomberg", "CoinDesk"]`）
   - 空配列 `[]` はそのエンジン下のすべてのニュースタイプを意味します
   - `list_news_types` ツールで利用可能なコードを取得できます
