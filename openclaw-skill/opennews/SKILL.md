@@ -21,7 +21,7 @@ metadata:
       - darwin
       - linux
       - win32
-  version: 1.0.3
+  version: 1.0.4
 ---
 
 # OpenNews Crypto News Skill
@@ -119,6 +119,7 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 | `coins`      | string[]                  | no       | Filter by coin symbols (e.g. `["BTC","ETH"]`) |
 | `engineTypes`| map[string][]string       | no       | Filter by engine and news types               |
 | `hasCoin`    | boolean                   | no       | Only return news with associated coins        |
+| `score`      | integer                   | no       | Filter by minimum AI score (0-100)            |
 
 Important: You need to understand the user's query intent and perform word segmentation, then combine them using OR/AND to form search keywords, supporting both Chinese and English.
 
@@ -165,7 +166,7 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 curl -s -X POST "https://ai.6551.io/open/news_search" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"limit": 50, "page": 1}' | jq '[.data[] | select(.aiRating.score >= 80)]'
+  -d '{"score": 80, "limit": 50, "page": 1}'
 ```
 
 ---
