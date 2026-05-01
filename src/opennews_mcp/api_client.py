@@ -140,6 +140,7 @@ class NewsAPIClient:
         query: Optional[str] = None,
         engine_types: Optional[dict[str, list[str]]] = None,
         has_coin: bool = False,
+        score: Optional[int] = None,
         limit: int = 20,
         page: int = 1,
     ) -> dict:
@@ -153,6 +154,8 @@ class NewsAPIClient:
             body["engineTypes"] = engine_types
         if has_coin:
             body["hasCoin"] = has_coin
+        if score is not None:
+            body["score"] = score
 
         resp = await self._request("POST", f"{self.base_url}/open/news_search", json=body)
         return resp.json()

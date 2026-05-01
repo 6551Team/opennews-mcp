@@ -163,6 +163,7 @@ async def search_news_advanced(
     keyword: str = "",
     engine_types: str = "",
     has_coin: bool = False,
+    min_score: int = 0,
     limit: int = 10,
 ) -> dict:
     """Advanced news search with multiple filters.
@@ -175,6 +176,7 @@ async def search_news_advanced(
         keyword: Optional search keyword.
         engine_types: Engine type filter in format "type1:cat1,cat2;type2:cat3" (e.g. "news:Bloomberg,Reuters;listing:;prediction:").
         has_coin: If true, only return news that have associated coins.
+        min_score: Minimum AI score threshold (default 0, range 0-100).
         limit: Maximum results (default 10, max 100).
     """
     if (err := require_token()):
@@ -199,6 +201,7 @@ async def search_news_advanced(
         result = await api.search_news(
             coins=coin_list, query=keyword or None,
             engine_types=engine_types_dict, has_coin=has_coin,
+            score=min_score if min_score > 0 else None,
             limit=limit, page=1,
         )
         data = result.get("data", [])[:limit]
@@ -226,20 +229,15 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
     api = ctx.request_context.lifespan_context.api
     limit = clamp_limit(limit)
     try:
-        fetch_limit = min(limit * 3, MAX_ROWS)
-        result = await api.search_news(limit=fetch_limit, page=1)
-        raw = result.get("data", [])
-
-        filtered = [it for it in raw
-                     if (it.get("aiRating") or {}).get("score", 0) >= min_score]
-        filtered.sort(
+        result = await api.search_news(score=min_score, limit=limit, page=1)
+        data = result.get("data", [])
+        data.sort(
             key=lambda x: (x.get("aiRating") or {}).get("score", 0),
             reverse=True,
         )
-        data = filtered[:limit]
         return make_serializable({
             "success": True, "min_score": min_score,
-            "data": data, "count": len(data),
+            "data": data[:limit], "count": len(data[:limit]), "total": result.get("total", 0),
         })
     except Exception as e:
         return {"success": False, "error": str(e) or repr(e)}
