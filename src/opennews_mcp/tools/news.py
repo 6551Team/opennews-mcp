@@ -231,10 +231,7 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
     try:
         result = await api.search_news(score=min_score, limit=limit, page=1)
         data = result.get("data", [])
-        data.sort(
-            key=lambda x: (x.get("aiRating") or {}).get("score", 0),
-            reverse=True,
-        )
+        data.sort(key=lambda x: x.get("score", 0), reverse=True)
         return make_serializable({
             "success": True, "min_score": min_score,
             "data": data[:limit], "count": len(data[:limit]), "total": result.get("total", 0),
