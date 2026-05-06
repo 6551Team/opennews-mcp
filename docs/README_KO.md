@@ -58,7 +58,7 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 | 카테고리 | 수량 | 주요 소스 |
 |---------|------|----------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews 등 |
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase 등 |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter 밈코인 소셜 센티먼트 |
@@ -109,7 +109,6 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | PR Newswire | PR Newswire — 보도자료 |
 | Coinbase | Coinbase 공지 및 블로그 |
 | Binance | Binance 공지 및 블로그 |
-| Phoenixnews | 피닉스 뉴스 |
 | jin10 | 진스 데이터 — 중국 금융 속보 |
 | The Big Whale | The Big Whale — 유럽 암호화폐 미디어 |
 | The Verge | The Verge — 테크 미디어 |
@@ -122,8 +121,6 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | 6551News | 6551 플랫폼 오리지널 분석 |
 | BWEnews | BWE 뉴스 와이어 |
 | AGGRNEWS | 통합 뉴스 피드 |
-| dbnews | DB 뉴스 |
-| Tree | Tree 뉴스 |
 | Velo | Velo 데이터 인텔리전스 |
 
 </details>
@@ -352,7 +349,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "match": "title"
       }
     ],
@@ -378,14 +375,14 @@ AI 분석이 있는 뉴스 (구독한 경우):
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 85,
         "signal": "long",
         "grade": "A"
       },
       {
         "symbol": "ETH",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 45,
         "signal": "short",
         "grade": "B"
@@ -424,7 +421,7 @@ AI 분석이 있는 뉴스 (구독한 경우):
   "coins": [
     {
       "symbol": "BTC",
-      "market_type": "spot",
+      "market_type": "cex",
       "match": "title",
       "score": 85,
       "signal": "long",

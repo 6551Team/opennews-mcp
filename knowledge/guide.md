@@ -17,10 +17,7 @@ Premium financial & crypto media, government agencies, social platforms:
 | Reuters | Reuters — global wire service |
 | A16Z | a16z (Andreessen Horowitz) — leading crypto VC |
 | AGGRNEWS | Aggregated news feed |
-| dbnews | DB news |
-| Tree | Tree news |
 | Velo | Velo data intelligence |
-| Phoenixnews | Phoenix news (凤凰新闻) |
 | BBC | BBC — British Broadcasting Corporation |
 | Binance | Binance announcements & blog |
 | Blockworks | Blockworks — crypto-native media |

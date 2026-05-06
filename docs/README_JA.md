@@ -58,7 +58,7 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 | カテゴリ | 数量 | 主なソース |
 |---------|------|-----------|
-| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase、Phoenixnews など |
+| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase など |
 | **Listing** | 9 | Binance、Coinbase、OKX、Bybit、Upbit、Bithumb、Robinhood、Hyperliquid、Aster |
 | **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
 | **Meme** | 1 | Twitter ミームコインソーシャルセンチメント |
@@ -109,7 +109,6 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | PR Newswire | PR Newswire — プレスリリース |
 | Coinbase | Coinbase アナウンス＆ブログ |
 | Binance | Binance アナウンス＆ブログ |
-| Phoenixnews | フェニックスニュース |
 | jin10 | 金十データ — 中国金融速報 |
 | The Big Whale | The Big Whale — 欧州暗号メディア |
 | The Verge | The Verge — テックメディア |
@@ -122,8 +121,6 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | 6551News | 6551 プラットフォームオリジナル分析 |
 | BWEnews | BWE ニュースワイヤー |
 | AGGRNEWS | アグリゲートニュースフィード |
-| dbnews | DB ニュース |
-| Tree | Tree ニュース |
 | Velo | Velo データインテリジェンス |
 
 </details>
@@ -352,7 +349,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "match": "title"
       }
     ],
@@ -378,14 +375,14 @@ AI 分析付きニュース（購読している場合）：
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 85,
         "signal": "long",
         "grade": "A"
       },
       {
         "symbol": "ETH",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 45,
         "signal": "short",
         "grade": "B"
@@ -424,7 +421,7 @@ AI 分析付きニュース（購読している場合）：
   "coins": [
     {
       "symbol": "BTC",
-      "market_type": "spot",
+      "market_type": "cex",
       "match": "title",
       "score": 85,
       "signal": "long",

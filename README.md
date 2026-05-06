@@ -58,7 +58,7 @@ Steps:
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews, and more |
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter meme coin social sentiment |
@@ -109,7 +109,6 @@ All articles are **AI-analyzed** with impact score (0-100), trading signal (long
 | PR Newswire | PR Newswire — press releases |
 | Coinbase | Coinbase announcements & blog |
 | Binance | Binance announcements & blog |
-| Phoenixnews | Phoenix news |
 | jin10 | Jin10 — Chinese financial data flash news |
 | The Big Whale | The Big Whale — European crypto media |
 | The Verge | The Verge — tech media |
@@ -122,8 +121,6 @@ All articles are **AI-analyzed** with impact score (0-100), trading signal (long
 | 6551News | 6551 platform original analysis |
 | BWEnews | BWE news wire |
 | AGGRNEWS | Aggregated news feed |
-| dbnews | DB news |
-| Tree | Tree news |
 | Velo | Velo data intelligence |
 
 </details>
@@ -352,7 +349,7 @@ When new news matches your filters, the server pushes:
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "match": "title"
       }
     ],
@@ -378,14 +375,14 @@ For news with AI analysis (if subscribed):
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 85,
         "signal": "long",
         "grade": "A"
       },
       {
         "symbol": "ETH",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 45,
         "signal": "short",
         "grade": "B"
@@ -424,7 +421,7 @@ Each article returns:
   "coins": [
     {
       "symbol": "BTC",
-      "market_type": "spot",
+      "market_type": "cex",
       "match": "title",
       "score": 85,
       "signal": "long",

@@ -16,7 +16,7 @@ async def get_news_sources(ctx: Context) -> dict:
       CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch,
       Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social,
       U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley (MS NOW),
-      PR Newswire, Coinbase, Phoenixnews, and more.
+      PR Newswire, Coinbase, and more.
 
     LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood,
       Hyperliquid, Aster — new token listing announcements from major exchanges.
