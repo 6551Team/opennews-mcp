@@ -375,19 +375,38 @@ AI 分析付きニュース（購読している場合）：
     "newsType": "Bloomberg",
     "engineType": "news",
     "link": "https://...",
-    "coins": [...],
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "score": 85,
+        "signal": "long",
+        "grade": "A"
+      },
+      {
+        "symbol": "ETH",
+        "market_type": "spot",
+        "score": 45,
+        "signal": "short",
+        "grade": "B"
+      }
+    ],
     "aiRating": {
       "score": 85,
       "grade": "A",
-      "signal": "long",
-      "status": "done",
-      "summary": "中国語の要約",
-      "enSummary": "English summary"
+      "signal": "long"
     },
     "ts": 1708473600000
   }
 }
 ```
+
+**注意**：`coins` 配列内の各コインには個別の AI 評価が含まれます：
+- `score`：このコインの影響スコア（0-100）
+- `signal`：このコインのシグナル方向（long/short/neutral）
+- `grade`：このコインのグレード（A+/A/B+/B/C）
+
+トップレベルの `aiRating.score` は全コイン中の最高スコアを表します。
 
 ---
 
@@ -402,14 +421,20 @@ AI 分析付きニュース（購読している場合）：
   "newsType": "Bloomberg",
   "engineType": "news",
   "link": "https://...",
-  "coins": [{ "symbol": "BTC", "market_type": "spot", "match": "title" }],
+  "coins": [
+    {
+      "symbol": "BTC",
+      "market_type": "spot",
+      "match": "title",
+      "score": 85,
+      "signal": "long",
+      "grade": "A"
+    }
+  ],
   "aiRating": {
     "score": 85,
     "grade": "A",
-    "signal": "long",
-    "status": "done",
-    "summary": "中国語の要約",
-    "enSummary": "English summary"
+    "signal": "long"
   },
   "ts": 1708473600000
 }
@@ -417,9 +442,11 @@ AI 分析付きニュース（購読している場合）：
 
 | AI フィールド | 説明 |
 |-------------|------|
-| `score` | 0-100 影響度スコア |
+| `score` | 0-100 影響度スコア（トップレベル = 全コイン中の最高スコア） |
 | `signal` | `long`（強気）/ `short`（弱気）/ `neutral` |
-| `status` | `done` = AI 分析完了 |
+| `coins[].score` | 個別コインの影響度スコア（0-100） |
+| `coins[].signal` | 個別コインのシグナル方向（long/short/neutral） |
+| `coins[].grade` | 個別コインのグレード（A+/A/B+/B/C） |
 
 ---
 

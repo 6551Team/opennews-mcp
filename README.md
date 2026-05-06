@@ -375,19 +375,38 @@ For news with AI analysis (if subscribed):
     "newsType": "Bloomberg",
     "engineType": "news",
     "link": "https://...",
-    "coins": [...],
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "score": 85,
+        "signal": "long",
+        "grade": "A"
+      },
+      {
+        "symbol": "ETH",
+        "market_type": "spot",
+        "score": 45,
+        "signal": "short",
+        "grade": "B"
+      }
+    ],
     "aiRating": {
       "score": 85,
       "grade": "A",
-      "signal": "long",
-      "status": "done",
-      "summary": "Chinese summary",
-      "enSummary": "English summary"
+      "signal": "long"
     },
     "ts": 1708473600000
   }
 }
 ```
+
+**Note**: Each coin in the `coins` array now includes individual AI ratings:
+- `score`: 0-100 impact score for this specific coin
+- `signal`: `long` / `short` / `neutral` for this coin
+- `grade`: `A+` / `A` / `B+` / `B` / `C` for this coin
+
+The top-level `aiRating.score` represents the highest score among all coins.
 
 ---
 
@@ -402,7 +421,16 @@ Each article returns:
   "newsType": "Bloomberg",
   "engineType": "news",
   "link": "https://...",
-  "coins": [{ "symbol": "BTC", "market_type": "spot", "match": "title" }],
+  "coins": [
+    {
+      "symbol": "BTC",
+      "market_type": "spot",
+      "match": "title",
+      "score": 85,
+      "signal": "long",
+      "grade": "A"
+    }
+  ],
   "aiRating": {
     "score": 85,
     "grade": "A",
@@ -417,9 +445,11 @@ Each article returns:
 
 | AI Field | Description |
 |----------|-------------|
-| `score` | 0-100 impact score |
+| `score` | 0-100 impact score (top-level = highest among all coins) |
 | `signal` | `long` (bullish) / `short` (bearish) / `neutral` |
-| `status` | `done` = AI analysis completed |
+| `coins[].score` | Individual coin impact score (0-100) |
+| `coins[].signal` | Individual coin signal (long/short/neutral) |
+| `coins[].grade` | Individual coin grade (A+/A/B+/B/C) |
 
 ---
 

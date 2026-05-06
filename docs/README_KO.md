@@ -375,19 +375,38 @@ AI 분석이 있는 뉴스 (구독한 경우):
     "newsType": "Bloomberg",
     "engineType": "news",
     "link": "https://...",
-    "coins": [...],
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "score": 85,
+        "signal": "long",
+        "grade": "A"
+      },
+      {
+        "symbol": "ETH",
+        "market_type": "spot",
+        "score": 45,
+        "signal": "short",
+        "grade": "B"
+      }
+    ],
     "aiRating": {
       "score": 85,
       "grade": "A",
-      "signal": "long",
-      "status": "done",
-      "summary": "중국어 요약",
-      "enSummary": "English summary"
+      "signal": "long"
     },
     "ts": 1708473600000
   }
 }
 ```
+
+**참고**: `coins` 배열의 각 코인에는 개별 AI 평가가 포함됩니다:
+- `score`: 해당 코인의 영향력 점수 (0-100)
+- `signal`: 해당 코인의 시그널 방향 (long/short/neutral)
+- `grade`: 해당 코인의 등급 (A+/A/B+/B/C)
+
+최상위 `aiRating.score`는 모든 코인 중 최고 점수를 나타냅니다.
 
 ---
 
@@ -402,14 +421,20 @@ AI 분석이 있는 뉴스 (구독한 경우):
   "newsType": "Bloomberg",
   "engineType": "news",
   "link": "https://...",
-  "coins": [{ "symbol": "BTC", "market_type": "spot", "match": "title" }],
+  "coins": [
+    {
+      "symbol": "BTC",
+      "market_type": "spot",
+      "match": "title",
+      "score": 85,
+      "signal": "long",
+      "grade": "A"
+    }
+  ],
   "aiRating": {
     "score": 85,
     "grade": "A",
-    "signal": "long",
-    "status": "done",
-    "summary": "중국어 요약",
-    "enSummary": "English summary"
+    "signal": "long"
   },
   "ts": 1708473600000
 }
@@ -417,9 +442,11 @@ AI 분석이 있는 뉴스 (구독한 경우):
 
 | AI 필드 | 설명 |
 |---------|------|
-| `score` | 0-100 영향도 점수 |
+| `score` | 0-100 영향도 점수 (최상위 = 모든 코인 중 최고 점수) |
 | `signal` | `long`(강세) / `short`(약세) / `neutral` |
-| `status` | `done` = AI 분석 완료 |
+| `coins[].score` | 개별 코인의 영향도 점수 (0-100) |
+| `coins[].signal` | 개별 코인의 시그널 방향 (long/short/neutral) |
+| `coins[].grade` | 개별 코인의 등급 (A+/A/B+/B/C) |
 
 ---
 

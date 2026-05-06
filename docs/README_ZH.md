@@ -375,19 +375,38 @@ $env:OPENNEWS_TOKEN = "<your-token>"
     "newsType": "Bloomberg",
     "engineType": "news",
     "link": "https://...",
-    "coins": [...],
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "spot",
+        "score": 85,
+        "signal": "long",
+        "grade": "A"
+      },
+      {
+        "symbol": "ETH",
+        "market_type": "spot",
+        "score": 45,
+        "signal": "short",
+        "grade": "B"
+      }
+    ],
     "aiRating": {
       "score": 85,
       "grade": "A",
-      "signal": "long",
-      "status": "done",
-      "summary": "中文摘要",
-      "enSummary": "English summary"
+      "signal": "long"
     },
     "ts": 1708473600000
   }
 }
 ```
+
+**注意**：`coins` 数组中的每个币种现在包含独立的 AI 评分：
+- `score`：该币种的影响力评分（0-100）
+- `signal`：该币种的信号方向（long/short/neutral）
+- `grade`：该币种的评级（A+/A/B+/B/C）
+
+顶层 `aiRating.score` 代表所有币种中的最高分。
 
 ---
 
@@ -402,14 +421,20 @@ $env:OPENNEWS_TOKEN = "<your-token>"
   "newsType": "Bloomberg",
   "engineType": "news",
   "link": "https://...",
-  "coins": [{ "symbol": "BTC", "market_type": "spot", "match": "title" }],
+  "coins": [
+    {
+      "symbol": "BTC",
+      "market_type": "spot",
+      "match": "title",
+      "score": 85,
+      "signal": "long",
+      "grade": "A"
+    }
+  ],
   "aiRating": {
     "score": 85,
     "grade": "A",
-    "signal": "long",
-    "status": "done",
-    "summary": "中文摘要",
-    "enSummary": "English summary"
+    "signal": "long"
   },
   "ts": 1708473600000
 }
@@ -417,9 +442,11 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 | AI 字段 | 描述 |
 |---------|------|
-| `score` | 0-100 影响力评分 |
+| `score` | 0-100 影响力评分（顶层 = 所有币种中的最高分） |
 | `signal` | `long`（看涨）/ `short`（看跌）/ `neutral`（中性） |
-| `status` | `done` = AI 分析完成 |
+| `coins[].score` | 单个币种的影响力评分（0-100） |
+| `coins[].signal` | 单个币种的信号方向（long/short/neutral） |
+| `coins[].grade` | 单个币种的评级（A+/A/B+/B/C） |
 
 ---
 
