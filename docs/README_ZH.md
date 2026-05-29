@@ -58,7 +58,7 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 | 类别 | 数量 | 主要来源 |
 |------|------|----------|
-| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase、凤凰新闻等 |
+| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase等 |
 | **Listing** | 9 | Binance、Coinbase、OKX、Bybit、Upbit、Bithumb、Robinhood、Hyperliquid、Aster |
 | **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
 | **Meme** | 1 | Twitter meme 币社交情绪 |
@@ -109,7 +109,6 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | PR Newswire | 美通社 — 新闻稿发布 |
 | Coinbase | Coinbase 公告与博客 |
 | Binance | Binance 公告与博客 |
-| Phoenixnews | 凤凰新闻 |
 | jin10 | 金十数据 — 财经快讯 |
 | The Big Whale | The Big Whale — 欧洲加密媒体 |
 | The Verge | The Verge — 科技媒体 |
@@ -122,8 +121,6 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | 6551News | 6551 平台原创分析 |
 | BWEnews | BWE 新闻线 |
 | AGGRNEWS | 聚合新闻源 |
-| dbnews | DB 新闻 |
-| Tree | Tree 新闻 |
 | Velo | Velo 数据情报 |
 
 </details>
@@ -352,7 +349,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "match": "title"
       }
     ],
@@ -378,14 +375,14 @@ $env:OPENNEWS_TOKEN = "<your-token>"
     "coins": [
       {
         "symbol": "BTC",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 85,
         "signal": "long",
         "grade": "A"
       },
       {
         "symbol": "ETH",
-        "market_type": "spot",
+        "market_type": "cex",
         "score": 45,
         "signal": "short",
         "grade": "B"
@@ -487,7 +484,7 @@ $env:OPENNEWS_TOKEN = "<your-token>"
   "coins": [
     {
       "symbol": "BTC",
-      "market_type": "spot",
+      "market_type": "cex",
       "match": "title",
       "score": 85,
       "signal": "long",

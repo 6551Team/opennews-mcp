@@ -36,7 +36,7 @@ Real-time crypto & financial news aggregator powered by 6551.io — **84+ data s
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews, and more |
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter meme coin social sentiment |
@@ -136,7 +136,7 @@ Important: You need to understand the user's query intent and perform word segme
   "newsType": "Bloomberg",
   "engineType": "news",
   "link": "https://...",
-  "coins": [{"symbol": "BTC", "market_type": "spot", "match": "title"}],
+  "coins": [{"symbol": "BTC", "market_type": "cex", "match": "title"}],
   "aiRating": {
     "score": 85,
     "grade": "A",

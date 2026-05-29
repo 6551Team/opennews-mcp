@@ -46,7 +46,7 @@ Aggregates 84+ data sources across 6 engine categories:
 - NEWS (53 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, \
 CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, \
 Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, \
-TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, Phoenixnews, and more.
+TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more.
 - LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, \
 Hyperliquid, Aster — new token listing announcements.
 - ONCHAIN (3 sources): Hyperliquid Whale Trade, Hyperliquid Large Position, \
