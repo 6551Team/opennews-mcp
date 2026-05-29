@@ -408,6 +408,69 @@ AI 분석이 있는 뉴스 (구독한 경우):
 
 최상위 `aiRating.score`는 모든 코인 중 최고 점수를 나타냅니다.
 
+### 서버 푸시 - 전략 트리거
+
+> **Max 구독이 필요합니다.** [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy)에서 전략을 생성하고 관리하세요.
+
+사용자 정의 전략이 트리거되면(예: 가격 알림, 키워드 매칭) 서버가 푸시합니다:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "strategy.triggered",
+  "params": {
+    "id": 1234567890,
+    "newsType": "strategy",
+    "engineType": "market",
+    "text": "BTC 펀딩비율 0.15%",
+    "link": "",
+    "source": "binance",
+    "description": "{...}",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "cex"
+      }
+    ],
+    "ts": "2025-01-15T08:30:00Z",
+    "strategy": {
+      "id": 42,
+      "name": "BTC 펀딩비율 알림",
+      "sourceType": "market",
+      "soundId": "alert-1",
+      "bgColor": "#FF6B35",
+      "metrics": {
+        "funding_rate_high": {
+          "value": 0.15,
+          "unit": "%"
+        }
+      }
+    },
+    "aiRating": {
+      "score": 85
+    }
+  }
+}
+```
+
+**전략 푸시 필드 설명**:
+- `id`: 뉴스/이벤트 ID
+- `engineType`: 소스 엔진 유형 (`market`, `news`, `onchain`)
+- `text`: 이벤트 설명
+- `coins`: 관련 코인
+- `ts`: 이벤트 타임스탬프
+- `strategy.id`: 사용자 전략 ID
+- `strategy.name`: 전략 이름
+- `strategy.sourceType`: 전략 소스 유형
+- `strategy.soundId`: 알림 사운드 ID
+- `strategy.bgColor`: 알림 배경색
+- `strategy.metrics`: 트리거된 지표 값 및 단위
+- `aiRating` (선택): 뉴스에 AI 점수가 있을 때 존재:
+  - `score`: 영향력 점수 (0-100)
+- `relatedAddress` (선택): 관련 지갑 주소
+
+**참고**: 전략 트리거 이벤트는 NATS를 통해 사용자별로 푸시됩니다. 별도의 구독이 필요 없으며, 연결 후 해당 사용자의 전략 이벤트를 자동으로 수신합니다.
+
 ---
 
 ## 데이터 구조

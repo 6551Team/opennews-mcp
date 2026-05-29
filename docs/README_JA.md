@@ -408,6 +408,69 @@ AI 分析付きニュース（購読している場合）：
 
 トップレベルの `aiRating.score` は全コイン中の最高スコアを表します。
 
+### サーバープッシュ - ストラテジートリガー
+
+> **Max サブスクリプションが必要です。** [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy) でストラテジーを作成・管理できます。
+
+ユーザー定義のストラテジーがトリガーされた場合（例：価格アラート、キーワードマッチ）、サーバーがプッシュします：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "strategy.triggered",
+  "params": {
+    "id": 1234567890,
+    "newsType": "strategy",
+    "engineType": "market",
+    "text": "BTC ファンディングレート 0.15%",
+    "link": "",
+    "source": "binance",
+    "description": "{...}",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "cex"
+      }
+    ],
+    "ts": "2025-01-15T08:30:00Z",
+    "strategy": {
+      "id": 42,
+      "name": "BTC ファンディングレートアラート",
+      "sourceType": "market",
+      "soundId": "alert-1",
+      "bgColor": "#FF6B35",
+      "metrics": {
+        "funding_rate_high": {
+          "value": 0.15,
+          "unit": "%"
+        }
+      }
+    },
+    "aiRating": {
+      "score": 85
+    }
+  }
+}
+```
+
+**ストラテジープッシュフィールド説明**：
+- `id`：ニュース/イベント ID
+- `engineType`：ソースエンジンタイプ（`market`、`news`、`onchain`）
+- `text`：イベントの説明
+- `coins`：関連コイン
+- `ts`：イベントタイムスタンプ
+- `strategy.id`：ユーザーストラテジー ID
+- `strategy.name`：ストラテジー名
+- `strategy.sourceType`：ストラテジーソースタイプ
+- `strategy.soundId`：通知サウンド ID
+- `strategy.bgColor`：通知背景色
+- `strategy.metrics`：トリガーされた指標値と単位
+- `aiRating`（オプション）：ニュースに AI スコアがある場合に存在：
+  - `score`：影響スコア（0-100）
+- `relatedAddress`（オプション）：関連ウォレットアドレス
+
+**注意**：ストラテジートリガーイベントは NATS を通じてユーザーごとにプッシュされます。追加のサブスクリプションは不要で、接続後に自動的にそのユーザーのストラテジーイベントを受信します。
+
 ---
 
 ## データ構造

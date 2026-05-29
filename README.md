@@ -401,6 +401,69 @@ For news with AI analysis (if subscribed):
 }
 ```
 
+### Server Push - Strategy Triggered
+
+> **Requires Max subscription.** Create and manage your strategies at [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy).
+
+When a user-defined strategy is triggered (e.g., price alert, keyword match), the server pushes:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "strategy.triggered",
+  "params": {
+    "id": 1234567890,
+    "newsType": "strategy",
+    "engineType": "market",
+    "text": "BTC funding rate 0.15%",
+    "link": "",
+    "source": "binance",
+    "description": "{...}",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "cex"
+      }
+    ],
+    "ts": "2025-01-15T08:30:00Z",
+    "strategy": {
+      "id": 42,
+      "name": "BTC Funding Rate Alert",
+      "sourceType": "market",
+      "soundId": "alert-1",
+      "bgColor": "#FF6B35",
+      "metrics": {
+        "funding_rate_high": {
+          "value": 0.15,
+          "unit": "%"
+        }
+      }
+    },
+    "aiRating": {
+      "score": 85
+    }
+  }
+}
+```
+
+**Strategy Params Fields**:
+- `id`: News/event ID
+- `engineType`: Source engine type (`market`, `news`, `onchain`)
+- `text`: Human-readable event description
+- `coins`: Related coins
+- `ts`: Event timestamp
+- `strategy.id`: User strategy ID
+- `strategy.name`: Strategy name
+- `strategy.sourceType`: Strategy source type
+- `strategy.soundId`: Notification sound ID
+- `strategy.bgColor`: Notification background color
+- `strategy.metrics`: Triggered metric values with units
+- `aiRating` (optional): Present when the news has an AI score. Contains:
+  - `score`: 0-100 impact score
+- `relatedAddress` (optional): Related wallet address if applicable
+
+**Note**: Strategy triggered events are pushed per-user via NATS. No explicit subscription is required — events are automatically delivered to the connected user who owns the strategy.
+
 **Note**: Each coin in the `coins` array now includes individual AI ratings:
 - `score`: 0-100 impact score for this specific coin
 - `signal`: `long` / `short` / `neutral` for this coin

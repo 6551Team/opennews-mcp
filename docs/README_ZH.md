@@ -408,6 +408,69 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 顶层 `aiRating.score` 代表所有币种中的最高分。
 
+### 服务器推送 - 策略命中
+
+> **需要 Max 订阅套餐。** 在 [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy) 创建和管理您的策略。
+
+当用户自定义策略被触发时（如价格预警、关键词匹配），服务器推送：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "strategy.triggered",
+  "params": {
+    "id": 1234567890,
+    "newsType": "strategy",
+    "engineType": "market",
+    "text": "BTC 资金费率 0.15%",
+    "link": "",
+    "source": "binance",
+    "description": "{...}",
+    "coins": [
+      {
+        "symbol": "BTC",
+        "market_type": "cex"
+      }
+    ],
+    "ts": "2025-01-15T08:30:00Z",
+    "strategy": {
+      "id": 42,
+      "name": "BTC 资金费率预警",
+      "sourceType": "market",
+      "soundId": "alert-1",
+      "bgColor": "#FF6B35",
+      "metrics": {
+        "funding_rate_high": {
+          "value": 0.15,
+          "unit": "%"
+        }
+      }
+    },
+    "aiRating": {
+      "score": 85
+    }
+  }
+}
+```
+
+**策略推送字段说明**：
+- `id`：新闻/事件 ID
+- `engineType`：来源引擎类型（`market`、`news`、`onchain`）
+- `text`：可读的事件描述
+- `coins`：相关币种
+- `ts`：事件时间戳
+- `strategy.id`：用户策略 ID
+- `strategy.name`：策略名称
+- `strategy.sourceType`：策略来源类型
+- `strategy.soundId`：通知音效 ID
+- `strategy.bgColor`：通知背景色
+- `strategy.metrics`：触发的指标值及单位
+- `aiRating`（可选）：当新闻有 AI 评分时存在，包含：
+  - `score`：影响力评分（0-100）
+- `relatedAddress`（可选）：相关钱包地址
+
+**注意**：策略命中事件通过 NATS 按用户推送，无需额外订阅，连接后自动接收属于该用户的策略事件。
+
 ---
 
 ## 数据结构
