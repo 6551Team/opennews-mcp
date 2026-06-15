@@ -1,6 +1,6 @@
 ---
 name: opennews
-description: "Real-time crypto & financial news aggregator — 84+ data sources across 6 categories (News: Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X + 47 more; Listing: Binance, Coinbase, OKX + 6 more; OnChain: whale & KOL trades; Meme: social sentiment; Market: price/funding/liquidation alerts; Prediction: 12 AI prediction signals). AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
+description: "Real-time crypto, equities, macro, and financial market news aggregator — 84+ data sources across 6 categories covering digital assets, U.S. stocks, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and market-moving social/news signals. Sources include Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X, Binance, Coinbase, OKX, whale/KOL trades, price/funding/liquidation alerts, and 12 AI prediction signals. AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
 
 user-invocable: true
 metadata:
@@ -21,12 +21,14 @@ metadata:
       - darwin
       - linux
       - win32
-  version: 1.0.4
+  version: 1.0.5
 ---
 
-# OpenNews Crypto News Skill
+# OpenNews Financial Market News Skill
 
-Real-time crypto & financial news aggregator powered by 6551.io — **84+ data sources** across 6 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
+Real-time crypto, equities, macro, and financial market news aggregator powered by 6551.io — **84+ data sources** across 6 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
+
+Use OpenNews for time-sensitive, market-moving news and signals across digital assets, U.S. stocks, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and social/news channels that can affect prices or investor positioning.
 
 **Get your token**: https://6551.io/mcp
 
@@ -36,7 +38,7 @@ Real-time crypto & financial news aggregator powered by 6551.io — **84+ data s
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more |
+| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more; useful for crypto, U.S. equities, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and market-moving social/news signals |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
 | **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
 | **Meme** | 1 | Twitter meme coin social sentiment |
@@ -241,7 +243,7 @@ curl -s -X GET "https://ai.6551.io/open/free_hot?category=macro"
 }
 ```
 
-**Example - Get Hot Crypto News:**
+**Example - Get Hot Macro News:**
 ```bash
 curl -s -X GET "https://ai.6551.io/open/free_hot?category=macro"
 ```
