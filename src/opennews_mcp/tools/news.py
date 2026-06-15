@@ -1,8 +1,9 @@
-"""News content tools — search and retrieve news from 84+ sources via REST API.
+"""News content tools — search and retrieve real-time financial market news via REST API.
 
-Covers 6 engine categories: news (53 premium media & social sources), listing (9 exchanges),
-onchain (whale & KOL trades), meme (social sentiment), market (6 anomaly signals),
-prediction (12 AI prediction signals).
+Covers crypto, U.S. equities, macro, semiconductors, AI infrastructure, supply chains,
+commodities, rates, policy, and market-moving social/news signals across 6 engine categories:
+news (53 premium media & social sources), listing (9 exchanges), onchain (whale & KOL trades),
+meme (social sentiment), market (6 anomaly signals), and prediction (12 AI prediction signals).
 Uses POST /open/news_search as the primary data source.
 """
 
@@ -14,10 +15,12 @@ from opennews_mcp.config import clamp_limit, make_serializable, MAX_ROWS, requir
 
 @mcp.tool()
 async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
-    """Get the most recent crypto news articles, newest first.
+    """Get the most recent market-moving news and signals, newest first.
 
     Returns news from 84+ sources across all 6 categories (news, listing, onchain,
-    meme, market, prediction) with title text, source, link, related coins, AI rating, and tags.
+    meme, market, prediction) with title text, source, link, related assets, AI rating, and tags.
+    Coverage includes crypto, U.S. equities, macro, semiconductors, AI infrastructure,
+    supply chains, commodities, rates, policy, and social/news signals.
 
     Args:
         limit: Maximum number of articles to return (default 10, max 100).
@@ -39,13 +42,15 @@ async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
 
 @mcp.tool()
 async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
-    """Search crypto news by keyword in text content.
+    """Search real-time financial market news by keyword in text content.
 
-    Searches across all 84+ sources including Bloomberg, Reuters, CoinDesk,
+    Searches across all 84+ sources for crypto, U.S. equities, macro, semiconductors,
+    AI infrastructure, supply chains, commodities, rates, policy, and market-moving
+    social/news signals. Sources include Bloomberg, Reuters, FT, CNBC, CoinDesk,
     Twitter/X, on-chain alerts, exchange listings, market signals, and AI predictions.
 
     Args:
-        keyword: Search term (e.g. "bitcoin", "SEC", "ETF").
+        keyword: Search term (e.g. "bitcoin", "NVDA", "FOMC", "tariffs", "oil", "AI chips").
         limit: Maximum results (default 10, max 100).
     """
     if (err := require_token()):
@@ -65,7 +70,7 @@ async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
 
 @mcp.tool()
 async def search_news_by_coin(coin: str, ctx: Context, limit: int = 10) -> dict:
-    """Search news related to a specific cryptocurrency coin/token.
+    """Search news and market signals related to a specific digital asset coin/token.
 
     Finds all mentions across 84+ sources: media coverage, exchange listings,
     whale trades, meme sentiment, market anomalies, and AI predictions for the given coin.
@@ -91,7 +96,7 @@ async def search_news_by_coin(coin: str, ctx: Context, limit: int = 10) -> dict:
 
 @mcp.tool()
 async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, limit: int = 10) -> dict:
-    """Get news articles from a specific source.
+    """Get market news or signal items from a specific source/category.
 
     Use get_news_sources first to see available engine types and news type codes.
 
@@ -127,10 +132,12 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
 
 @mcp.tool()
 async def get_news_by_engine(engine_type: str, ctx: Context, limit: int = 10) -> dict:
-    """Get news articles filtered by engine type.
+    """Get market news or signal items filtered by engine type.
 
     Engine types: "news", "listing", "onchain", "meme", "market", "prediction".
-      - "news": 53 sources — Bloomberg, Reuters, FT, CNBC, CNN, BBC, CoinDesk, Twitter/X, etc.
+      - "news": 53 sources — Bloomberg, Reuters, FT, CNBC, CNN, BBC, CoinDesk, Twitter/X, etc.,
+        covering crypto, U.S. equities, macro, semiconductors, AI infrastructure,
+        supply chains, commodities, rates, policy, and social/news signals.
       - "listing": 9 exchanges — Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, etc.
       - "onchain": Whale trades & KOL activity on Hyperliquid.
       - "meme": Meme coin social sentiment from Twitter.
@@ -166,16 +173,18 @@ async def search_news_advanced(
     min_score: int = 0,
     limit: int = 10,
 ) -> dict:
-    """Advanced news search with multiple filters.
+    """Advanced financial market news search with multiple filters.
 
-    Combines coin, keyword, engine type, and source filters for precise queries
-    across the full 84+ source catalog.
+    Combines keyword, digital asset coin, engine type, source, and score filters for precise
+    queries across the full 84+ source catalog. Use it for crypto, U.S. equities, macro,
+    semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and
+    market-moving social/news signals.
 
     Args:
         coins: Comma-separated coin symbols (e.g. "BTC,ETH").
-        keyword: Optional search keyword.
+        keyword: Optional search keyword (e.g. "NVDA", "FOMC", "tariffs", "oil", "AI chips").
         engine_types: Engine type filter in format "type1:cat1,cat2;type2:cat3" (e.g. "news:Bloomberg,Reuters;listing:;prediction:").
-        has_coin: If true, only return news that have associated coins.
+        has_coin: If true, only return items that have associated digital asset coins.
         min_score: Minimum AI score threshold (default 0, range 0-100).
         limit: Maximum results (default 10, max 100).
     """
@@ -215,10 +224,12 @@ async def search_news_advanced(
 
 @mcp.tool()
 async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10) -> dict:
-    """Get highly-rated news articles (by AI score), sorted by score descending.
+    """Get highly-rated market news and signals by AI score, sorted by score descending.
 
-    AI scores range 0-100 and reflect potential market impact.
-    All articles from 84+ sources are AI-analyzed with score, grade, signal, and summary.
+    AI scores range 0-100 and reflect potential market impact across crypto,
+    U.S. equities, macro, semiconductors, AI infrastructure, supply chains,
+    commodities, rates, policy, and social/news signals. All items from 84+
+    sources are AI-analyzed with score, grade, signal, and summary.
 
     Args:
         min_score: Minimum score threshold (default 70).
@@ -242,9 +253,9 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
 
 @mcp.tool()
 async def get_news_by_signal(signal: str, ctx: Context, limit: int = 10) -> dict:
-    """Get news filtered by trading signal type.
+    """Get market news filtered by AI trading signal type.
 
-    Each article from 84+ sources is AI-analyzed for trading direction.
+    Each item from 84+ sources is AI-analyzed for directional market impact.
 
     Args:
         signal: The signal type: "long" (bullish), "short" (bearish), or "neutral".

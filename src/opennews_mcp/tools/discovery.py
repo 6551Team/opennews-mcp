@@ -1,4 +1,4 @@
-"""Discovery tools — list available news sources and categories."""
+"""Discovery tools — list available financial market news sources and categories."""
 
 from mcp.server.fastmcp import Context
 
@@ -8,7 +8,7 @@ from opennews_mcp.config import require_token
 
 @mcp.tool()
 async def get_news_sources(ctx: Context) -> dict:
-    """Get all available news source categories and their metadata.
+    """Get all available market news source categories and their metadata.
 
     This platform aggregates 84+ real-time data sources across 6 engine categories:
 
@@ -16,7 +16,9 @@ async def get_news_sources(ctx: Context) -> dict:
       CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch,
       Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social,
       U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley (MS NOW),
-      PR Newswire, Coinbase, and more.
+      PR Newswire, Coinbase, and more. Useful for crypto, U.S. equities, macro,
+      semiconductors, AI infrastructure, supply chains, commodities, rates, policy,
+      and market-moving social/news signals.
 
     LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood,
       Hyperliquid, Aster — new token listing announcements from major exchanges.
@@ -75,7 +77,7 @@ async def get_news_sources(ctx: Context) -> dict:
 
 @mcp.tool()
 async def list_news_types(ctx: Context) -> dict:
-    """List all available news type codes for filtering.
+    """List all available market news type codes for filtering.
 
     Returns a flat list of news source codes that can be used with
     the newsType parameter in search_news.

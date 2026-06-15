@@ -1,4 +1,4 @@
-"""Free news tools — no token required, access via /open/free_* endpoints.
+"""Free financial market news tools — no token required, access via /open/free_* endpoints.
 
 These tools provide basic news access without authentication.
 For full features (84+ sources, AI analysis, real-time WebSocket), get a free token at https://6551.io/mcp.
@@ -11,7 +11,7 @@ from opennews_mcp.app import mcp
 
 @mcp.tool()
 async def get_news_categories(ctx: Context) -> dict:
-    """Get all available news categories and subcategories.
+    """Get all available free market news categories and subcategories.
 
     Returns a list of categories, each containing subcategories,
     for use with the get_hot_news tool.
@@ -32,7 +32,11 @@ async def get_hot_news(
     ctx: Context,
     subcategory: str = "",
 ) -> dict:
-    """Get hot news and tweets by category.
+    """Get hot market news and tweets by category.
+
+    Use this free endpoint for curated real-time financial market news, including
+    crypto, equities, macro, policy, commodities, and market-moving social signals
+    when the authenticated 84+ source search is unavailable.
 
     Args:
         category: Category key (required). Use get_news_categories to list available keys.

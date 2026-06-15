@@ -1,4 +1,4 @@
-"""Real-time news tools — WebSocket subscription for live updates from 84+ sources."""
+"""Real-time market news tools — WebSocket subscription for live updates from 84+ sources."""
 
 from mcp.server.fastmcp import Context
 
@@ -15,22 +15,24 @@ async def subscribe_latest_news(
     engine_types: str = "",
     has_coin: bool = False,
 ) -> dict:
-    """Subscribe to real-time news updates via WebSocket.
+    """Subscribe to real-time financial market news updates via WebSocket.
 
     Connects to the WebSocket feed, subscribes to news with optional filters,
     and collects incoming messages for the specified duration.
 
     Streams live data from 84+ sources across 6 categories:
-    news (Bloomberg, Reuters, etc.), listing (Binance, Coinbase, etc.),
+    news (Bloomberg, Reuters, FT, CNBC, Twitter/X, etc.), listing (Binance, Coinbase, etc.),
     onchain (whale trades), meme (Twitter sentiment), market (price/funding/liquidation alerts),
     prediction (AI prediction signals — smart money, correlations, whale positions, etc.).
+    Coverage includes crypto, U.S. equities, macro, semiconductors, AI infrastructure,
+    supply chains, commodities, rates, policy, and market-moving social/news signals.
 
     Args:
         wait_seconds: How long to listen for news (default 10, max 30 seconds).
         max_items: Maximum news items to collect (default 5, max 20).
-        coins: Comma-separated coin symbols to filter (e.g. "BTC,ETH").
+        coins: Comma-separated digital asset coin symbols to filter (e.g. "BTC,ETH").
         engine_types: Engine type filter in format "type1:cat1,cat2;type2:cat3".
-        has_coin: If true, only receive news that have associated coins.
+        has_coin: If true, only receive items that have associated digital asset coins.
     """
     if (err := require_token()):
         return err
