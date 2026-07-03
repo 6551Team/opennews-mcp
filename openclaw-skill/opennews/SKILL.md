@@ -127,6 +127,66 @@ Important: You need to understand the user's query intent and perform word segme
 
 ---
 
+## Finance Enhancement Endpoints
+
+These authenticated endpoints provide company report discovery, company report text, and wallet-visible on-chain holdings evidence. Responses are wrapped as `{"success": true, "data": ...}` and may include usage quota metadata.
+
+### Company Search
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-search" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"keyword": "IBM", "limit": 20, "auto_collect": true}'
+```
+
+### Company Info
+
+Returns company identity, available SEC filings, third-party research reports, earnings-call transcripts, report forms, and financial item names.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-info" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"company": "IBM", "auto_collect": true, "filing_limit": 300, "fact_limit": 5000}'
+```
+
+### Company Report Text
+
+Fetches SEC filing, third-party research report, or earnings-call transcript text by report name, form, accession, source key, quarter hint, section, or text search.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-report-text" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"company": "IBM", "report_name": "10-K", "form_type": "10-K", "auto_collect": true}'
+```
+
+### Crypto Holdings Evidence
+
+Returns Blockscout address-balance evidence for an institution or wallet address. It is not proof of economic ownership, beneficial ownership, investment advice, or a trading signal.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/crypto-holdings" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"address": "0x...", "chain": "ethereum", "token_symbol": "ETH", "limit": 100}'
+```
+
+### Crypto Holding Changes
+
+Returns changes between adjacent wallet snapshots. At least two snapshots are needed to produce changed records.
+The raw HTTP API accepts `change_types` as a JSON array. The MCP tool `get_crypto_holding_changes` accepts a comma-separated string such as `increase,decrease` and defaults `auto_collect` to `false`; collect holdings first when a fresh wallet snapshot is needed.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/crypto-holding-changes" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"address": "0x...", "chain": "ethereum", "change_types": ["increase", "decrease"], "auto_collect": false, "limit": 100}'
+```
+
+---
+
 ## Data Structures
 
 ### News Article

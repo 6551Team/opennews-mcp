@@ -142,6 +142,15 @@ AI-powered prediction and correlation signals:
 - **get_high_score_news**: Articles with high AI impact scores (0-100 scale)
 - **get_news_by_signal**: Filter by AI trading signal — "long" (bullish), "short" (bearish), or "neutral"
 
+### Finance Enhancement
+- **search_companies**: Search public company candidates by keyword, ticker, CIK, or fuzzy company name
+- **get_company_info**: Resolve a company and list available SEC filings, research reports, earnings-call transcripts, report forms, and financial item names
+- **get_company_report_text**: Fetch SEC filing, third-party research report, or earnings-call transcript text by report name, form, accession, source key, quarter hint, section, or text search
+- **get_crypto_holdings**: Query wallet-visible on-chain holdings evidence for an institution or address; results are Blockscout address-balance evidence, not proof of beneficial ownership or a trading signal
+- **get_crypto_holding_changes**: Query on-chain holdings changes between adjacent snapshots, with optional token, date, and change-type filters
+
+For the MCP tool, pass `change_types` as a comma-separated string such as `"increase,decrease"`. `get_crypto_holding_changes` defaults `auto_collect` to false; call `get_crypto_holdings` first with `auto_collect=true` or `force_collect=true` when you need to populate a fresh wallet snapshot.
+
 ### Real-time
 - **subscribe_latest_news**: WebSocket live feed with optional filters by coins, engine types
 
@@ -157,6 +166,8 @@ AI-powered prediction and correlation signals:
 8. **Bullish signals**: `get_news_by_signal(signal="long")` — AI-detected bullish catalysts
 9. **Multi-filter power search**: `search_news_advanced(coins="BTC,ETH", engine_types="news:Bloomberg,Reuters;market:", keyword="ETF")` — Bloomberg & Reuters ETF news for BTC/ETH plus all market signals
 10. **Live monitoring**: `subscribe_latest_news(wait_seconds=15, coins="BTC", engine_types="news:;market:")` — real-time BTC news + market anomalies
+11. **Company filings workflow**: `get_company_info(company="IBM")`, then `get_company_report_text(company="IBM", report_name="10-K", form_type="10-K")` — discover and fetch company reports
+12. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
 
 ## Data Structure
 

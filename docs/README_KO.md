@@ -229,6 +229,11 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | | `search_news_advanced` | 복합 필터: 코인 + 키워드 + 엔진 유형 조합 |
 | AI | `get_high_score_news` | 높은 AI 영향도 점수 기사 (0-100 스케일) |
 | | `get_news_by_signal` | AI 트레이딩 시그널별: long / short / neutral |
+| 금융 강화 | `search_companies` | 키워드, ticker, CIK 또는 유사 회사명으로 상장사 후보 검색 |
+| | `get_company_info` | 회사를 식별하고 사용 가능한 SEC filing, 리서치 보고서, 실적 콜 transcript, 재무 항목을 나열 |
+| | `get_company_report_text` | SEC filing, 서드파티 리서치, 실적 콜 transcript 본문 조회 |
+| | `get_crypto_holdings` | 기관 또는 주소의 지갑 기준 온체인 보유 증거 조회 |
+| | `get_crypto_holding_changes` | 인접 스냅샷 사이의 온체인 보유 변화 조회 |
 | 실시간 | `subscribe_latest_news` | WebSocket 라이브 피드, 코인 및 엔진 유형 필터 지원 |
 
 > 자세한 사용 가이드와 예제는 [지식 가이드](../knowledge/guide.md)를 참조하세요.

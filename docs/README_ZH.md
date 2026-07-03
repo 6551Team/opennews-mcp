@@ -229,6 +229,11 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | | `search_news_advanced` | 多条件组合: 币种 + 关键词 + 引擎类型 |
 | AI | `get_high_score_news` | 高 AI 影响力评分文章 (0-100 分制) |
 | | `get_news_by_signal` | 按 AI 交易信号: long / short / neutral |
+| 金融增强 | `search_companies` | 按关键词、ticker、CIK 或模糊公司名搜索上市公司候选项 |
+| | `get_company_info` | 解析公司并列出可用 SEC filings、研报、电话会 transcript 和财务字段 |
+| | `get_company_report_text` | 获取 SEC filing、第三方研报或财报电话会 transcript 文本 |
+| | `get_crypto_holdings` | 查询机构或地址的钱包可见链上持仓证据 |
+| | `get_crypto_holding_changes` | 查询相邻快照之间的链上持仓变化 |
 | 实时 | `subscribe_latest_news` | WebSocket 实时推送，支持币种和引擎类型过滤 |
 
 > 完整使用指南和详细示例，请查看 [知识指南](../knowledge/guide.md)。

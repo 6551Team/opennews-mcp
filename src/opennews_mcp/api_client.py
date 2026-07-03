@@ -160,6 +160,168 @@ class NewsAPIClient:
         resp = await self._request("POST", f"{self.base_url}/open/news_search", json=body)
         return resp.json()
 
+    async def search_companies(
+        self,
+        keyword: str,
+        limit: int = 20,
+        auto_collect: bool = True,
+    ) -> dict:
+        """POST /open/finance-enhance/company-search — search public company candidates."""
+        body = {
+            "keyword": keyword,
+            "limit": limit,
+            "auto_collect": auto_collect,
+        }
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/company-search",
+            json=body,
+        )
+        return resp.json()
+
+    async def get_company_info(
+        self,
+        company: str,
+        auto_collect: bool = True,
+        filing_limit: int = 300,
+        fact_limit: int = 5000,
+        include_all_filings: bool = False,
+    ) -> dict:
+        """POST /open/finance-enhance/company-info — get company metadata and report indexes."""
+        body = {
+            "company": company,
+            "auto_collect": auto_collect,
+            "filing_limit": filing_limit,
+            "fact_limit": fact_limit,
+            "include_all_filings": include_all_filings,
+        }
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/company-info",
+            json=body,
+        )
+        return resp.json()
+
+    async def get_company_report_text(
+        self,
+        company: str,
+        report_name: str,
+        accession: Optional[str] = None,
+        form_type: Optional[str] = None,
+        section_key: Optional[str] = None,
+        text_search: Optional[str] = None,
+        auto_collect: bool = True,
+        max_section_chars: int = 100000,
+        filing_search_limit: int = 300,
+        section_limit: int = 1000,
+    ) -> dict:
+        """POST /open/finance-enhance/company-report-text — get filing/report/transcript text."""
+        body: dict[str, Any] = {
+            "company": company,
+            "report_name": report_name,
+            "auto_collect": auto_collect,
+            "max_section_chars": max_section_chars,
+            "filing_search_limit": filing_search_limit,
+            "section_limit": section_limit,
+        }
+        optional_fields = {
+            "accession": accession,
+            "form_type": form_type,
+            "section_key": section_key,
+            "text_search": text_search,
+        }
+        body.update({key: value for key, value in optional_fields.items() if value})
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/company-report-text",
+            json=body,
+        )
+        return resp.json()
+
+    async def get_crypto_holdings(
+        self,
+        institution: Optional[str] = None,
+        address: Optional[str] = None,
+        chain: Optional[str] = None,
+        token_symbol: Optional[str] = None,
+        token_address: Optional[str] = None,
+        as_of: Optional[str] = None,
+        auto_collect: bool = True,
+        force_collect: bool = False,
+        collect_max_rows: Optional[int] = None,
+        limit: int = 100,
+    ) -> dict:
+        """POST /open/finance-enhance/crypto-holdings — get on-chain holdings evidence."""
+        body: dict[str, Any] = {
+            "auto_collect": auto_collect,
+            "force_collect": force_collect,
+            "limit": limit,
+        }
+        optional_fields = {
+            "institution": institution,
+            "address": address,
+            "chain": chain,
+            "token_symbol": token_symbol,
+            "token_address": token_address,
+            "as_of": as_of,
+            "collect_max_rows": collect_max_rows,
+        }
+        body.update({
+            key: value for key, value in optional_fields.items()
+            if value is not None and value != ""
+        })
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/crypto-holdings",
+            json=body,
+        )
+        return resp.json()
+
+    async def get_crypto_holding_changes(
+        self,
+        institution: Optional[str] = None,
+        address: Optional[str] = None,
+        chain: Optional[str] = None,
+        token_symbol: Optional[str] = None,
+        token_address: Optional[str] = None,
+        change_types: Optional[list[str]] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        include_unchanged: bool = False,
+        auto_collect: bool = False,
+        force_collect: bool = False,
+        collect_max_rows: Optional[int] = None,
+        limit: int = 100,
+    ) -> dict:
+        """POST /open/finance-enhance/crypto-holding-changes — get holdings changes."""
+        body: dict[str, Any] = {
+            "include_unchanged": include_unchanged,
+            "auto_collect": auto_collect,
+            "force_collect": force_collect,
+            "limit": limit,
+        }
+        optional_fields = {
+            "institution": institution,
+            "address": address,
+            "chain": chain,
+            "token_symbol": token_symbol,
+            "token_address": token_address,
+            "change_types": change_types,
+            "start_date": start_date,
+            "end_date": end_date,
+            "collect_max_rows": collect_max_rows,
+        }
+        body.update({
+            key: value for key, value in optional_fields.items()
+            if value is not None and value != "" and value != []
+        })
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/crypto-holding-changes",
+            json=body,
+        )
+        return resp.json()
+
 
 
 class NewsWSClient:
