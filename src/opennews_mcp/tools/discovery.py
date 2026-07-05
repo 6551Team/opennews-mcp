@@ -10,21 +10,21 @@ from opennews_mcp.config import require_token
 async def get_news_sources(ctx: Context) -> dict:
     """Get all available market news source categories and their metadata.
 
-    This platform aggregates 84+ real-time data sources across 6 engine categories:
+    This platform aggregates 85+ real-time data sources across 6 engine categories:
 
-    NEWS (53 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business,
+    NEWS (55 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business,
       CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch,
       Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social,
       U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley (MS NOW),
-      PR Newswire, Coinbase, and more. Useful for crypto, U.S. equities, macro,
+      PR Newswire, GlobeNewswire, Business Wire, Coinbase, and more. Useful for crypto, U.S. equities, macro,
       semiconductors, AI infrastructure, supply chains, commodities, rates, policy,
       and market-moving social/news signals.
 
     LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood,
       Hyperliquid, Aster — new token listing announcements from major exchanges.
 
-    ONCHAIN (3 sources): Hyperliquid Whale Trade, Hyperliquid Large Position,
-      KOL Trade — on-chain whale & KOL activity alerts.
+    ONCHAIN (2 sources): Hyperliquid Whale Trade, Hyperliquid Large Position —
+      Hyperliquid whale trades and large position activity.
 
     MEME (1 source): Twitter — meme coin social sentiment tracking.
 
@@ -84,7 +84,7 @@ async def list_news_types(ctx: Context) -> dict:
     """
     if (err := require_token()):
         return err
-    # See get_news_sources for the full 84+ source catalog.
+    # See get_news_sources for the full 85+ source catalog.
     api = ctx.request_context.lifespan_context.api
 
     try:

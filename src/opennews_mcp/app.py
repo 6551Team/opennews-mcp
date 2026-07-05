@@ -42,15 +42,16 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 _INSTRUCTIONS = """\
 OpenNews MCP — Real-time crypto & financial news aggregator powered by 6551.io.
 
-Aggregates 84+ data sources across 6 engine categories:
-- NEWS (53 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, \
+Aggregates 85+ data sources across 6 engine categories:
+- NEWS (55 sources): Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, \
 CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, \
 Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, \
-TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more.
+TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, GlobeNewswire, Business Wire, \
+Coinbase, and more.
 - LISTING (9 sources): Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, \
 Hyperliquid, Aster — new token listing announcements.
-- ONCHAIN (3 sources): Hyperliquid Whale Trade, Hyperliquid Large Position, \
-KOL Trade — on-chain whale & KOL activity.
+- ONCHAIN (2 sources): Hyperliquid Whale Trade, Hyperliquid Large Position — \
+Hyperliquid whale trades and large position activity.
 - MEME (1 source): Twitter meme coin social sentiment.
 - MARKET (6 sources): Price Change, Funding Rate, Funding Rate Difference, \
 Large Liquidation, Market Trends, OI Change — quantitative market signals.

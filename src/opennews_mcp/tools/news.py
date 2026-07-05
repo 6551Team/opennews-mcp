@@ -2,7 +2,7 @@
 
 Covers crypto, U.S. equities, macro, semiconductors, AI infrastructure, supply chains,
 commodities, rates, policy, and market-moving social/news signals across 6 engine categories:
-news (53 premium media & social sources), listing (9 exchanges), onchain (whale & KOL trades),
+news (55 premium media & social sources), listing (9 exchanges), onchain (Hyperliquid whale trades and large positions),
 meme (social sentiment), market (6 anomaly signals), and prediction (12 AI prediction signals).
 Uses POST /open/news_search as the primary data source.
 """
@@ -17,7 +17,7 @@ from opennews_mcp.config import clamp_limit, make_serializable, MAX_ROWS, requir
 async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
     """Get the most recent market-moving news and signals, newest first.
 
-    Returns news from 84+ sources across all 6 categories (news, listing, onchain,
+    Returns news from 85+ sources across all 6 categories (news, listing, onchain,
     meme, market, prediction) with title text, source, link, related assets, AI rating, and tags.
     Coverage includes crypto, U.S. equities, macro, semiconductors, AI infrastructure,
     supply chains, commodities, rates, policy, and social/news signals.
@@ -44,7 +44,7 @@ async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
 async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
     """Search real-time financial market news by keyword in text content.
 
-    Searches across all 84+ sources for crypto, U.S. equities, macro, semiconductors,
+    Searches across all 85+ sources for crypto, U.S. equities, macro, semiconductors,
     AI infrastructure, supply chains, commodities, rates, policy, and market-moving
     social/news signals. Sources include Bloomberg, Reuters, FT, CNBC, CoinDesk,
     Twitter/X, on-chain alerts, exchange listings, market signals, and AI predictions.
@@ -72,7 +72,7 @@ async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
 async def search_news_by_coin(coin: str, ctx: Context, limit: int = 10) -> dict:
     """Search news and market signals related to a specific digital asset coin/token.
 
-    Finds all mentions across 84+ sources: media coverage, exchange listings,
+    Finds all mentions across 85+ sources: media coverage, exchange listings,
     whale trades, meme sentiment, market anomalies, and AI predictions for the given coin.
 
     Args:
@@ -105,7 +105,7 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
         news_type: The news source code (e.g. "Bloomberg", "Reuters", "Coindesk").
             For listing: "Binance", "Coinbase", "OKX", "Bybit", "Upbit", "Bithumb",
               "Robinhood", "Hyperliquid", "Aster".
-            For onchain: "Hyperliquid Whale Trade", "Hyperliquid Large Position", "KOL Trade".
+            For onchain: "Hyperliquid Whale Trade", "Hyperliquid Large Position".
             For meme: "Twitter".
             For market: "Price Change", "Funding Rate", "Funding Rate Difference",
               "Large Liquidation", "Market Trends", "OI Change".
@@ -135,11 +135,11 @@ async def get_news_by_engine(engine_type: str, ctx: Context, limit: int = 10) ->
     """Get market news or signal items filtered by engine type.
 
     Engine types: "news", "listing", "onchain", "meme", "market", "prediction".
-      - "news": 53 sources — Bloomberg, Reuters, FT, CNBC, CNN, BBC, CoinDesk, Twitter/X, etc.,
+      - "news": 55 sources — Bloomberg, Reuters, FT, CNBC, CNN, BBC, CoinDesk, Twitter/X, etc.,
         covering crypto, U.S. equities, macro, semiconductors, AI infrastructure,
         supply chains, commodities, rates, policy, and social/news signals.
       - "listing": 9 exchanges — Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, etc.
-      - "onchain": Whale trades & KOL activity on Hyperliquid.
+      - "onchain": Hyperliquid whale trades and large position activity.
       - "meme": Meme coin social sentiment from Twitter.
       - "market": Price changes, funding rates, liquidations, OI changes, market trends.
       - "prediction": 12 AI prediction signals — smart money, whale positions, correlations, etc.
@@ -176,7 +176,7 @@ async def search_news_advanced(
     """Advanced financial market news search with multiple filters.
 
     Combines keyword, digital asset coin, engine type, source, and score filters for precise
-    queries across the full 84+ source catalog. Use it for crypto, U.S. equities, macro,
+    queries across the full 85+ source catalog. Use it for crypto, U.S. equities, macro,
     semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and
     market-moving social/news signals.
 
@@ -228,7 +228,7 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
 
     AI scores range 0-100 and reflect potential market impact across crypto,
     U.S. equities, macro, semiconductors, AI infrastructure, supply chains,
-    commodities, rates, policy, and social/news signals. All items from 84+
+    commodities, rates, policy, and social/news signals. All items from 85+
     sources are AI-analyzed with score, grade, signal, and summary.
 
     Args:
@@ -255,7 +255,7 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
 async def get_news_by_signal(signal: str, ctx: Context, limit: int = 10) -> dict:
     """Get market news filtered by AI trading signal type.
 
-    Each item from 84+ sources is AI-analyzed for directional market impact.
+    Each item from 85+ sources is AI-analyzed for directional market impact.
 
     Args:
         signal: The signal type: "long" (bullish), "short" (bearish), or "neutral".

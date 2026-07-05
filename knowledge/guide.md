@@ -2,11 +2,11 @@
 
 ## Overview
 
-This MCP server provides real-time access to a **massive, multi-source crypto & financial news aggregation platform** powered by 6551.io. It aggregates **84+ data sources** across 6 engine categories, covering everything from Bloomberg and Reuters breaking news to on-chain whale trades, meme coin signals, market anomaly alerts, and AI prediction signals — all with AI-powered ratings and trading signal analysis.
+This MCP server provides real-time access to a **massive, multi-source crypto & financial news aggregation platform** powered by 6551.io. It aggregates **85+ data sources** across 6 engine categories, covering everything from Bloomberg and Reuters breaking news to on-chain whale trades, meme coin signals, market anomaly alerts, and AI prediction signals — all with AI-powered ratings and trading signal analysis.
 
-## Data Source Coverage (6 Categories, 84+ Sources)
+## Data Source Coverage (6 Categories, 85+ Sources)
 
-### 1. News — 53 sources (engineType: "news")
+### 1. News — 55 sources (engineType: "news")
 Premium financial & crypto media, government agencies, social platforms:
 
 | Source Code | Description |
@@ -36,6 +36,8 @@ Premium financial & crypto media, government agencies, social platforms:
 | MS NOW | Morgan Stanley NOW — institutional research |
 | Politico | Politico — US & EU political news |
 | PR Newswire | PR Newswire — press releases |
+| GlobeNewswire | GlobeNewswire — press releases |
+| Business Wire | Business Wire — press releases |
 | TechCrunch | TechCrunch — tech & startup news |
 | Techinasia | Tech in Asia — Asian tech news |
 | Telegram | Telegram channels |
@@ -78,14 +80,13 @@ Token listing announcements from major exchanges:
 | OKX | OKX new token listings |
 | Coinbase | Coinbase new token listings |
 
-### 3. OnChain — 3 sources (engineType: "onchain")
-On-chain activity from whales and key opinion leaders:
+### 3. OnChain — 2 sources (engineType: "onchain")
+Hyperliquid whale trades and large position activity:
 
 | Source Code | Description |
 |-------------|-------------|
 | Hyperliquid Whale Trade | Hyperliquid whale trade alerts |
 | Hyperliquid Large Position | Hyperliquid large position changes |
-| KOL Trade | KOL (Key Opinion Leader) on-chain trades |
 
 ### 4. Meme — 1 source (engineType: "meme")
 Meme coin social sentiment tracking:
@@ -127,7 +128,7 @@ AI-powered prediction and correlation signals:
 ## Available Tools
 
 ### Discovery
-- **get_news_sources**: Get the full engine tree with all 6 categories and 84+ sources, including metadata (names, icons, AI-enabled status)
+- **get_news_sources**: Get the full engine tree with all 6 categories and 85+ sources, including metadata (names, icons, AI-enabled status)
 - **list_news_types**: Flat list of all source codes for use in filters
 
 ### News Search
@@ -156,10 +157,10 @@ For the MCP tool, pass `change_types` as a comma-separated string such as `"incr
 
 ## Workflow Examples
 
-1. **Breaking news scan**: `get_latest_news(limit=20)` — see what's happening right now across all 84+ sources
+1. **Breaking news scan**: `get_latest_news(limit=20)` — see what's happening right now across all 85+ sources
 2. **Institutional media only**: `get_news_by_source(engine_type="news", news_type="Bloomberg")` — Bloomberg-only feed
 3. **Exchange listing alpha**: `get_news_by_engine(engine_type="listing")` — catch new token listings on Binance, Coinbase, Upbit, etc.
-4. **Whale watching**: `get_news_by_engine(engine_type="onchain")` — Hyperliquid whale trades & KOL activity
+4. **Whale watching**: `get_news_by_engine(engine_type="onchain")` — Hyperliquid whale trades and large position activity
 5. **Market anomalies**: `get_news_by_engine(engine_type="market")` — price spikes, liquidations, OI changes, funding rate divergences
 6. **AI predictions**: `get_news_by_engine(engine_type="prediction")` — smart money trades, whale positions, correlations, insider patterns
 7. **Coin deep-dive**: `search_news_by_coin(coin="ETH", limit=30)` — all ETH-related news across every source

@@ -1,4 +1,4 @@
-"""Real-time market news tools — WebSocket subscription for live updates from 84+ sources."""
+"""Real-time market news tools — WebSocket subscription for live updates from 85+ sources."""
 
 from mcp.server.fastmcp import Context
 
@@ -20,7 +20,7 @@ async def subscribe_latest_news(
     Connects to the WebSocket feed, subscribes to news with optional filters,
     and collects incoming messages for the specified duration.
 
-    Streams live data from 84+ sources across 6 categories:
+    Streams live data from 85+ sources across 6 categories:
     news (Bloomberg, Reuters, FT, CNBC, Twitter/X, etc.), listing (Binance, Coinbase, etc.),
     onchain (whale trades), meme (Twitter sentiment), market (price/funding/liquidation alerts),
     prediction (AI prediction signals — smart money, correlations, whale positions, etc.).

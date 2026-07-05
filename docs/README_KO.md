@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  84+ 실시간 데이터 소스 · 6개 엔진 카테고리 · AI 평가 · 트레이딩 시그널
+  85+ 실시간 데이터 소스 · 6개 엔진 카테고리 · AI 평가 · 트레이딩 시그널
 </p>
 
 <p align="center">
@@ -54,13 +54,13 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 ---
 
-## 데이터 소스 — 6개 카테고리 84+ 소스
+## 데이터 소스 — 6개 카테고리 85+ 소스
 
 | 카테고리 | 수량 | 주요 소스 |
 |---------|------|----------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase 등 |
+| **News** | 55 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, GlobeNewswire, Business Wire, Coinbase 등 |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
-| **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
+| **OnChain** | 2 | Hyperliquid Whale Trade, Hyperliquid Large Position |
 | **Meme** | 1 | Twitter 밈코인 소셜 센티먼트 |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
 | **Prediction** | 12 | CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE, CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE |
@@ -68,7 +68,7 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 모든 기사는 **AI 분석** 완료 — 영향도 점수(0-100), 트레이딩 시그널(long/short/neutral), 중영 이중 언어 요약 포함.
 
 <details>
-<summary><b>News — 53개 소스</b> (engineType: "news") — 프리미엄 금융 및 암호화폐 미디어, 정부 기관, 소셜 플랫폼</summary>
+<summary><b>News — 55개 소스</b> (engineType: "news") — 프리미엄 금융 및 암호화폐 미디어, 정부 기관, 소셜 플랫폼</summary>
 
 | 소스 코드 | 설명 |
 |----------|------|
@@ -107,6 +107,8 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | MS NOW | 모건 스탠리 NOW — 기관 리서치 |
 | Ambrey | Ambrey — 해양 및 지정학 인텔리전스 |
 | PR Newswire | PR Newswire — 보도자료 |
+| GlobeNewswire | GlobeNewswire — 보도자료 |
+| Business Wire | Business Wire — 보도자료 |
 | Coinbase | Coinbase 공지 및 블로그 |
 | Binance | Binance 공지 및 블로그 |
 | jin10 | 진스 데이터 — 중국 금융 속보 |
@@ -143,13 +145,12 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 </details>
 
 <details>
-<summary><b>OnChain — 3개 소스</b> (engineType: "onchain") — 고래 및 KOL 온체인 활동</summary>
+<summary><b>OnChain — 2개 소스</b> (engineType: "onchain") — Hyperliquid 고래 거래 및 대형 포지션 활동</summary>
 
 | 소스 코드 | 설명 |
 |----------|------|
 | Hyperliquid Whale Trade | Hyperliquid 고래 거래 알림 |
 | Hyperliquid Large Position | Hyperliquid 대형 포지션 변동 |
-| KOL Trade | KOL (핵심 오피니언 리더) 온체인 거래 |
 
 </details>
 
@@ -219,9 +220,9 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 
 | 카테고리 | 도구 | 설명 |
 |---------|------|------|
-| 디스커버리 | `get_news_sources` | 완전한 엔진 트리 — 6개 카테고리 84+ 소스 및 메타데이터 |
+| 디스커버리 | `get_news_sources` | 완전한 엔진 트리 — 6개 카테고리 85+ 소스 및 메타데이터 |
 | | `list_news_types` | 필터용 소스 코드 플랫 리스트 |
-| 검색 | `get_latest_news` | 84+ 소스에서 최신 기사 조회 |
+| 검색 | `get_latest_news` | 85+ 소스에서 최신 기사 조회 |
 | | `search_news` | 전체 소스 대상 키워드 검색 |
 | | `search_news_by_coin` | 코인별 (BTC, ETH, SOL...) 전체 소스 대상 |
 | | `get_news_by_source` | 특정 소스 지정 (예: engine_type="news", news_type="Bloomberg") |

@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  84+ 实时数据源 · 6 大引擎类别 · AI 评分 · 交易信号
+  85+ 实时数据源 · 6 大引擎类别 · AI 评分 · 交易信号
 </p>
 
 <p align="center">
@@ -54,13 +54,13 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 ---
 
-## 数据源 — 6 大类别 84+ 数据源
+## 数据源 — 6 大类别 85+ 数据源
 
 | 类别 | 数量 | 主要来源 |
 |------|------|----------|
-| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase等 |
+| **News** | 55 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、GlobeNewswire、Business Wire、Coinbase等 |
 | **Listing** | 9 | Binance、Coinbase、OKX、Bybit、Upbit、Bithumb、Robinhood、Hyperliquid、Aster |
-| **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
+| **OnChain** | 2 | Hyperliquid Whale Trade、Hyperliquid Large Position |
 | **Meme** | 1 | Twitter meme 币社交情绪 |
 | **Market** | 6 | Price Change、Funding Rate、Funding Rate Difference、Large Liquidation、Market Trends、OI Change |
 | **Prediction** | 12 | CORRELATION_LOGICAL（相关性-逻辑）、SMART_MONEY_TRADE（聪明钱交易）、PRICE_SPIKE（价格异动）、CLUSTER_ENTRY（集群进场）、WHALE_POSITION（鲸鱼持仓）、NEW_WALLET_TRADE（新钱包交易）、INSIDER_PATTERN（内幕模式）、CORRELATION_NARRATIVE（相关性-叙述）、CORRELATION_HEDGE（相关性-对冲）、CORRELATION_ENTITY_GEO（相关性-地缘）、CORRELATION_CAUSAL（相关性-因果）、SETTLEMENT_ARBITRAGE（套利） |
@@ -68,7 +68,7 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 所有文章均经 **AI 分析**，包含影响力评分（0-100）、交易信号（long/short/neutral）及中英双语摘要。
 
 <details>
-<summary><b>News — 53 个来源</b>（engineType: "news"）— 顶级财经与加密媒体、政府机构、社交平台</summary>
+<summary><b>News — 55 个来源</b>（engineType: "news"）— 顶级财经与加密媒体、政府机构、社交平台</summary>
 
 | 来源代码 | 描述 |
 |----------|------|
@@ -107,6 +107,8 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | MS NOW | 摩根士丹利 NOW — 机构研究 |
 | Ambrey | Ambrey — 海事与地缘政治情报 |
 | PR Newswire | 美通社 — 新闻稿发布 |
+| GlobeNewswire | GlobeNewswire — 新闻稿发布 |
+| Business Wire | Business Wire — 新闻稿发布 |
 | Coinbase | Coinbase 公告与博客 |
 | Binance | Binance 公告与博客 |
 | jin10 | 金十数据 — 财经快讯 |
@@ -143,13 +145,12 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 </details>
 
 <details>
-<summary><b>OnChain — 3 个来源</b>（engineType: "onchain"）— 巨鲸与 KOL 链上活动</summary>
+<summary><b>OnChain — 2 个来源</b>（engineType: "onchain"）— Hyperliquid 巨鲸交易与大额持仓活动</summary>
 
 | 来源代码 | 描述 |
 |----------|------|
 | Hyperliquid Whale Trade | Hyperliquid 巨鲸交易预警 |
 | Hyperliquid Large Position | Hyperliquid 大额持仓变动 |
-| KOL Trade | KOL（意见领袖）链上交易 |
 
 </details>
 
@@ -219,9 +220,9 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 
 | 分类 | 工具 | 描述 |
 |------|------|------|
-| 发现 | `get_news_sources` | 完整引擎树 — 6 大类别 84+ 数据源及元数据 |
+| 发现 | `get_news_sources` | 完整引擎树 — 6 大类别 85+ 数据源及元数据 |
 | | `list_news_types` | 所有来源代码的扁平列表，用于过滤 |
-| 搜索 | `get_latest_news` | 跨 84+ 数据源获取最新文章 |
+| 搜索 | `get_latest_news` | 跨 85+ 数据源获取最新文章 |
 | | `search_news` | 跨所有数据源全文关键词搜索 |
 | | `search_news_by_coin` | 按币种搜索 (BTC, ETH, SOL...) 跨所有数据源 |
 | | `get_news_by_source` | 按特定来源搜索 (如 engine_type="news", news_type="Bloomberg") |

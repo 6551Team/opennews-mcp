@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  84+ リアルタイムデータソース · 6 エンジンカテゴリ · AI 評価 · トレーディングシグナル
+  85+ リアルタイムデータソース · 6 エンジンカテゴリ · AI 評価 · トレーディングシグナル
 </p>
 
 <p align="center">
@@ -54,13 +54,13 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 ---
 
-## データソース — 6カテゴリ 84+ ソース
+## データソース — 6カテゴリ 85+ ソース
 
 | カテゴリ | 数量 | 主なソース |
 |---------|------|-----------|
-| **News** | 53 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、Coinbase など |
+| **News** | 55 | Bloomberg、Reuters、Financial Times、CNBC、CNN、BBC、Fox Business、CoinDesk、Cointelegraph、The Block、Blockworks、Decrypt、DlNews、A16Z、TechCrunch、Wired、Politico、Business Insider、Twitter/X、Telegram、Weibo、Truth Social、U.S. Treasury、ECB、TASS、Handelsblatt、Welt、Ambrey、Morgan Stanley、PR Newswire、GlobeNewswire、Business Wire、Coinbase など |
 | **Listing** | 9 | Binance、Coinbase、OKX、Bybit、Upbit、Bithumb、Robinhood、Hyperliquid、Aster |
-| **OnChain** | 3 | Hyperliquid Whale Trade、Hyperliquid Large Position、KOL Trade |
+| **OnChain** | 2 | Hyperliquid Whale Trade、Hyperliquid Large Position |
 | **Meme** | 1 | Twitter ミームコインソーシャルセンチメント |
 | **Market** | 6 | Price Change、Funding Rate、Funding Rate Difference、Large Liquidation、Market Trends、OI Change |
 | **Prediction** | 12 | CORRELATION_LOGICAL、SMART_MONEY_TRADE、PRICE_SPIKE、CLUSTER_ENTRY、WHALE_POSITION、NEW_WALLET_TRADE、INSIDER_PATTERN、CORRELATION_NARRATIVE、CORRELATION_HEDGE、CORRELATION_ENTITY_GEO、CORRELATION_CAUSAL、SETTLEMENT_ARBITRAGE |
@@ -68,7 +68,7 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 すべての記事は **AI 分析済み** — 影響度スコア（0-100）、トレーディングシグナル（long/short/neutral）、中英バイリンガル要約付き。
 
 <details>
-<summary><b>News — 53 ソース</b>（engineType: "news"）— プレミアム金融・暗号メディア、政府機関、ソーシャルプラットフォーム</summary>
+<summary><b>News — 55 ソース</b>（engineType: "news"）— プレミアム金融・暗号メディア、政府機関、ソーシャルプラットフォーム</summary>
 
 | ソースコード | 説明 |
 |-------------|------|
@@ -107,6 +107,8 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | MS NOW | モルガン・スタンレー NOW — 機関投資家リサーチ |
 | Ambrey | Ambrey — 海事＆地政学インテリジェンス |
 | PR Newswire | PR Newswire — プレスリリース |
+| GlobeNewswire | GlobeNewswire — プレスリリース |
+| Business Wire | Business Wire — プレスリリース |
 | Coinbase | Coinbase アナウンス＆ブログ |
 | Binance | Binance アナウンス＆ブログ |
 | jin10 | 金十データ — 中国金融速報 |
@@ -143,13 +145,12 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 </details>
 
 <details>
-<summary><b>OnChain — 3 ソース</b>（engineType: "onchain"）— ホエール＆KOLのオンチェーン活動</summary>
+<summary><b>OnChain — 2 ソース</b>（engineType: "onchain"）— Hyperliquid ホエール取引と大口ポジション活動</summary>
 
 | ソースコード | 説明 |
 |-------------|------|
 | Hyperliquid Whale Trade | Hyperliquid ホエール取引アラート |
 | Hyperliquid Large Position | Hyperliquid 大口ポジション変動 |
-| KOL Trade | KOL（キーオピニオンリーダー）オンチェーン取引 |
 
 </details>
 
@@ -219,9 +220,9 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 
 | カテゴリ | ツール | 説明 |
 |---------|--------|------|
-| ディスカバリー | `get_news_sources` | 完全エンジンツリー — 6カテゴリ 84+ ソースとメタデータ |
+| ディスカバリー | `get_news_sources` | 完全エンジンツリー — 6カテゴリ 85+ ソースとメタデータ |
 | | `list_news_types` | フィルタ用ソースコードのフラットリスト |
-| 検索 | `get_latest_news` | 84+ ソースから最新記事を取得 |
+| 検索 | `get_latest_news` | 85+ ソースから最新記事を取得 |
 | | `search_news` | 全ソース横断キーワード検索 |
 | | `search_news_by_coin` | 通貨別（BTC, ETH, SOL...）全ソース横断 |
 | | `get_news_by_source` | 特定ソース指定（例：engine_type="news", news_type="Bloomberg"） |

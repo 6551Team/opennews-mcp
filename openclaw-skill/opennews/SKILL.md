@@ -1,6 +1,6 @@
 ---
 name: opennews
-description: "Real-time crypto, equities, macro, and financial market news aggregator — 84+ data sources across 6 categories covering digital assets, U.S. stocks, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and market-moving social/news signals. Sources include Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X, Binance, Coinbase, OKX, whale/KOL trades, price/funding/liquidation alerts, and 12 AI prediction signals. AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
+description: "Real-time crypto, equities, macro, and financial market news aggregator — 85+ data sources across 6 categories covering digital assets, U.S. stocks, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and market-moving social/news signals. Sources include Bloomberg, Reuters, FT, CNBC, CoinDesk, Twitter/X, Binance, Coinbase, OKX, Hyperliquid whale trades, price/funding/liquidation alerts, and 12 AI prediction signals. AI-analyzed with impact score, trading signals, and bilingual summaries. **Free tools available without token**."
 
 user-invocable: true
 metadata:
@@ -26,7 +26,7 @@ metadata:
 
 # OpenNews Financial Market News Skill
 
-Real-time crypto, equities, macro, and financial market news aggregator powered by 6551.io — **84+ data sources** across 6 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
+Real-time crypto, equities, macro, and financial market news aggregator powered by 6551.io — **85+ data sources** across 6 engine categories, all AI-analyzed with impact scores, trading signals, and bilingual summaries.
 
 Use OpenNews for time-sensitive, market-moving news and signals across digital assets, U.S. stocks, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and social/news channels that can affect prices or investor positioning.
 
@@ -34,13 +34,13 @@ Use OpenNews for time-sensitive, market-moving news and signals across digital a
 
 **Base URL**: `https://ai.6551.io`
 
-## Data Sources — 84+ Sources Across 6 Categories
+## Data Sources — 85+ Sources Across 6 Categories
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more; useful for crypto, U.S. equities, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and market-moving social/news signals |
+| **News** | 55 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, GlobeNewswire, Business Wire, Coinbase, and more; useful for crypto, U.S. equities, semiconductors, AI infrastructure, supply chains, commodities, rates, policy, and market-moving social/news signals |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
-| **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
+| **OnChain** | 2 | Hyperliquid Whale Trade, Hyperliquid Large Position |
 | **Meme** | 1 | Twitter meme coin social sentiment |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
 | **Prediction** | 12 | CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE, CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE |
@@ -58,14 +58,14 @@ Authorization: Bearer $OPENNEWS_TOKEN
 
 ### 1. Get News Sources
 
-Fetch the full engine tree with all 6 categories and 84+ sources.
+Fetch the full engine tree with all 6 categories and 85+ sources.
 
 ```bash
 curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   "https://ai.6551.io/open/news_type"
 ```
 
-Returns a tree with engine types (`news` — 53 sources, `listing` — 9 exchanges, `onchain` — 3 whale/KOL trackers, `meme` — 1 sentiment source, `market` — 6 anomaly signals, `prediction` — 12 AI prediction signals) and their sub-categories.
+Returns a tree with engine types (`news` — 55 sources, `listing` — 9 exchanges, `onchain` — 2 Hyperliquid trackers, `meme` — 1 sentiment source, `market` — 6 anomaly signals, `prediction` — 12 AI prediction signals) and their sub-categories.
 
 ### 2. Search News
 
@@ -317,7 +317,7 @@ curl -s -X GET "https://ai.6551.io/open/free_hot?category=macro&subcategory=defi
 
 ## Notes
 
-- **Primary API**: Get your token at https://6551.io/mcp for full access to 84+ sources with advanced search
+- **Primary API**: Get your token at https://6551.io/mcp for full access to 85+ sources with advanced search
 - **Free API**: Use free endpoints as fallback when token is unavailable (limited to curated hot news)
 - Rate limits apply; max 100 results per request for authenticated API
 - AI ratings may not be available on all articles (check `status == "done"`)

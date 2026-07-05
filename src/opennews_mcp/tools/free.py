@@ -1,7 +1,7 @@
 """Free financial market news tools — no token required, access via /open/free_* endpoints.
 
 These tools provide basic news access without authentication.
-For full features (84+ sources, AI analysis, real-time WebSocket), get a free token at https://6551.io/mcp.
+For full features (85+ sources, AI analysis, real-time WebSocket), get a free token at https://6551.io/mcp.
 """
 
 from mcp.server.fastmcp import Context
@@ -36,7 +36,7 @@ async def get_hot_news(
 
     Use this free endpoint for curated real-time financial market news, including
     crypto, equities, macro, policy, commodities, and market-moving social signals
-    when the authenticated 84+ source search is unavailable.
+    when the authenticated 85+ source search is unavailable.
 
     Args:
         category: Category key (required). Use get_news_categories to list available keys.

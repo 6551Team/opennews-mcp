@@ -1,6 +1,6 @@
 <p align="center">
   <b>OpenNews MCP Server</b><br>
-  84+ Real-time Data Sources · 6 Engine Categories · AI Ratings · Trading Signals
+  85+ Real-time Data Sources · 6 Engine Categories · AI Ratings · Trading Signals
 </p>
 
 <p align="center">
@@ -54,13 +54,13 @@ Steps:
 
 ---
 
-## Data Sources — 84+ Sources Across 6 Categories
+## Data Sources — 85+ Sources Across 6 Categories
 
 | Category | Count | Key Sources |
 |----------|-------|-------------|
-| **News** | 53 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, Coinbase, and more |
+| **News** | 55 | Bloomberg, Reuters, Financial Times, CNBC, CNN, BBC, Fox Business, CoinDesk, Cointelegraph, The Block, Blockworks, Decrypt, DlNews, A16Z, TechCrunch, Wired, Politico, Business Insider, Twitter/X, Telegram, Weibo, Truth Social, U.S. Treasury, ECB, TASS, Handelsblatt, Welt, Ambrey, Morgan Stanley, PR Newswire, GlobeNewswire, Business Wire, Coinbase, and more |
 | **Listing** | 9 | Binance, Coinbase, OKX, Bybit, Upbit, Bithumb, Robinhood, Hyperliquid, Aster |
-| **OnChain** | 3 | Hyperliquid Whale Trade, Hyperliquid Large Position, KOL Trade |
+| **OnChain** | 2 | Hyperliquid Whale Trade, Hyperliquid Large Position |
 | **Meme** | 1 | Twitter meme coin social sentiment |
 | **Market** | 6 | Price Change, Funding Rate, Funding Rate Difference, Large Liquidation, Market Trends, OI Change |
 | **Prediction** | 12 | CORRELATION_LOGICAL, SMART_MONEY_TRADE, PRICE_SPIKE, CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE |
@@ -68,7 +68,7 @@ Steps:
 All articles are **AI-analyzed** with impact score (0-100), trading signal (long/short/neutral), and bilingual summaries (EN/ZH).
 
 <details>
-<summary><b>News — 53 sources</b> (engineType: "news") — Premium financial & crypto media, government agencies, social platforms</summary>
+<summary><b>News — 55 sources</b> (engineType: "news") — Premium financial & crypto media, government agencies, social platforms</summary>
 
 | Source Code | Description |
 |-------------|-------------|
@@ -107,6 +107,8 @@ All articles are **AI-analyzed** with impact score (0-100), trading signal (long
 | MS NOW | Morgan Stanley NOW — institutional research |
 | Ambrey | Ambrey — maritime & geopolitical intelligence |
 | PR Newswire | PR Newswire — press releases |
+| GlobeNewswire | GlobeNewswire — press releases |
+| Business Wire | Business Wire — press releases |
 | Coinbase | Coinbase announcements & blog |
 | Binance | Binance announcements & blog |
 | jin10 | Jin10 — Chinese financial data flash news |
@@ -143,13 +145,12 @@ All articles are **AI-analyzed** with impact score (0-100), trading signal (long
 </details>
 
 <details>
-<summary><b>OnChain — 3 sources</b> (engineType: "onchain") — On-chain activity from whales and key opinion leaders</summary>
+<summary><b>OnChain — 2 sources</b> (engineType: "onchain") — Hyperliquid whale trades and large position activity</summary>
 
 | Source Code | Description |
 |-------------|-------------|
 | Hyperliquid Whale Trade | Hyperliquid whale trade alerts |
 | Hyperliquid Large Position | Hyperliquid large position changes |
-| KOL Trade | KOL (Key Opinion Leader) on-chain trades |
 
 </details>
 
@@ -219,9 +220,9 @@ After connecting, just tell your AI assistant:
 
 | Category | Tool | Description |
 |----------|------|-------------|
-| Discovery | `get_news_sources` | Full engine tree — all 6 categories and 84+ sources with metadata |
+| Discovery | `get_news_sources` | Full engine tree — all 6 categories and 85+ sources with metadata |
 | | `list_news_types` | Flat list of all source codes for filtering |
-| Search | `get_latest_news` | Latest articles across all 84+ sources |
+| Search | `get_latest_news` | Latest articles across all 85+ sources |
 | | `search_news` | Full-text keyword search across all sources |
 | | `search_news_by_coin` | By coin (BTC, ETH, SOL...) across all sources |
 | | `get_news_by_source` | By specific source (e.g. engine_type="news", news_type="Bloomberg") |
