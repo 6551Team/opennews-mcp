@@ -283,6 +283,10 @@ Also supports `config.json` in project root (env vars take precedence):
 
 Subscribe to real-time crypto news updates.
 
+### Heartbeat
+
+To keep the connection alive, the client can send `ping`, and the server responds with `pong`.
+
 ### Subscribe to News
 
 ```json
