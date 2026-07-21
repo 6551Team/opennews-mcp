@@ -238,6 +238,55 @@ class NewsAPIClient:
         )
         return resp.json()
 
+    async def get_key_market_events(
+        self,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        categories: Optional[list[str]] = None,
+        countries: Optional[list[str]] = None,
+        event_types: Optional[list[str]] = None,
+        tickers: Optional[list[str]] = None,
+        sector: Optional[str] = None,
+        importance: Optional[str] = None,
+        include_estimated: bool = True,
+        text_search: Optional[str] = None,
+        auto_collect: bool = True,
+        force_collect: bool = False,
+        lookahead_days: Optional[int] = None,
+        earnings_batch_size: Optional[int] = None,
+        limit: int = 100,
+    ) -> dict:
+        """POST /open/finance-enhance/key-market-events — get macro and focus-company events."""
+        body: dict[str, Any] = {
+            "include_estimated": include_estimated,
+            "auto_collect": auto_collect,
+            "force_collect": force_collect,
+            "limit": limit,
+        }
+        optional_fields = {
+            "start_date": start_date,
+            "end_date": end_date,
+            "categories": categories,
+            "countries": countries,
+            "event_types": event_types,
+            "tickers": tickers,
+            "sector": sector,
+            "importance": importance,
+            "text_search": text_search,
+            "lookahead_days": lookahead_days,
+            "earnings_batch_size": earnings_batch_size,
+        }
+        body.update({
+            key: value for key, value in optional_fields.items()
+            if value is not None and value != "" and value != []
+        })
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/key-market-events",
+            json=body,
+        )
+        return resp.json()
+
     async def get_crypto_holdings(
         self,
         institution: Optional[str] = None,

@@ -10,6 +10,10 @@ def _clamp(value: int, low: int, high: int) -> int:
     return min(max(low, value), high)
 
 
+def _comma_list(value: str) -> list[str] | None:
+    return [item.strip() for item in value.split(",") if item.strip()] or None
+
+
 @mcp.tool()
 async def search_companies(keyword: str, ctx: Context, limit: int = 20, auto_collect: bool = True) -> dict:
     """Search public company candidates by keyword, ticker, CIK, or fuzzy company name.
@@ -116,6 +120,75 @@ async def get_company_report_text(
             max_section_chars=max_section_chars,
             filing_search_limit=filing_search_limit,
             section_limit=section_limit,
+        )
+        return make_serializable(result)
+    except Exception as e:
+        return {"success": False, "error": str(e) or repr(e)}
+
+
+@mcp.tool()
+async def get_key_market_events(
+    ctx: Context,
+    start_date: str = "",
+    end_date: str = "",
+    categories: str = "",
+    countries: str = "",
+    event_types: str = "",
+    tickers: str = "",
+    sector: str = "",
+    importance: str = "",
+    include_estimated: bool = True,
+    text_search: str = "",
+    auto_collect: bool = True,
+    force_collect: bool = False,
+    lookahead_days: int = 0,
+    earnings_batch_size: int = 0,
+    limit: int = 100,
+) -> dict:
+    """Query important macro and focus-company earnings event dates.
+
+    Returns Fed/BOJ policy dates, US CPI/PPI/nonfarm payroll releases, and
+    configured focus-company earnings events. Rows marked estimated_schedule
+    should be confirmed against official calendars before alerting or trading.
+
+    Args:
+        start_date: Optional start date in YYYY-MM-DD format.
+        end_date: Optional end date in YYYY-MM-DD format.
+        categories: Optional comma-separated categories, such as "central_bank,earnings".
+        countries: Optional comma-separated countries or regions, such as "US,JP".
+        event_types: Optional comma-separated event types, such as "fomc_rate_decision,company_earnings".
+        tickers: Optional comma-separated company tickers, such as "ARM,NVDA".
+        sector: Optional sector filter.
+        importance: Optional importance filter, such as "high".
+        include_estimated: Whether to include estimated fallback schedule rows.
+        text_search: Optional keyword filter.
+        auto_collect: Whether to trigger backend key-events collection on cache miss.
+        force_collect: Whether to force collection before reading cache.
+        lookahead_days: Optional collection lookahead window; 0 means backend default.
+        earnings_batch_size: Optional earnings collection batch size; 0 means backend default.
+        limit: Maximum event rows to return (default 100, max 500).
+    """
+    if (err := require_token()):
+        return err
+    api = ctx.request_context.lifespan_context.api
+    limit = _clamp(limit, 1, 500)
+    try:
+        result = await api.get_key_market_events(
+            start_date=start_date or None,
+            end_date=end_date or None,
+            categories=_comma_list(categories),
+            countries=_comma_list(countries),
+            event_types=_comma_list(event_types),
+            tickers=_comma_list(tickers),
+            sector=sector or None,
+            importance=importance or None,
+            include_estimated=include_estimated,
+            text_search=text_search or None,
+            auto_collect=auto_collect,
+            force_collect=force_collect,
+            lookahead_days=lookahead_days if lookahead_days > 0 else None,
+            earnings_batch_size=earnings_batch_size if earnings_batch_size > 0 else None,
+            limit=limit,
         )
         return make_serializable(result)
     except Exception as e:

@@ -162,6 +162,17 @@ curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-report-text" \
   -d '{"company": "IBM", "report_name": "10-K", "form_type": "10-K", "auto_collect": true}'
 ```
 
+### Key Market Events
+
+Returns important macro events and configured focus-company earnings dates. Rows marked `estimated_schedule` should be confirmed against official calendars before alerting or trading.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/key-market-events" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"start_date": "2026-07-21", "end_date": "2026-08-31", "importance": "high", "limit": 10}'
+```
+
 ### Crypto Holdings Evidence
 
 Returns Blockscout address-balance evidence for an institution or wallet address. It is not proof of economic ownership, beneficial ownership, investment advice, or a trading signal.

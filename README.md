@@ -233,6 +233,7 @@ After connecting, just tell your AI assistant:
 | Finance | `search_companies` | Search public company candidates by keyword, ticker, CIK, or fuzzy name |
 | | `get_company_info` | Resolve a company and list available SEC filings, research reports, transcripts, and financial fields |
 | | `get_company_report_text` | Fetch SEC filing, third-party research report, or earnings-call transcript text |
+| | `get_key_market_events` | Query key macro dates and configured focus-company earnings events |
 | | `get_crypto_holdings` | Query wallet-visible on-chain holdings evidence for an institution or address |
 | | `get_crypto_holding_changes` | Query adjacent-snapshot on-chain holdings changes |
 | Real-time | `subscribe_latest_news` | WebSocket live feed with coin & engine type filters |
