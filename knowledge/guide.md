@@ -144,12 +144,14 @@ AI-powered prediction and correlation signals:
 - **get_news_by_signal**: Filter by AI trading signal — "long" (bullish), "short" (bearish), or "neutral"
 
 ### Finance Enhancement
-- **search_companies**: Search public company candidates by keyword, ticker, CIK, or fuzzy company name
-- **get_company_info**: Resolve a company and list available SEC filings, research reports, earnings-call transcripts, report forms, and financial item names
-- **get_company_report_text**: Fetch SEC filing, third-party research report, or earnings-call transcript text by report name, form, accession, source key, quarter hint, section, or text search
+- **search_companies**: Discover company candidates or resolve one exact ticker, CIK, KRX code, DART code, generic typed identifier, or canonical issuer ID
+- **get_company_info**: Resolve exactly one issuer and list its SEC/DART filings, research reports, earnings-call transcripts, report forms, and financial item names
+- **get_company_report_text**: Fetch one issuer-bound SEC, DART, research, or transcript report by stable `report_id` and `report_type`
 - **get_key_market_events**: Query important macro events and configured focus-company earnings dates; estimated schedule rows should be confirmed before alerting or trading
 - **get_crypto_holdings**: Query wallet-visible on-chain holdings evidence for an institution or address; results are Blockscout address-balance evidence, not proof of beneficial ownership or a trading signal
 - **get_crypto_holding_changes**: Query on-chain holdings changes between adjacent snapshots, with optional token, date, and change-type filters
+
+For multi-market issuers, first inspect `ambiguity_candidates[]`, then retry with exactly one exact selector. The MCP tools accept `canonical_issuer_id`, `ticker`, `cik`, `krx_stock_code`, `dart_corp_code`, or `identifier` plus `identifier_type` and `market`. Raw HTTP callers must use the generic `identifier` form. For example, `SEC:0002120882` maps to `identifier=0002120882, identifier_type=cik, market=US`, while `DART:00164779` maps to `identifier=00164779, identifier_type=dart_corp_code, market=KR`.
 
 For the MCP tool, pass `change_types` as a comma-separated string such as `"increase,decrease"`. `get_crypto_holding_changes` defaults `auto_collect` to false; call `get_crypto_holdings` first with `auto_collect=true` or `force_collect=true` when you need to populate a fresh wallet snapshot.
 
@@ -168,7 +170,7 @@ For the MCP tool, pass `change_types` as a comma-separated string such as `"incr
 8. **Bullish signals**: `get_news_by_signal(signal="long")` — AI-detected bullish catalysts
 9. **Multi-filter power search**: `search_news_advanced(coins="BTC,ETH", engine_types="news:Bloomberg,Reuters;market:", keyword="ETF")` — Bloomberg & Reuters ETF news for BTC/ETH plus all market signals
 10. **Live monitoring**: `subscribe_latest_news(wait_seconds=15, coins="BTC", engine_types="news:;market:")` — real-time BTC news + market anomalies
-11. **Company filings workflow**: `get_company_info(company="IBM")`, then `get_company_report_text(company="IBM", report_name="10-K", form_type="10-K")` — discover and fetch company reports
+11. **Company filings workflow**: `search_companies(keyword="Hynix")`, choose one candidate, call `get_company_info(canonical_issuer_id="SEC:0002120882")`, then call `get_company_report_text(canonical_issuer_id="SEC:0002120882", report_id="<catalog id>", report_type="SEC")`
 12. **Market event calendar**: `get_key_market_events(start_date="2026-07-21", end_date="2026-08-31", importance="high", limit=10)` — inspect macro and focus-company earnings dates
 13. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
 

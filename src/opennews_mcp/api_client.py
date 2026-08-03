@@ -2,13 +2,13 @@
 
 import asyncio
 import json
-import time
 import logging
+import time
 from typing import Any, Optional
 
 import httpx
 
-from opennews_mcp.config import API_BASE_URL, WSS_URL, API_TOKEN
+from opennews_mcp.config import API_BASE_URL, API_TOKEN, WSS_URL
 
 logger = logging.getLogger(__name__)
 
@@ -162,16 +162,29 @@ class NewsAPIClient:
 
     async def search_companies(
         self,
-        keyword: str,
+        keyword: str = "",
+        identifier: Optional[str] = None,
+        identifier_type: str = "auto",
+        market: str = "GLOBAL",
+        exchange: Optional[str] = None,
+        result_scope: str = "issuer",
         limit: int = 20,
         auto_collect: bool = True,
     ) -> dict:
         """POST /open/finance-enhance/company-search — search public company candidates."""
-        body = {
-            "keyword": keyword,
+        body: dict[str, Any] = {
+            "identifier_type": identifier_type,
+            "market": market,
+            "result_scope": result_scope,
             "limit": limit,
             "auto_collect": auto_collect,
         }
+        optional_fields = {
+            "keyword": keyword,
+            "identifier": identifier,
+            "exchange": exchange,
+        }
+        body.update({key: value for key, value in optional_fields.items() if value})
         resp = await self._request(
             "POST",
             f"{self.base_url}/open/finance-enhance/company-search",
@@ -181,20 +194,33 @@ class NewsAPIClient:
 
     async def get_company_info(
         self,
-        company: str,
+        company: str = "",
+        identifier: Optional[str] = None,
+        identifier_type: str = "auto",
+        market: str = "GLOBAL",
+        exchange: Optional[str] = None,
+        result_scope: str = "issuer",
         auto_collect: bool = True,
         filing_limit: int = 300,
         fact_limit: int = 5000,
         include_all_filings: bool = False,
     ) -> dict:
         """POST /open/finance-enhance/company-info — get company metadata and report indexes."""
-        body = {
-            "company": company,
+        body: dict[str, Any] = {
+            "identifier_type": identifier_type,
+            "market": market,
+            "result_scope": result_scope,
             "auto_collect": auto_collect,
             "filing_limit": filing_limit,
             "fact_limit": fact_limit,
             "include_all_filings": include_all_filings,
         }
+        optional_fields = {
+            "company": company,
+            "identifier": identifier,
+            "exchange": exchange,
+        }
+        body.update({key: value for key, value in optional_fields.items() if value})
         resp = await self._request(
             "POST",
             f"{self.base_url}/open/finance-enhance/company-info",
@@ -204,8 +230,14 @@ class NewsAPIClient:
 
     async def get_company_report_text(
         self,
-        company: str,
-        report_name: str,
+        company: str = "",
+        identifier: Optional[str] = None,
+        identifier_type: str = "auto",
+        market: str = "GLOBAL",
+        exchange: Optional[str] = None,
+        report_name: str = "",
+        report_id: Optional[str] = None,
+        report_type: Optional[str] = None,
         accession: Optional[str] = None,
         form_type: Optional[str] = None,
         section_key: Optional[str] = None,
@@ -217,14 +249,20 @@ class NewsAPIClient:
     ) -> dict:
         """POST /open/finance-enhance/company-report-text — get filing/report/transcript text."""
         body: dict[str, Any] = {
-            "company": company,
-            "report_name": report_name,
+            "identifier_type": identifier_type,
+            "market": market,
             "auto_collect": auto_collect,
             "max_section_chars": max_section_chars,
             "filing_search_limit": filing_search_limit,
             "section_limit": section_limit,
         }
         optional_fields = {
+            "company": company,
+            "identifier": identifier,
+            "exchange": exchange,
+            "report_name": report_name,
+            "report_id": report_id,
+            "report_type": report_type,
             "accession": accession,
             "form_type": form_type,
             "section_key": section_key,

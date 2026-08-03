@@ -1,5 +1,9 @@
 """Finance enhancement tools — company reports and on-chain holdings evidence."""
 
+import re
+from dataclasses import dataclass
+from typing import Literal
+
 from mcp.server.fastmcp import Context
 
 from opennews_mcp.app import mcp
@@ -14,43 +18,355 @@ def _comma_list(value: str) -> list[str] | None:
     return [item.strip() for item in value.split(",") if item.strip()] or None
 
 
+IdentifierType = Literal[
+    "ticker",
+    "cik",
+    "krx_stock_code",
+    "dart_corp_code",
+    "company_name",
+    "auto",
+]
+Market = Literal["US", "KR", "HK", "JP", "CN", "GLOBAL"]
+ResultScope = Literal["issuer", "security"]
+ReportType = Literal["SEC", "RESEARCH", "TRANSCRIPT", "DART"]
+
+_SELECTOR_NAMES = (
+    "company",
+    "identifier",
+    "canonical_issuer_id",
+    "ticker",
+    "cik",
+    "krx_stock_code",
+    "dart_corp_code",
+)
+
+
+@dataclass(frozen=True)
+class _CompanySelector:
+    company: str | None
+    identifier: str | None
+    identifier_type: IdentifierType
+    market: Market
+
+
+def _selector_error(status: str, message: str) -> dict[str, object]:
+    return {
+        "success": False,
+        "status": status,
+        "error": message,
+        "accepted_selectors": list(_SELECTOR_NAMES),
+        "examples": [
+            {"canonical_issuer_id": "SEC:0002120882"},
+            {"cik": "0002120882"},
+            {"ticker": "SKHY", "market": "US"},
+            {"canonical_issuer_id": "DART:00164779"},
+            {"krx_stock_code": "000660"},
+        ],
+    }
+
+
+def _resolve_company_selector(
+    *,
+    company: str = "",
+    identifier: str = "",
+    canonical_issuer_id: str = "",
+    ticker: str = "",
+    cik: str = "",
+    krx_stock_code: str = "",
+    dart_corp_code: str = "",
+    identifier_type: IdentifierType = "auto",
+    market: Market = "GLOBAL",
+) -> tuple[_CompanySelector | None, dict[str, object] | None]:
+    values = {
+        "company": str(company or "").strip(),
+        "identifier": str(identifier or "").strip(),
+        "canonical_issuer_id": str(canonical_issuer_id or "").strip(),
+        "ticker": str(ticker or "").strip(),
+        "cik": str(cik or "").strip(),
+        "krx_stock_code": str(krx_stock_code or "").strip(),
+        "dart_corp_code": str(dart_corp_code or "").strip(),
+    }
+    provided = [(name, value) for name, value in values.items() if value]
+    if not provided:
+        return None, _selector_error(
+            "invalid_input",
+            "Provide exactly one company selector. Use canonical_issuer_id from a prior "
+            "search result, a dedicated identifier field, identifier + identifier_type, "
+            "or company for fuzzy name discovery.",
+        )
+    if len(provided) > 1:
+        return None, _selector_error(
+            "selector_conflict",
+            "Provide exactly one company selector; do not combine a fuzzy company name "
+            "with ticker, CIK, DART, KRX, identifier, or canonical_issuer_id.",
+        )
+
+    selector_name, value = provided[0]
+    resolved_type: IdentifierType = identifier_type
+    resolved_market: Market = market
+
+    if selector_name == "canonical_issuer_id":
+        sec_match = re.fullmatch(r"SEC:(\d{1,10})", value, flags=re.IGNORECASE)
+        dart_match = re.fullmatch(r"DART:(\d{8})", value, flags=re.IGNORECASE)
+        if sec_match:
+            value = sec_match.group(1).zfill(10)
+            expected_type: IdentifierType = "cik"
+            expected_market: Market = "US"
+        elif dart_match:
+            value = dart_match.group(1)
+            expected_type = "dart_corp_code"
+            expected_market = "KR"
+        else:
+            return None, _selector_error(
+                "invalid_input",
+                "canonical_issuer_id must use SEC:<1-10 digit CIK> or "
+                "DART:<8 digit corp code>.",
+            )
+        if identifier_type not in ("auto", expected_type) or market not in (
+            "GLOBAL",
+            expected_market,
+        ):
+            return None, _selector_error(
+                "selector_conflict",
+                "canonical_issuer_id conflicts with identifier_type or market.",
+            )
+        return _CompanySelector(None, value, expected_type, expected_market), None
+
+    dedicated: dict[str, tuple[IdentifierType, Market | None]] = {
+        "ticker": ("ticker", None),
+        "cik": ("cik", "US"),
+        "krx_stock_code": ("krx_stock_code", "KR"),
+        "dart_corp_code": ("dart_corp_code", "KR"),
+    }
+    if selector_name in dedicated:
+        expected_type, expected_market = dedicated[selector_name]
+        if identifier_type not in ("auto", expected_type):
+            return None, _selector_error(
+                "selector_conflict",
+                f"{selector_name} conflicts with identifier_type={identifier_type}.",
+            )
+        if expected_market and market not in ("GLOBAL", expected_market):
+            return None, _selector_error(
+                "selector_conflict",
+                f"{selector_name} conflicts with market={market}.",
+            )
+        if selector_name == "cik":
+            if not re.fullmatch(r"\d{1,10}", value):
+                return None, _selector_error("invalid_input", "cik must contain 1-10 digits.")
+            value = value.zfill(10)
+        elif selector_name == "krx_stock_code" and not re.fullmatch(r"\d{6}", value):
+            return None, _selector_error(
+                "invalid_input", "krx_stock_code must contain exactly 6 digits."
+            )
+        elif selector_name == "dart_corp_code" and not re.fullmatch(r"\d{8}", value):
+            return None, _selector_error(
+                "invalid_input", "dart_corp_code must contain exactly 8 digits."
+            )
+        resolved_type = expected_type
+        if expected_market:
+            resolved_market = expected_market
+        return _CompanySelector(None, value, resolved_type, resolved_market), None
+
+    if selector_name == "identifier":
+        return _CompanySelector(None, value, resolved_type, resolved_market), None
+    return _CompanySelector(value, None, resolved_type, resolved_market), None
+
+
+def _candidate_retry(candidate: object) -> dict[str, object] | None:
+    if not isinstance(candidate, dict):
+        return None
+    canonical = str(candidate.get("canonical_issuer_id") or "").strip()
+    cik = str(candidate.get("cik") or "").strip()
+    dart = str(candidate.get("dart_corp_code") or candidate.get("corp_code") or "").strip()
+    krx = str(candidate.get("krx_stock_code") or candidate.get("stock_code") or "").strip()
+    ticker = str(candidate.get("ticker") or "").strip()
+    identifier = str(candidate.get("identifier") or "").strip()
+    identifier_type = str(candidate.get("identifier_type") or "").strip()
+    market = str(candidate.get("market") or "GLOBAL").strip() or "GLOBAL"
+
+    if canonical:
+        mcp_selector: dict[str, object] = {"canonical_issuer_id": canonical}
+    elif cik:
+        mcp_selector = {"cik": cik}
+    elif dart:
+        mcp_selector = {"dart_corp_code": dart}
+    elif krx:
+        mcp_selector = {"krx_stock_code": krx}
+    elif ticker:
+        mcp_selector = {"ticker": ticker, "market": market}
+    elif identifier and identifier_type in {
+        "ticker",
+        "cik",
+        "krx_stock_code",
+        "dart_corp_code",
+    }:
+        mcp_selector = {identifier_type: identifier}
+        if identifier_type == "ticker":
+            mcp_selector["market"] = market
+    else:
+        return None
+
+    if cik:
+        http_selector = {"identifier": cik, "identifier_type": "cik", "market": "US"}
+    elif dart:
+        http_selector = {
+            "identifier": dart,
+            "identifier_type": "dart_corp_code",
+            "market": "KR",
+        }
+    elif krx:
+        http_selector = {
+            "identifier": krx,
+            "identifier_type": "krx_stock_code",
+            "market": "KR",
+        }
+    elif ticker:
+        http_selector = {"identifier": ticker, "identifier_type": "ticker", "market": market}
+    elif identifier and identifier_type:
+        http_selector = {
+            "identifier": identifier,
+            "identifier_type": identifier_type,
+            "market": market,
+        }
+    else:
+        return None
+    return {
+        "issuer_name": candidate.get("issuer_name") or candidate.get("company_name"),
+        "canonical_issuer_id": canonical or None,
+        "mcp_selector": mcp_selector,
+        "http_selector": http_selector,
+    }
+
+
+def _with_resolution_hint(result: object) -> object:
+    if not isinstance(result, dict):
+        return result
+    payload = result.get("data") if isinstance(result.get("data"), dict) else result
+    if not isinstance(payload, dict):
+        return result
+    company = payload.get("company") if isinstance(payload.get("company"), dict) else {}
+    status = payload.get("status") or company.get("status")
+    if status != "ambiguous_entity":
+        return result
+    candidates = payload.get("ambiguity_candidates") or company.get("ambiguity_candidates") or []
+    retries = [retry for row in candidates if (retry := _candidate_retry(row)) is not None]
+    payload["resolution_hint"] = {
+        "message": "Choose one candidate, then retry with exactly one MCP selector. "
+        "Raw HTTP callers must use identifier + identifier_type + market.",
+        "retry_candidates": retries,
+    }
+    return result
+
+
+def _upstream_error(error: Exception) -> dict[str, object]:
+    return {
+        "success": False,
+        "status": "upstream_error",
+        "error": str(error) or repr(error),
+    }
+
+
 @mcp.tool()
-async def search_companies(keyword: str, ctx: Context, limit: int = 20, auto_collect: bool = True) -> dict:
-    """Search public company candidates by keyword, ticker, CIK, or fuzzy company name.
+async def search_companies(
+    ctx: Context,
+    keyword: str = "",
+    identifier: str = "",
+    canonical_issuer_id: str = "",
+    ticker: str = "",
+    cik: str = "",
+    krx_stock_code: str = "",
+    dart_corp_code: str = "",
+    identifier_type: IdentifierType = "auto",
+    market: Market = "GLOBAL",
+    exchange: str = "",
+    result_scope: ResultScope = "issuer",
+    limit: int = 20,
+    auto_collect: bool = True,
+) -> dict:
+    """Resolve an exact identifier or return explicit company ambiguity candidates.
 
     Args:
-        keyword: Search keyword, ticker, CIK, or company name (e.g. "IBM", "Apple").
+        keyword: Legacy fuzzy company-name query. Do not combine with another selector.
+        identifier: Typed identifier used with identifier_type and market.
+        canonical_issuer_id: Stable ID returned by search, such as SEC:0002120882 or DART:00164779.
+        ticker: Exact ticker convenience selector, such as SKHY.
+        cik: Exact SEC CIK convenience selector; 1-10 digits are normalized to 10 digits.
+        krx_stock_code: Exact six-digit KRX security code, such as 000660.
+        dart_corp_code: Exact eight-digit DART issuer code, such as 00164779.
+        identifier_type: ticker, cik, krx_stock_code, dart_corp_code, company_name, or auto.
+        market: US, KR, HK, JP, CN, or GLOBAL.
+        exchange: Optional exchange constraint.
+        result_scope: issuer or security.
         limit: Maximum company candidates to return (default 20, max 100).
         auto_collect: Whether to trigger backend collection and retry when cache is missing.
     """
     if (err := require_token()):
         return err
+    selector, selector_error = _resolve_company_selector(
+        company=keyword,
+        identifier=identifier,
+        canonical_issuer_id=canonical_issuer_id,
+        ticker=ticker,
+        cik=cik,
+        krx_stock_code=krx_stock_code,
+        dart_corp_code=dart_corp_code,
+        identifier_type=identifier_type,
+        market=market,
+    )
+    if selector_error:
+        return selector_error
+    assert selector is not None
     api = ctx.request_context.lifespan_context.api
     limit = _clamp(limit, 1, 100)
     try:
         result = await api.search_companies(
-            keyword=keyword,
+            keyword=selector.company or "",
+            identifier=selector.identifier,
+            identifier_type=selector.identifier_type,
+            market=selector.market,
+            exchange=exchange or None,
+            result_scope=result_scope,
             limit=limit,
             auto_collect=auto_collect,
         )
-        return make_serializable(result)
+        return make_serializable(_with_resolution_hint(result))
     except Exception as e:
-        return {"success": False, "error": str(e) or repr(e)}
+        return _upstream_error(e)
 
 
 @mcp.tool()
 async def get_company_info(
-    company: str,
     ctx: Context,
+    company: str = "",
+    identifier: str = "",
+    canonical_issuer_id: str = "",
+    ticker: str = "",
+    cik: str = "",
+    krx_stock_code: str = "",
+    dart_corp_code: str = "",
+    identifier_type: IdentifierType = "auto",
+    market: Market = "GLOBAL",
+    exchange: str = "",
+    result_scope: ResultScope = "issuer",
     auto_collect: bool = True,
     filing_limit: int = 300,
     fact_limit: int = 5000,
     include_all_filings: bool = False,
 ) -> dict:
-    """Resolve a company and return available SEC filings, research reports, transcripts, and financial item indexes.
+    """Resolve one exact issuer and return its report and financial-item catalog.
 
     Args:
-        company: Company name, ticker, or CIK (e.g. "IBM", "AAPL", "0000320193").
+        company: Legacy name/ticker/CIK input. Prefer an exact selector after search.
+        identifier: Typed identifier used with identifier_type and market.
+        canonical_issuer_id: Stable ID returned by search, such as SEC:0002120882 or DART:00164779.
+        ticker: Exact ticker convenience selector.
+        cik: Exact SEC CIK convenience selector.
+        krx_stock_code: Exact six-digit KRX security code.
+        dart_corp_code: Exact eight-digit DART issuer code.
+        identifier_type: ticker, cik, krx_stock_code, dart_corp_code, company_name, or auto.
+        market: US, KR, HK, JP, CN, or GLOBAL.
+        exchange: Optional exchange constraint.
+        result_scope: issuer or security.
         auto_collect: Whether to trigger backend collection and retry when cache is missing.
         filing_limit: Number of filings to scan (default 300, max 1000).
         fact_limit: Number of financial facts to scan (default 5000, max 20000).
@@ -58,27 +374,57 @@ async def get_company_info(
     """
     if (err := require_token()):
         return err
+    selector, selector_error = _resolve_company_selector(
+        company=company,
+        identifier=identifier,
+        canonical_issuer_id=canonical_issuer_id,
+        ticker=ticker,
+        cik=cik,
+        krx_stock_code=krx_stock_code,
+        dart_corp_code=dart_corp_code,
+        identifier_type=identifier_type,
+        market=market,
+    )
+    if selector_error:
+        return selector_error
+    assert selector is not None
     api = ctx.request_context.lifespan_context.api
     filing_limit = _clamp(filing_limit, 1, 1000)
     fact_limit = _clamp(fact_limit, 1, 20000)
     try:
         result = await api.get_company_info(
-            company=company,
+            company=selector.company or "",
+            identifier=selector.identifier,
+            identifier_type=selector.identifier_type,
+            market=selector.market,
+            exchange=exchange or None,
+            result_scope=result_scope,
             auto_collect=auto_collect,
             filing_limit=filing_limit,
             fact_limit=fact_limit,
             include_all_filings=include_all_filings,
         )
-        return make_serializable(result)
+        return make_serializable(_with_resolution_hint(result))
     except Exception as e:
-        return {"success": False, "error": str(e) or repr(e)}
+        return _upstream_error(e)
 
 
 @mcp.tool()
 async def get_company_report_text(
-    company: str,
-    report_name: str,
     ctx: Context,
+    company: str = "",
+    identifier: str = "",
+    canonical_issuer_id: str = "",
+    ticker: str = "",
+    cik: str = "",
+    krx_stock_code: str = "",
+    dart_corp_code: str = "",
+    identifier_type: IdentifierType = "auto",
+    market: Market = "GLOBAL",
+    exchange: str = "",
+    report_name: str = "",
+    report_id: str = "",
+    report_type: ReportType | None = None,
     accession: str = "",
     form_type: str = "",
     section_key: str = "",
@@ -88,11 +434,22 @@ async def get_company_report_text(
     filing_search_limit: int = 300,
     section_limit: int = 1000,
 ) -> dict:
-    """Get SEC filing, research report, or earnings-call transcript text by report name or identifier.
+    """Read one issuer-bound report using an exact company selector and stable report ID.
 
     Args:
-        company: Company name, ticker, or CIK.
-        report_name: Report name, form, accession, research slug, transcript source key, or quarter hint.
+        company: Legacy name/ticker/CIK input. Prefer an exact selector after search.
+        identifier: Typed identifier used with identifier_type and market.
+        canonical_issuer_id: Stable ID returned by search, such as SEC:0002120882 or DART:00164779.
+        ticker: Exact ticker convenience selector.
+        cik: Exact SEC CIK convenience selector.
+        krx_stock_code: Exact six-digit KRX security code.
+        dart_corp_code: Exact eight-digit DART issuer code.
+        identifier_type: ticker, cik, krx_stock_code, dart_corp_code, company_name, or auto.
+        market: US, KR, HK, JP, CN, or GLOBAL.
+        exchange: Optional exchange constraint.
+        report_name: Optional legacy display/form lookup.
+        report_id: Stable SEC accession, research slug, transcript source key, or DART rcept_no.
+        report_type: SEC, RESEARCH, TRANSCRIPT, or DART.
         accession: Optional SEC accession, research-report identifier, or transcript identifier.
         form_type: Optional SEC form type such as "10-K", "10-Q", or "8-K".
         section_key: Optional section key to fetch a specific section.
@@ -104,14 +461,34 @@ async def get_company_report_text(
     """
     if (err := require_token()):
         return err
+    selector, selector_error = _resolve_company_selector(
+        company=company,
+        identifier=identifier,
+        canonical_issuer_id=canonical_issuer_id,
+        ticker=ticker,
+        cik=cik,
+        krx_stock_code=krx_stock_code,
+        dart_corp_code=dart_corp_code,
+        identifier_type=identifier_type,
+        market=market,
+    )
+    if selector_error:
+        return selector_error
+    assert selector is not None
     api = ctx.request_context.lifespan_context.api
     max_section_chars = _clamp(max_section_chars, 1, 500000)
     filing_search_limit = _clamp(filing_search_limit, 1, 1000)
     section_limit = _clamp(section_limit, 1, 5000)
     try:
         result = await api.get_company_report_text(
-            company=company,
+            company=selector.company or "",
+            identifier=selector.identifier,
+            identifier_type=selector.identifier_type,
+            market=selector.market,
+            exchange=exchange or None,
             report_name=report_name,
+            report_id=report_id or None,
+            report_type=report_type,
             accession=accession or None,
             form_type=form_type or None,
             section_key=section_key or None,
@@ -121,9 +498,9 @@ async def get_company_report_text(
             filing_search_limit=filing_search_limit,
             section_limit=section_limit,
         )
-        return make_serializable(result)
+        return make_serializable(_with_resolution_hint(result))
     except Exception as e:
-        return {"success": False, "error": str(e) or repr(e)}
+        return _upstream_error(e)
 
 
 @mcp.tool()

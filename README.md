@@ -230,9 +230,9 @@ After connecting, just tell your AI assistant:
 | | `search_news_advanced` | Multi-filter: coins + keywords + engine types combined |
 | AI | `get_high_score_news` | High AI impact score articles (0-100 scale) |
 | | `get_news_by_signal` | By AI trading signal: long / short / neutral |
-| Finance | `search_companies` | Search public company candidates by keyword, ticker, CIK, or fuzzy name |
-| | `get_company_info` | Resolve a company and list available SEC filings, research reports, transcripts, and financial fields |
-| | `get_company_report_text` | Fetch SEC filing, third-party research report, or earnings-call transcript text |
+| Finance | `search_companies` | Discover candidates or resolve an exact canonical issuer, ticker, CIK, KRX code, DART code, or typed identifier |
+| | `get_company_info` | Resolve exactly one issuer and list its SEC/DART filings, research reports, transcripts, and financial fields |
+| | `get_company_report_text` | Fetch one issuer-bound filing, research report, or transcript by stable report ID/type |
 | | `get_key_market_events` | Query key macro dates and configured focus-company earnings events |
 | | `get_crypto_holdings` | Query wallet-visible on-chain holdings evidence for an institution or address |
 | | `get_crypto_holding_changes` | Query adjacent-snapshot on-chain holdings changes |

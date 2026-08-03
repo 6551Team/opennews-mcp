@@ -21,7 +21,7 @@ metadata:
       - darwin
       - linux
       - win32
-  version: 1.0.5
+  version: 1.0.6
 ---
 
 # OpenNews Financial Market News Skill
@@ -127,40 +127,98 @@ Important: You need to understand the user's query intent and perform word segme
 
 ---
 
-## Finance Enhancement Endpoints
+## Finance Enhancement Entity Protocol
 
-These authenticated endpoints provide company report discovery, company report text, and wallet-visible on-chain holdings evidence. Responses are wrapped as `{"success": true, "data": ...}` and may include usage quota metadata.
+These authenticated endpoints provide company discovery, report catalogs, report text, and wallet-visible on-chain evidence. Responses are wrapped as `{"success": true, "data": ...}` and may include usage quota metadata. Treat `data.status` as the business result; HTTP success alone does not mean the company or report was resolved.
+
+### Resolve the Company Before Reading Reports
+
+Company names can legitimately map to more than one issuer or listed security. Use this sequence:
+
+```text
+user company expression
+→ broad company-search
+→ inspect ambiguity_candidates[]
+→ choose the intended market/issuer
+→ retry with one exact identifier namespace
+→ read company-info
+→ choose report_id + report_type
+→ read company-report-text
+```
+
+Never send a fuzzy company name together with an exact identifier. Exactly one company selector must be authoritative.
+
+The OpenNews MCP tools accept any one of these selectors directly:
+
+| MCP selector | Example | Meaning |
+|---|---|---|
+| `canonical_issuer_id` | `SEC:0002120882` | Stable issuer ID returned by company search |
+| `ticker` | `SKHY` | Exact listed ticker |
+| `cik` | `0002120882` | SEC CIK |
+| `krx_stock_code` | `000660` | Six-digit KRX security code |
+| `dart_corp_code` | `00164779` | Eight-digit DART issuer code |
+| `identifier` + `identifier_type` + `market` | `00164779` + `dart_corp_code` + `KR` | Generic typed selector |
+| `company` / search `keyword` | `SK hynix Inc.` / `Hynix` | Fuzzy discovery only |
+
+The raw HTTP endpoints use the generic form `identifier` + `identifier_type` + `market`. Do not send `cik`, `ticker`, `dart_corp_code`, `krx_stock_code`, or `canonical_issuer_id` as standalone HTTP JSON fields: those are MCP conveniences. Convert stable IDs as follows:
+
+| Search result | Exact raw HTTP selector |
+|---|---|
+| `SEC:0002120882` | `{"identifier":"0002120882","identifier_type":"cik","market":"US"}` |
+| `DART:00164779` | `{"identifier":"00164779","identifier_type":"dart_corp_code","market":"KR"}` |
+| `KRX:000660` security | `{"identifier":"000660","identifier_type":"krx_stock_code","market":"KR"}` |
 
 ### Company Search
+
+Use a name only for discovery. An `ambiguous_entity` response is expected when multiple markets or issuers match.
 
 ```bash
 curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-search" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"keyword": "IBM", "limit": 20, "auto_collect": true}'
+  -d '{"keyword":"Hynix","identifier_type":"company_name","market":"GLOBAL","result_scope":"issuer","limit":20,"auto_collect":false}'
 ```
+
+For SK hynix this can return both the U.S. SEC issuer (`SEC:0002120882`, including ticker `SKHY`) and the Korean DART issuer (`DART:00164779`, security `KRX:000660`). Choose from the user's requested market; do not silently take the first candidate.
 
 ### Company Info
 
-Returns company identity, available SEC filings, third-party research reports, earnings-call transcripts, report forms, and financial item names.
+Returns the resolved identity and available SEC/DART filings, third-party research reports, earnings-call transcripts, report forms, and financial item names.
+
+U.S. SEC issuer:
 
 ```bash
 curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-info" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"company": "IBM", "auto_collect": true, "filing_limit": 300, "fact_limit": 5000}'
+  -d '{"identifier":"0002120882","identifier_type":"cik","market":"US","auto_collect":false,"filing_limit":50,"fact_limit":1000}'
 ```
+
+Korean DART issuer:
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-info" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"identifier":"00164779","identifier_type":"dart_corp_code","market":"KR","auto_collect":false,"filing_limit":50,"fact_limit":1000}'
+```
+
+Verify the returned `canonical_issuer_id`, `market`, `matched_by`, and `match_confidence` before using any report catalog entry.
 
 ### Company Report Text
 
-Fetches SEC filing, third-party research report, or earnings-call transcript text by report name, form, accession, source key, quarter hint, section, or text search.
+Prefer the stable `report_id` and `report_type` returned by company-info. Report types are `SEC`, `DART`, `RESEARCH`, and `TRANSCRIPT`.
 
 ```bash
 curl -s -X POST "https://ai.6551.io/open/finance-enhance/company-report-text" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"company": "IBM", "report_name": "10-K", "form_type": "10-K", "auto_collect": true}'
+  -d '{"identifier":"0002120882","identifier_type":"cik","market":"US","report_id":"<catalog report_id>","report_type":"RESEARCH","max_section_chars":50000,"auto_collect":false}'
 ```
+
+Before treating text as evidence, verify that the response company, selected report `canonical_issuer_id`, `report_id`, and `report_type` all match the chosen catalog entry.
+
+Business statuses include `ok`, `invalid_input`, `selector_conflict`, `ambiguous_entity`, `entity_not_found`, `report_not_found`, `text_not_cached`, `section_not_found`, `unsupported`, `partial_result`, and `upstream_error`. For `ambiguous_entity`, use `ambiguity_candidates[]` and the returned resolution hint to retry with one exact selector.
 
 ### Key Market Events
 
