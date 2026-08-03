@@ -230,12 +230,15 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | | `search_news_advanced` | 複合フィルタ：通貨 + キーワード + エンジンタイプ |
 | AI | `get_high_score_news` | 高 AI 影響度スコア記事（0-100 スケール） |
 | | `get_news_by_signal` | AI トレーディングシグナル別：long / short / neutral |
-| Finance | `search_companies` | キーワード、ticker、CIK、曖昧な会社名で上場企業候補を検索 |
-| | `get_company_info` | 会社を解決し、利用可能な SEC filing、リサーチレポート、決算説明会 transcript、財務項目を一覧 |
-| | `get_company_report_text` | SEC filing、第三者リサーチ、決算説明会 transcript の本文を取得 |
+| Finance | `search_companies` | 候補を発見、または正確な canonical issuer、ticker、CIK、KRX コード、DART コード、typed identifier を解決 |
+| | `get_company_info` | 1つの issuer を正確に解決し、SEC/DART filings、リサーチレポート、transcript、財務項目を一覧 |
+| | `get_company_report_text` | 安定した report ID/type で、issuer に紐づく filing、リサーチレポート、transcript を取得 |
+| | `get_key_market_events` | 主要マクロ日程と設定済み重点企業の決算イベントを照会 |
 | | `get_crypto_holdings` | 機関またはアドレスのウォレット可視オンチェーン保有証拠を照会 |
 | | `get_crypto_holding_changes` | 隣接スナップショット間のオンチェーン保有変化を照会 |
 | リアルタイム | `subscribe_latest_news` | WebSocket ライブフィード、通貨・エンジンタイプフィルタ対応 |
+
+複数市場または同名企業では、まず `ambiguity_candidates[]` を確認し、正確な selector を1つだけ指定して再試行してください。MCP ツールは `canonical_issuer_id`、`ticker`、`cik`、`krx_stock_code`、`dart_corp_code`、または `identifier` + `identifier_type` + `market` を受け付けます。Raw HTTP 呼び出しでは汎用の `identifier` 形式を使ってください。例: `SEC:0002120882` は `identifier=0002120882, identifier_type=cik, market=US`、`DART:00164779` は `identifier=00164779, identifier_type=dart_corp_code, market=KR` に対応します。
 
 > 詳細な使用ガイドとサンプルについては、[ナレッジガイド](../knowledge/guide.md) をご覧ください。
 

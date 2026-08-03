@@ -230,13 +230,15 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | | `search_news_advanced` | 多条件组合: 币种 + 关键词 + 引擎类型 |
 | AI | `get_high_score_news` | 高 AI 影响力评分文章 (0-100 分制) |
 | | `get_news_by_signal` | 按 AI 交易信号: long / short / neutral |
-| 金融增强 | `search_companies` | 按关键词、ticker、CIK 或模糊公司名搜索上市公司候选项 |
-| | `get_company_info` | 解析公司并列出可用 SEC filings、研报、电话会 transcript 和财务字段 |
-| | `get_company_report_text` | 获取 SEC filing、第三方研报或财报电话会 transcript 文本 |
+| 金融增强 | `search_companies` | 发现候选项，或按精确 canonical issuer、ticker、CIK、KRX 代码、DART 代码、typed identifier 解析 |
+| | `get_company_info` | 精确解析一个 issuer，并列出 SEC/DART filings、研报、transcript 和财务字段 |
+| | `get_company_report_text` | 按稳定 report ID/type 获取某个 issuer 绑定的 filing、研报或 transcript |
 | | `get_key_market_events` | 查询关键宏观日期和重点公司财报事件 |
 | | `get_crypto_holdings` | 查询机构或地址的钱包可见链上持仓证据 |
 | | `get_crypto_holding_changes` | 查询相邻快照之间的链上持仓变化 |
 | 实时 | `subscribe_latest_news` | WebSocket 实时推送，支持币种和引擎类型过滤 |
+
+对于跨市场或同名公司，请先查看 `ambiguity_candidates[]`，再用且只用一个精确 selector 重试。MCP 工具支持 `canonical_issuer_id`、`ticker`、`cik`、`krx_stock_code`、`dart_corp_code`，或 `identifier` + `identifier_type` + `market`；原始 HTTP 调用方应使用通用 `identifier` 形式。例如，`SEC:0002120882` 对应 `identifier=0002120882, identifier_type=cik, market=US`，`DART:00164779` 对应 `identifier=00164779, identifier_type=dart_corp_code, market=KR`。
 
 > 完整使用指南和详细示例，请查看 [知识指南](../knowledge/guide.md)。
 

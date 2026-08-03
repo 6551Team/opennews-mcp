@@ -230,12 +230,15 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | | `search_news_advanced` | 복합 필터: 코인 + 키워드 + 엔진 유형 조합 |
 | AI | `get_high_score_news` | 높은 AI 영향도 점수 기사 (0-100 스케일) |
 | | `get_news_by_signal` | AI 트레이딩 시그널별: long / short / neutral |
-| 금융 강화 | `search_companies` | 키워드, ticker, CIK 또는 유사 회사명으로 상장사 후보 검색 |
-| | `get_company_info` | 회사를 식별하고 사용 가능한 SEC filing, 리서치 보고서, 실적 콜 transcript, 재무 항목을 나열 |
-| | `get_company_report_text` | SEC filing, 서드파티 리서치, 실적 콜 transcript 본문 조회 |
+| 금융 강화 | `search_companies` | 후보를 찾거나 정확한 canonical issuer, ticker, CIK, KRX 코드, DART 코드, typed identifier로 식별 |
+| | `get_company_info` | 정확히 하나의 issuer를 식별하고 SEC/DART filings, 리서치 보고서, transcript, 재무 항목을 나열 |
+| | `get_company_report_text` | 안정적인 report ID/type으로 특정 issuer에 연결된 filing, 리서치 보고서, transcript를 조회 |
+| | `get_key_market_events` | 주요 매크로 일정과 설정된 중점 기업의 실적 이벤트 조회 |
 | | `get_crypto_holdings` | 기관 또는 주소의 지갑 기준 온체인 보유 증거 조회 |
 | | `get_crypto_holding_changes` | 인접 스냅샷 사이의 온체인 보유 변화 조회 |
 | 실시간 | `subscribe_latest_news` | WebSocket 라이브 피드, 코인 및 엔진 유형 필터 지원 |
+
+여러 시장에 걸친 issuer나 동명이 회사의 경우 먼저 `ambiguity_candidates[]`를 확인한 뒤, 정확한 selector 하나만 지정해 다시 호출하세요. MCP 도구는 `canonical_issuer_id`, `ticker`, `cik`, `krx_stock_code`, `dart_corp_code` 또는 `identifier` + `identifier_type` + `market`을 받습니다. Raw HTTP 호출자는 범용 `identifier` 형식을 사용해야 합니다. 예: `SEC:0002120882`는 `identifier=0002120882, identifier_type=cik, market=US`, `DART:00164779`는 `identifier=00164779, identifier_type=dart_corp_code, market=KR`에 해당합니다.
 
 > 자세한 사용 가이드와 예제는 [지식 가이드](../knowledge/guide.md)를 참조하세요.
 
