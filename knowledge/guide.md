@@ -148,10 +148,14 @@ AI-powered prediction and correlation signals:
 - **get_company_info**: Resolve exactly one issuer and list its SEC/DART filings, research reports, earnings-call transcripts, report forms, and financial item names
 - **get_company_report_text**: Fetch one issuer-bound SEC, DART, research, or transcript report by stable `report_id` and `report_type`
 - **get_key_market_events**: Query important macro events and configured focus-company earnings dates; estimated schedule rows should be confirmed before alerting or trading
+- **get_politician_stock_activity**: Query official U.S. House PTR stock transaction disclosures by ticker, filer, district, date, transaction code, owner code, or disclosed amount bucket; these are disclosure rows, not current holdings
+- **get_institution_stock_holdings**: Query latest-per-manager SEC Form 13F stock holdings by ticker, issuer name, CUSIP, manager name, or manager CIK; these are delayed quarter-end filings from the staged manager universe
 - **get_crypto_holdings**: Query wallet-visible on-chain holdings evidence for an institution or address; results are Blockscout address-balance evidence, not proof of beneficial ownership or a trading signal
 - **get_crypto_holding_changes**: Query on-chain holdings changes between adjacent snapshots, with optional token, date, and change-type filters
 
 For multi-market issuers, first inspect `ambiguity_candidates[]`, then retry with exactly one exact selector. The MCP tools accept `canonical_issuer_id`, `ticker`, `cik`, `krx_stock_code`, `dart_corp_code`, or `identifier` plus `identifier_type` and `market`. Raw HTTP callers must use the generic `identifier` form. For example, `SEC:0002120882` maps to `identifier=0002120882, identifier_type=cik, market=US`, while `DART:00164779` maps to `identifier=00164779, identifier_type=dart_corp_code, market=KR`.
+
+For stock-disclosure tools, preserve evidence boundaries in answers. House PTR amounts are disclosure buckets and Senate is not supported. Form 13F holdings are delayed reporting-period evidence and only cover managers staged in Finance Enhance.
 
 For the MCP tool, pass `change_types` as a comma-separated string such as `"increase,decrease"`. `get_crypto_holding_changes` defaults `auto_collect` to false; call `get_crypto_holdings` first with `auto_collect=true` or `force_collect=true` when you need to populate a fresh wallet snapshot.
 
@@ -172,7 +176,9 @@ For the MCP tool, pass `change_types` as a comma-separated string such as `"incr
 10. **Live monitoring**: `subscribe_latest_news(wait_seconds=15, coins="BTC", engine_types="news:;market:")` — real-time BTC news + market anomalies
 11. **Company filings workflow**: `search_companies(keyword="Hynix")`, choose one candidate, call `get_company_info(canonical_issuer_id="SEC:0002120882")`, then call `get_company_report_text(canonical_issuer_id="SEC:0002120882", report_id="<catalog id>", report_type="SEC")`
 12. **Market event calendar**: `get_key_market_events(start_date="2026-07-21", end_date="2026-08-31", importance="high", limit=10)` — inspect macro and focus-company earnings dates
-13. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
+13. **House PTR activity**: `get_politician_stock_activity(source_year=2026, ticker="AAPL", transaction_codes="P,S", limit=25)` — inspect official House transaction disclosures
+14. **13F holdings evidence**: `get_institution_stock_holdings(stock="AAPL", institution="0001067983", limit=25)` — inspect delayed SEC manager filing evidence
+15. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
 
 ## Data Structure
 

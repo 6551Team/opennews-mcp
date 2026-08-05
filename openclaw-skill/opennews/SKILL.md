@@ -129,7 +129,7 @@ Important: You need to understand the user's query intent and perform word segme
 
 ## Finance Enhancement Entity Protocol
 
-These authenticated endpoints provide company discovery, report catalogs, report text, and wallet-visible on-chain evidence. Responses are wrapped as `{"success": true, "data": ...}` and may include usage quota metadata. Treat `data.status` as the business result; HTTP success alone does not mean the company or report was resolved.
+These authenticated endpoints provide company discovery, report catalogs, report text, key market events, public stock-disclosure evidence, and wallet-visible on-chain evidence. Responses are wrapped as `{"success": true, "data": ...}` and may include usage quota metadata. Treat `data.status` as the business result; HTTP success alone does not mean the company, report, or disclosure query was resolved.
 
 ### Resolve the Company Before Reading Reports
 
@@ -229,6 +229,30 @@ curl -s -X POST "https://ai.6551.io/open/finance-enhance/key-market-events" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"start_date": "2026-07-21", "end_date": "2026-08-31", "importance": "high", "limit": 10}'
+```
+
+### Politician Stock Activity
+
+Returns official U.S. House PTR transaction disclosure evidence by ticker, filer, district, date, transaction code, owner code, or disclosed amount bucket. It is not current holdings, exact trade value, cost basis, profit, or investment advice. Senate eFD is deliberately unsupported until consent/terms review is complete.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/politician-stock-activity" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"chamber":"house","source_year":2026,"ticker":"AAPL","transaction_codes":["P","S"],"limit":25}'
+```
+
+The MCP tool accepts `transaction_codes` and `owner_codes` as comma-separated strings, for example `P,S` and `SP,JT`.
+
+### Institution Stock Holdings
+
+Returns latest-per-manager SEC Form 13F stock holding disclosure evidence from the staged manager universe. `stock` accepts a staged ticker, issuer name, or CUSIP; `institution` accepts a staged manager name or exact SEC manager CIK. Results are delayed quarter-end filings, not real-time holdings or complete economic exposure.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/institution-stock-holdings" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"stock":"AAPL","institution":"0001067983","sort_by":"value","limit":25}'
 ```
 
 ### Crypto Holdings Evidence

@@ -1,4 +1,4 @@
-"""Finance enhancement tools — company reports and on-chain holdings evidence."""
+"""Finance enhancement tools — company reports and holdings evidence."""
 
 import re
 from dataclasses import dataclass
@@ -29,6 +29,8 @@ IdentifierType = Literal[
 Market = Literal["US", "KR", "HK", "JP", "CN", "GLOBAL"]
 ResultScope = Literal["issuer", "security"]
 ReportType = Literal["SEC", "RESEARCH", "TRANSCRIPT", "DART"]
+PoliticianChamber = Literal["house", "senate", "all"]
+InstitutionStockSort = Literal["value", "shares", "change", "institution"]
 
 _SELECTOR_NAMES = (
     "company",
@@ -570,6 +572,139 @@ async def get_key_market_events(
         return make_serializable(result)
     except Exception as e:
         return {"success": False, "error": str(e) or repr(e)}
+
+
+@mcp.tool()
+async def get_politician_stock_activity(
+    ctx: Context,
+    chamber: PoliticianChamber = "house",
+    source_year: int = 0,
+    doc_id: str = "",
+    ticker: str = "",
+    politician: str = "",
+    state_district: str = "",
+    transaction_codes: str = "",
+    owner_codes: str = "",
+    start_date: str = "",
+    end_date: str = "",
+    min_amount: float = -1,
+    max_amount: float = -1,
+    auto_collect: bool = False,
+    force_collect: bool = False,
+    collect_max_pdfs: int = 0,
+    limit: int = 100,
+    offset: int = 0,
+) -> dict:
+    """Query official U.S. House PTR stock transaction disclosures.
+
+    Returns public transaction disclosure evidence and amount buckets. It is not
+    current holdings, exact trade value, cost basis, profit, or investment advice.
+
+    Args:
+        chamber: Disclosure chamber. Only house is currently supported; senate/all return a boundary message.
+        source_year: Optional House disclosure year; 0 means backend default.
+        doc_id: Optional House PTR PDF document ID.
+        ticker: Optional stock ticker filter.
+        politician: Optional filer name filter.
+        state_district: Optional district filter, such as CA12.
+        transaction_codes: Optional comma-separated codes: P, S, E.
+        owner_codes: Optional comma-separated owner codes: SP, DC, JT.
+        start_date: Optional start date in YYYY-MM-DD format.
+        end_date: Optional end date in YYYY-MM-DD format.
+        min_amount: Optional disclosed amount bucket lower bound; negative means unset.
+        max_amount: Optional disclosed amount bucket upper bound; negative means unset.
+        auto_collect: Whether to trigger bounded House PTR collection when cache is missing.
+        force_collect: Whether to force collection.
+        collect_max_pdfs: Optional PDF collection cap; 0 means backend default.
+        limit: Maximum returned transaction rows (default 100, max 500).
+        offset: Pagination offset.
+    """
+    if (err := require_token()):
+        return err
+    api = ctx.request_context.lifespan_context.api
+    limit = _clamp(limit, 1, 500)
+    try:
+        result = await api.get_politician_stock_activity(
+            chamber=chamber,
+            source_year=source_year if source_year > 0 else None,
+            doc_id=doc_id or None,
+            ticker=ticker or None,
+            politician=politician or None,
+            state_district=state_district or None,
+            transaction_codes=_comma_list(transaction_codes),
+            owner_codes=_comma_list(owner_codes),
+            start_date=start_date or None,
+            end_date=end_date or None,
+            min_amount=min_amount if min_amount >= 0 else None,
+            max_amount=max_amount if max_amount >= 0 else None,
+            auto_collect=auto_collect,
+            force_collect=force_collect,
+            collect_max_pdfs=(
+                _clamp(collect_max_pdfs, 1, 250) if collect_max_pdfs > 0 else None
+            ),
+            limit=limit,
+            offset=max(0, int(offset)),
+        )
+        return make_serializable(result)
+    except Exception as e:
+        return _upstream_error(e)
+
+
+@mcp.tool()
+async def get_institution_stock_holdings(
+    ctx: Context,
+    stock: str = "",
+    institution: str = "",
+    as_of: str = "",
+    changed_only: bool = False,
+    include_options: bool = False,
+    include_exited: bool = False,
+    sort_by: InstitutionStockSort = "value",
+    auto_collect: bool = False,
+    force_collect: bool = False,
+    limit: int = 100,
+    offset: int = 0,
+) -> dict:
+    """Query SEC Form 13F institution stock holding disclosures.
+
+    Returns latest-per-manager quarter-end 13F evidence from the staged manager
+    universe. It is delayed filing evidence, not real-time ownership or a complete
+    view of economic exposure.
+
+    Args:
+        stock: Optional staged ticker, issuer name, or CUSIP.
+        institution: Optional staged manager name or exact SEC manager CIK.
+        as_of: Optional report-period cutoff in YYYY-MM-DD format.
+        changed_only: Whether to exclude unchanged positions.
+        include_options: Whether to include put/call option rows.
+        include_exited: Whether to include exited positions.
+        sort_by: value, shares, change, or institution.
+        auto_collect: Whether to trigger one bounded manager 13F collection on cache miss.
+        force_collect: Whether to force collection for the resolved manager.
+        limit: Maximum returned holding rows (default 100, max 500).
+        offset: Pagination offset.
+    """
+    if (err := require_token()):
+        return err
+    api = ctx.request_context.lifespan_context.api
+    limit = _clamp(limit, 1, 500)
+    try:
+        result = await api.get_institution_stock_holdings(
+            stock=stock or None,
+            institution=institution or None,
+            as_of=as_of or None,
+            changed_only=changed_only,
+            include_options=include_options,
+            include_exited=include_exited,
+            sort_by=sort_by,
+            auto_collect=auto_collect,
+            force_collect=force_collect,
+            limit=limit,
+            offset=max(0, int(offset)),
+        )
+        return make_serializable(result)
+    except Exception as e:
+        return _upstream_error(e)
 
 
 @mcp.tool()

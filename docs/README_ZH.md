@@ -234,6 +234,8 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | | `get_company_info` | 精确解析一个 issuer，并列出 SEC/DART filings、研报、transcript 和财务字段 |
 | | `get_company_report_text` | 按稳定 report ID/type 获取某个 issuer 绑定的 filing、研报或 transcript |
 | | `get_key_market_events` | 查询关键宏观日期和重点公司财报事件 |
+| | `get_politician_stock_activity` | 查询官方美国众议院 PTR 股票交易披露 |
+| | `get_institution_stock_holdings` | 查询延迟的 SEC Form 13F 机构股票持仓披露 |
 | | `get_crypto_holdings` | 查询机构或地址的钱包可见链上持仓证据 |
 | | `get_crypto_holding_changes` | 查询相邻快照之间的链上持仓变化 |
 | 实时 | `subscribe_latest_news` | WebSocket 实时推送，支持币种和引擎类型过滤 |

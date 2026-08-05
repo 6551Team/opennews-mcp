@@ -234,6 +234,8 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | | `get_company_info` | 정확히 하나의 issuer를 식별하고 SEC/DART filings, 리서치 보고서, transcript, 재무 항목을 나열 |
 | | `get_company_report_text` | 안정적인 report ID/type으로 특정 issuer에 연결된 filing, 리서치 보고서, transcript를 조회 |
 | | `get_key_market_events` | 주요 매크로 일정과 설정된 중점 기업의 실적 이벤트 조회 |
+| | `get_politician_stock_activity` | 미국 하원 PTR 공식 주식 거래 공시 조회 |
+| | `get_institution_stock_holdings` | 지연된 SEC Form 13F 기관 주식 보유 공시 조회 |
 | | `get_crypto_holdings` | 기관 또는 주소의 지갑 기준 온체인 보유 증거 조회 |
 | | `get_crypto_holding_changes` | 인접 스냅샷 사이의 온체인 보유 변화 조회 |
 | 실시간 | `subscribe_latest_news` | WebSocket 라이브 피드, 코인 및 엔진 유형 필터 지원 |

@@ -325,6 +325,100 @@ class NewsAPIClient:
         )
         return resp.json()
 
+    async def get_politician_stock_activity(
+        self,
+        chamber: str = "house",
+        source_year: Optional[int] = None,
+        doc_id: Optional[str] = None,
+        ticker: Optional[str] = None,
+        politician: Optional[str] = None,
+        state_district: Optional[str] = None,
+        transaction_codes: Optional[list[str]] = None,
+        owner_codes: Optional[list[str]] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        min_amount: Optional[float] = None,
+        max_amount: Optional[float] = None,
+        auto_collect: bool = False,
+        force_collect: bool = False,
+        collect_max_pdfs: Optional[int] = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> dict:
+        """POST /open/finance-enhance/politician-stock-activity — get House PTR disclosures."""
+        body: dict[str, Any] = {
+            "chamber": chamber,
+            "auto_collect": auto_collect,
+            "force_collect": force_collect,
+            "limit": limit,
+            "offset": offset,
+        }
+        optional_fields = {
+            "source_year": source_year,
+            "doc_id": doc_id,
+            "ticker": ticker,
+            "politician": politician,
+            "state_district": state_district,
+            "transaction_codes": transaction_codes,
+            "owner_codes": owner_codes,
+            "start_date": start_date,
+            "end_date": end_date,
+            "min_amount": min_amount,
+            "max_amount": max_amount,
+            "collect_max_pdfs": collect_max_pdfs,
+        }
+        body.update({
+            key: value for key, value in optional_fields.items()
+            if value is not None and value != "" and value != []
+        })
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/politician-stock-activity",
+            json=body,
+        )
+        return resp.json()
+
+    async def get_institution_stock_holdings(
+        self,
+        stock: Optional[str] = None,
+        institution: Optional[str] = None,
+        as_of: Optional[str] = None,
+        changed_only: bool = False,
+        include_options: bool = False,
+        include_exited: bool = False,
+        sort_by: str = "value",
+        auto_collect: bool = False,
+        force_collect: bool = False,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> dict:
+        """POST /open/finance-enhance/institution-stock-holdings — get SEC 13F evidence."""
+        body: dict[str, Any] = {
+            "changed_only": changed_only,
+            "include_options": include_options,
+            "include_exited": include_exited,
+            "sort_by": sort_by,
+            "auto_collect": auto_collect,
+            "force_collect": force_collect,
+            "limit": limit,
+            "offset": offset,
+        }
+        optional_fields = {
+            "stock": stock,
+            "institution": institution,
+            "as_of": as_of,
+        }
+        body.update({
+            key: value for key, value in optional_fields.items()
+            if value is not None and value != ""
+        })
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/institution-stock-holdings",
+            json=body,
+        )
+        return resp.json()
+
     async def get_crypto_holdings(
         self,
         institution: Optional[str] = None,
