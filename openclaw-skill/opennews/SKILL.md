@@ -125,6 +125,19 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 
 Important: You need to understand the user's query intent and perform word segmentation, then combine them using OR/AND to form search keywords, supporting both Chinese and English.
 
+### India-Focused News
+
+There are no dedicated Indian media sources in the catalog yet, so Indian market coverage is obtained through keyword search across the global sources. The MCP tool `get_india_news` runs the common keywords (India, Sensex, Nifty, RBI, SEBI, rupee, NSE, BSE) and merges de-duplicated results:
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/news_search" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"q": "India OR Sensex OR Nifty OR RBI OR rupee", "limit": 10, "page": 1}'
+```
+
+For a focused query, combine a topic with India terms, for example `"RBI rate decision"` or `"Tata AND India"`.
+
 ---
 
 ## Finance Enhancement Entity Protocol

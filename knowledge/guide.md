@@ -138,6 +138,7 @@ AI-powered prediction and correlation signals:
 - **get_news_by_source**: Filter by specific source within a category (e.g. engine_type="news", news_type="Bloomberg")
 - **get_news_by_engine**: Filter by entire engine category (e.g. "listing" for all exchange listing alerts, "prediction" for AI prediction signals)
 - **search_news_advanced**: Combined multi-filter search (coins + keywords + engine types + has_coin)
+- **get_india_news**: India-focused keyword search (India, Sensex, Nifty, RBI, rupee, etc.) across all sources. Coverage is limited to India mentions from global media; there are no dedicated Indian news sources in the backend catalog yet.
 
 ### AI Ratings & Signals
 - **get_high_score_news**: Articles with high AI impact scores (0-100 scale)
@@ -179,6 +180,7 @@ For the MCP tool, pass `change_types` as a comma-separated string such as `"incr
 13. **House PTR activity**: `get_politician_stock_activity(source_year=2026, ticker="AAPL", transaction_codes="P,S", limit=25)` — inspect official House transaction disclosures
 14. **13F holdings evidence**: `get_institution_stock_holdings(stock="AAPL", institution="0001067983", limit=25)` — inspect delayed SEC manager filing evidence
 15. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
+16. **India market scan**: `get_india_news(limit=20)` — India-related mentions (Sensex, Nifty, RBI, rupee, etc.) from the global source catalog
 
 ## Data Structure
 

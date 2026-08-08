@@ -211,6 +211,7 @@ After connecting, just tell your AI assistant:
 | "Bloomberg articles" | Filter by source |
 | "On-chain events" | Filter by engine type (onchain) |
 | "Important news with AI score above 80" | High score filtering |
+| "India market news" | India-focused keyword search (Sensex, Nifty, RBI, rupee) |
 | "Bullish signals" | Filter by trading signal (long) |
 | "Subscribe to real-time news" | WebSocket live updates |
 
@@ -228,6 +229,7 @@ After connecting, just tell your AI assistant:
 | | `get_news_by_source` | By specific source (e.g. engine_type="news", news_type="Bloomberg") |
 | | `get_news_by_engine` | By category: news, listing, onchain, meme, market, prediction |
 | | `search_news_advanced` | Multi-filter: coins + keywords + engine types combined |
+| | `get_india_news` | India-focused keyword search (Sensex, Nifty, RBI, rupee) across all sources |
 | AI | `get_high_score_news` | High AI impact score articles (0-100 scale) |
 | | `get_news_by_signal` | By AI trading signal: long / short / neutral |
 | Finance | `search_companies` | Discover candidates or resolve an exact canonical issuer, ticker, CIK, KRX code, DART code, or typed identifier |
