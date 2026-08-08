@@ -5,6 +5,7 @@ can still override any value.
 """
 
 import json
+import math
 import os
 from datetime import datetime, date
 from decimal import Decimal
@@ -44,7 +45,7 @@ def require_token() -> dict | None:
     return None
 
 # ---------- Safety ----------
-MAX_ROWS = int(os.environ.get("OPENNEWS_MAX_ROWS", 0) or _cfg.get("max_rows", 100))
+MAX_ROWS = max(1, int(os.environ.get("OPENNEWS_MAX_ROWS", 0) or _cfg.get("max_rows", 100)))
 
 
 def clamp_limit(limit: int) -> int:
@@ -60,6 +61,10 @@ def make_serializable(obj):
         return {k: make_serializable(v) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
         return [make_serializable(item) for item in obj]
+    if isinstance(obj, (set, frozenset)):
+        return [make_serializable(item) for item in obj]
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return None
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     if isinstance(obj, Decimal):

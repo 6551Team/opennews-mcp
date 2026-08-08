@@ -31,7 +31,7 @@ async def get_latest_news(ctx: Context, limit: int = 10) -> dict:
     limit = clamp_limit(limit)
     try:
         result = await api.search_news(limit=limit, page=1)
-        data = result.get("data", [])[:limit]
+        data = (result.get("data") or [])[:limit]
         return make_serializable({
             "success": True, "data": data,
             "count": len(data), "total": result.get("total", 0),
@@ -59,7 +59,7 @@ async def search_news(keyword: str, ctx: Context, limit: int = 10) -> dict:
     limit = clamp_limit(limit)
     try:
         result = await api.search_news(query=keyword, limit=limit, page=1)
-        data = result.get("data", [])[:limit]
+        data = (result.get("data") or [])[:limit]
         return make_serializable({
             "success": True, "keyword": keyword, "data": data,
             "count": len(data), "total": result.get("total", 0),
@@ -85,7 +85,7 @@ async def search_news_by_coin(coin: str, ctx: Context, limit: int = 10) -> dict:
     limit = clamp_limit(limit)
     try:
         result = await api.search_news(coins=[coin], limit=limit, page=1)
-        data = result.get("data", [])[:limit]
+        data = (result.get("data") or [])[:limit]
         return make_serializable({
             "success": True, "coin": coin, "data": data,
             "count": len(data), "total": result.get("total", 0),
@@ -121,7 +121,7 @@ async def get_news_by_source(engine_type: str, news_type: str, ctx: Context, lim
     limit = clamp_limit(limit)
     try:
         result = await api.search_news(engine_types={engine_type: [news_type]}, limit=limit, page=1)
-        data = result.get("data", [])[:limit]
+        data = (result.get("data") or [])[:limit]
         return make_serializable({
             "success": True, "engine_type": engine_type, "news_type": news_type, "data": data,
             "count": len(data), "total": result.get("total", 0),
@@ -154,7 +154,7 @@ async def get_news_by_engine(engine_type: str, ctx: Context, limit: int = 10) ->
     limit = clamp_limit(limit)
     try:
         result = await api.search_news(engine_types={engine_type: []}, limit=limit, page=1)
-        data = result.get("data", [])[:limit]
+        data = (result.get("data") or [])[:limit]
         return make_serializable({
             "success": True, "engine_type": engine_type, "data": data,
             "count": len(data), "total": result.get("total", 0),
@@ -213,7 +213,7 @@ async def search_news_advanced(
             score=min_score if min_score > 0 else None,
             limit=limit, page=1,
         )
-        data = result.get("data", [])[:limit]
+        data = (result.get("data") or [])[:limit]
         return make_serializable({
             "success": True, "data": data,
             "count": len(data), "total": result.get("total", 0),
@@ -241,7 +241,7 @@ async def get_high_score_news(ctx: Context, min_score: int = 70, limit: int = 10
     limit = clamp_limit(limit)
     try:
         result = await api.search_news(score=min_score, limit=limit, page=1)
-        data = result.get("data", [])
+        data = result.get("data") or []
         data.sort(key=lambda x: x.get("score", 0), reverse=True)
         return make_serializable({
             "success": True, "min_score": min_score,
@@ -268,7 +268,7 @@ async def get_news_by_signal(signal: str, ctx: Context, limit: int = 10) -> dict
     try:
         fetch_limit = min(limit * 3, MAX_ROWS)
         result = await api.search_news(limit=fetch_limit, page=1)
-        raw = result.get("data", [])
+        raw = result.get("data") or []
 
         filtered = [it for it in raw
                      if (it.get("aiRating") or {}).get("signal") == signal
