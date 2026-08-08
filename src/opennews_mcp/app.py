@@ -60,6 +60,9 @@ CLUSTER_ENTRY, WHALE_POSITION, NEW_WALLET_TRADE, INSIDER_PATTERN, \
 CORRELATION_NARRATIVE, CORRELATION_HEDGE, CORRELATION_ENTITY_GEO, \
 CORRELATION_CAUSAL, SETTLEMENT_ARBITRAGE — AI-powered prediction signals.
 
+India-focused coverage (Sensex, Nifty, RBI, rupee, etc.) is available via keyword \
+search; there are no dedicated Indian media sources yet.
+
 All articles are AI-analyzed with impact score (0-100), trading signal (long/short/neutral), \
 and bilingual summaries (EN/ZH).
 """

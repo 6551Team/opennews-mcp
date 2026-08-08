@@ -280,3 +280,60 @@ async def get_news_by_signal(signal: str, ctx: Context, limit: int = 10) -> dict
         })
     except Exception as e:
         return {"success": False, "error": str(e) or repr(e)}
+
+
+_INDIA_KEYWORDS = (
+    "India", "Sensex", "Nifty", "RBI", "SEBI", "rupee", "NSE", "BSE",
+)
+
+
+@mcp.tool()
+async def get_india_news(ctx: Context, keyword: str = "", limit: int = 10) -> dict:
+    """Get India-focused market news by searching India-related keywords.
+
+    Runs keyword searches across the 85+ global sources (by default: India,
+    Sensex, Nifty, RBI, SEBI, rupee, NSE, BSE) and merges de-duplicated
+    results. Coverage is limited to India mentions from global media;
+    the backend has no dedicated Indian news sources yet.
+
+    Args:
+        keyword: Optional comma-separated custom keywords. When empty, the
+            default India keyword set is used (at most 10 keywords per call).
+        limit: Maximum results (default 10, max 100).
+    """
+    if (err := require_token()):
+        return err
+    api = ctx.request_context.lifespan_context.api
+    limit = clamp_limit(limit)
+    terms = [t.strip() for t in (keyword or ",".join(_INDIA_KEYWORDS)).split(",") if t.strip()][:10]
+    if not terms:
+        return {"success": False, "error": "No search keywords provided."}
+    per_term = max(1, min((limit * 2) // len(terms), MAX_ROWS))
+    seen: set = set()
+    items: list = []
+    errors: list = []
+    try:
+        for term in terms:
+            try:
+                result = await api.search_news(query=term, limit=per_term, page=1)
+            except Exception as e:
+                errors.append(f"{term}: {str(e) or repr(e)}")
+                continue
+            for item in result.get("data") or []:
+                key = item.get("id") or item.get("link") or item.get("text")
+                if key is not None and key in seen:
+                    continue
+                if key is not None:
+                    seen.add(key)
+                items.append(item)
+        data = items[:limit]
+        return make_serializable({
+            "success": True,
+            "keywords": terms,
+            "data": data,
+            "count": len(data),
+            "total": len(items),
+            "errors": errors or None,
+        })
+    except Exception as e:
+        return {"success": False, "error": str(e) or repr(e)}
