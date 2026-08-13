@@ -160,6 +160,22 @@ class NewsAPIClient:
         resp = await self._request("POST", f"{self.base_url}/open/news_search", json=body)
         return resp.json()
 
+    async def get_strategy_list(self, limit: int = 20, page: int = 1) -> dict:
+        """GET /open/strategy_list — get user strategy list."""
+        params: dict[str, Any] = {"limit": limit, "page": page}
+        resp = await self._request("GET", f"{self.base_url}/open/strategy_list", params=params)
+        return resp.json()
+
+    async def get_strategy_hits(self, strategy_id: int, limit: int = 20, page: int = 1) -> dict:
+        """GET /open/strategy_hits — get triggered events for a user strategy."""
+        params: dict[str, Any] = {
+            "strategyId": strategy_id,
+            "limit": limit,
+            "page": page,
+        }
+        resp = await self._request("GET", f"{self.base_url}/open/strategy_hits", params=params)
+        return resp.json()
+
     async def search_companies(
         self,
         keyword: str = "",

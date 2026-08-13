@@ -230,6 +230,8 @@ opennews-mcp MCP 서버를 검토하고 설치해주세요. 프로젝트는 로�
 | | `search_news_advanced` | 복합 필터: 코인 + 키워드 + 엔진 유형 조합 |
 | AI | `get_high_score_news` | 높은 AI 영향도 점수 기사 (0-100 스케일) |
 | | `get_news_by_signal` | AI 트레이딩 시그널별: long / short / neutral |
+| 전략 | `get_strategy_list` | 현재 사용자 전략 목록: id, name, description, enabled, createdAt |
+| | `get_strategy_hits` | 전략 ID로 과거 트리거 이력 조회 |
 | 금융 강화 | `search_companies` | 후보를 찾거나 정확한 canonical issuer, ticker, CIK, KRX 코드, DART 코드, typed identifier로 식별 |
 | | `get_company_info` | 정확히 하나의 issuer를 식별하고 SEC/DART filings, 리서치 보고서, transcript, 재무 항목을 나열 |
 | | `get_company_report_text` | 안정적인 report ID/type으로 특정 issuer에 연결된 filing, 리서치 보고서, transcript를 조회 |
@@ -282,17 +284,60 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ---
 
+## 전략 이력 도구
+
+OpenNews API Token과 대상 구독이 필요합니다. [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy)에서 전략을 생성하고 관리하세요. 각 REST/MCP 호출은 1 quota를 사용합니다.
+
+- `get_strategy_list(limit=20, page=1)`: `id`, `name`, `description`, `enabled`, `createdAt`을 반환합니다.
+- `get_strategy_hits(strategy_id=42, limit=20, page=1)`: 전략 ID의 과거 트리거 이력을 반환합니다. 각 항목은 `strategy.triggered`와 같은 news-like payload이며 `strategy`, `coins`, `aiRating`, `source`, `description`, `relatedAddress`, metrics를 포함할 수 있습니다.
+
+Raw HTTP:
+
+```bash
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_list?page=1&limit=20"
+
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_hits?strategyId=42&page=1&limit=20"
+```
+
+---
+
 ## WebSocket 실시간 구독
 
 **엔드포인트**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
 
-실시간 암호화폐 뉴스 업데이트를 구독합니다.
+`news_wss`는 인증이 필요한 WebSocket 스트림입니다. 클라이언트가 보내는 3가지 동작과 서버가 푸시하는 3가지 이벤트를 지원합니다.
+
+| 방향 | 메시지 | 용도 |
+|------|--------|------|
+| Client -> Server | `ping` | 연결 유지 |
+| Client -> Server | `news.subscribe` | 필터를 포함해 뉴스 업데이트 구독 |
+| Client -> Server | `news.unsubscribe` | 현재 연결의 뉴스 업데이트 중지 |
+| Server -> Client | `pong` | 하트비트 응답 |
+| Server -> Client | `news.update` | 조건과 일치한 새 뉴스 |
+| Server -> Client | `news.ai_update` | AI 평가 필드가 포함된 새 뉴스 |
+| Server -> Client | `strategy.triggered` | 사용자가 소유한 전략의 트리거 알림 |
+
+`news.subscribe`는 `news.update`와 `news.ai_update`를 제어합니다. `strategy.triggered`는 인증된 사용자에게 자동 전달되며 별도 subscribe 메서드가 필요하지 않습니다.
 
 ### 하트비트
 
-연결을 유지하기 위해 클라이언트는 `ping`을 보낼 수 있으며, 서버는 `pong`으로 응답합니다.
+클라이언트가 텍스트 프레임을 보냅니다:
+
+```text
+ping
+```
+
+서버가 텍스트 프레임을 반환합니다:
+
+```text
+pong
+```
 
 ### 뉴스 구독
+
+클라이언트가 보냅니다:
 
 ```json
 {
@@ -310,7 +355,8 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 }
 ```
 
-**응답**:
+서버가 반환합니다:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -339,11 +385,25 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ### 구독 취소
 
+클라이언트가 보냅니다:
+
 ```json
 {
   "jsonrpc": "2.0",
   "id": 2,
   "method": "news.unsubscribe"
+}
+```
+
+서버가 반환합니다:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "success": true
+  }
 }
 ```
 

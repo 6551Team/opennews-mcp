@@ -230,6 +230,8 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | | `search_news_advanced` | 複合フィルタ：通貨 + キーワード + エンジンタイプ |
 | AI | `get_high_score_news` | 高 AI 影響度スコア記事（0-100 スケール） |
 | | `get_news_by_signal` | AI トレーディングシグナル別：long / short / neutral |
+| Strategy | `get_strategy_list` | 現在のユーザーのストラテジー一覧：id、name、description、enabled、createdAt |
+| | `get_strategy_hits` | ストラテジー ID で過去のトリガー履歴を取得 |
 | Finance | `search_companies` | 候補を発見、または正確な canonical issuer、ticker、CIK、KRX コード、DART コード、typed identifier を解決 |
 | | `get_company_info` | 1つの issuer を正確に解決し、SEC/DART filings、リサーチレポート、transcript、財務項目を一覧 |
 | | `get_company_report_text` | 安定した report ID/type で、issuer に紐づく filing、リサーチレポート、transcript を取得 |
@@ -282,17 +284,60 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ---
 
+## ストラテジー履歴ツール
+
+OpenNews API Token と対象サブスクリプションが必要です。[https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy) でストラテジーを作成・管理できます。各 REST/MCP 呼び出しは 1 クォータを消費します。
+
+- `get_strategy_list(limit=20, page=1)`: `id`、`name`、`description`、`enabled`、`createdAt` を返します。
+- `get_strategy_hits(strategy_id=42, limit=20, page=1)`: ストラテジー ID の過去トリガー履歴を返します。各項目は `strategy.triggered` と同じ news-like payload で、`strategy`、`coins`、`aiRating`、`source`、`description`、`relatedAddress`、メトリクスを含む場合があります。
+
+Raw HTTP:
+
+```bash
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_list?page=1&limit=20"
+
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_hits?strategyId=42&page=1&limit=20"
+```
+
+---
+
 ## WebSocket リアルタイム購読
 
 **エンドポイント**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
 
-リアルタイムの暗号通貨ニュース更新を購読します。
+`news_wss` は認証付き WebSocket ストリームです。クライアントから送る 3 種類の操作と、サーバーから届く 3 種類のイベントがあります。
+
+| 方向 | メッセージ | 用途 |
+|------|------------|------|
+| Client -> Server | `ping` | 接続維持 |
+| Client -> Server | `news.subscribe` | フィルタ付きでニュース更新を購読 |
+| Client -> Server | `news.unsubscribe` | 現在の接続でニュース更新を停止 |
+| Server -> Client | `pong` | ハートビート応答 |
+| Server -> Client | `news.update` | 条件に一致した新規ニュース |
+| Server -> Client | `news.ai_update` | AI 評価フィールド付きの新規ニュース |
+| Server -> Client | `strategy.triggered` | ユーザー所有ストラテジーのヒット通知 |
+
+`news.subscribe` は `news.update` と `news.ai_update` を制御します。`strategy.triggered` は認証済みユーザーに自動配信され、別の subscribe メソッドは不要です。
 
 ### ハートビート
 
-接続を維持するために、クライアントは `ping` を送信でき、サーバーは `pong` を返します。
+クライアントはテキストフレームを送信します：
+
+```text
+ping
+```
+
+サーバーはテキストフレームを返します：
+
+```text
+pong
+```
 
 ### ニュースを購読
+
+クライアントが送信：
 
 ```json
 {
@@ -310,7 +355,8 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 }
 ```
 
-**レスポンス**:
+サーバーが返す：
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -339,11 +385,25 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ### 購読解除
 
+クライアントが送信：
+
 ```json
 {
   "jsonrpc": "2.0",
   "id": 2,
   "method": "news.unsubscribe"
+}
+```
+
+サーバーが返す：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "success": true
+  }
 }
 ```
 

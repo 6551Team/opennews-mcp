@@ -21,7 +21,7 @@ metadata:
       - darwin
       - linux
       - win32
-  version: 1.0.6
+  version: 1.0.7
 ---
 
 # OpenNews Financial Market News Skill
@@ -124,6 +124,86 @@ curl -s -X POST "https://ai.6551.io/open/news_search" \
 | `score`      | integer                   | no       | Filter by minimum AI score (0-100)            |
 
 Important: You need to understand the user's query intent and perform word segmentation, then combine them using OR/AND to form search keywords, supporting both Chinese and English.
+
+---
+
+## Strategy History Operations
+
+These authenticated endpoints query the current user's strategy configuration and historical strategy-triggered events. Each call consumes 1 quota. Create and manage strategies at https://www.newsliquid.com/strategy.
+
+### 1. Get Strategy List
+
+```bash
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_list?page=1&limit=20"
+```
+
+Returns only `id`, `name`, `description`, `enabled`, and `createdAt` for each strategy.
+
+### 2. Get Strategy Hits
+
+```bash
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_hits?strategyId=42&page=1&limit=20"
+```
+
+Returns historical triggered events for the given strategy ID. Each hit uses the same news-like payload shape as the WebSocket `strategy.triggered` event, including nested `strategy`, `coins`, optional `aiRating`, `source`, `description`, `relatedAddress`, and triggered metric fields when available.
+
+---
+
+## WebSocket news_wss Protocol
+
+Connect with the token in the query string:
+
+```text
+wss://ai.6551.io/open/news_wss?token=$OPENNEWS_TOKEN
+```
+
+Supported client messages:
+
+| Client sends | Server returns |
+|---|---|
+| text frame `ping` | text frame `pong` |
+| JSON-RPC `news.subscribe` with optional `engineTypes`, `coins`, `hasCoin` | JSON-RPC response with matching `id` and `result.success=true` |
+| JSON-RPC `news.unsubscribe` | JSON-RPC response with matching `id` and `result.success=true` |
+
+Server-pushed events:
+
+| Server method | Meaning |
+|---|---|
+| `news.update` | New matched news item |
+| `news.ai_update` | New matched news item with AI rating fields |
+| `strategy.triggered` | Strategy hit for the authenticated user who owns the strategy |
+
+`news.subscribe` controls `news.update` and `news.ai_update`. `strategy.triggered` is automatically delivered to the authenticated strategy owner and does not need a separate subscribe method.
+
+Subscribe example:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "news.subscribe",
+  "params": {
+    "engineTypes": {
+      "news": ["Bloomberg", "CoinDesk"],
+      "onchain": []
+    },
+    "coins": ["BTC", "ETH"],
+    "hasCoin": true
+  }
+}
+```
+
+Unsubscribe example:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "news.unsubscribe"
+}
+```
 
 ---
 

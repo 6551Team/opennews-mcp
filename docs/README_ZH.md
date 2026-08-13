@@ -230,6 +230,8 @@ cp -r openclaw-skill/opennews ~/.openclaw/skills/
 | | `search_news_advanced` | 多条件组合: 币种 + 关键词 + 引擎类型 |
 | AI | `get_high_score_news` | 高 AI 影响力评分文章 (0-100 分制) |
 | | `get_news_by_signal` | 按 AI 交易信号: long / short / neutral |
+| 策略 | `get_strategy_list` | 获取当前用户策略列表：id、name、description、enabled、createdAt |
+| | `get_strategy_hits` | 根据策略 ID 查询历史命中数据 |
 | 金融增强 | `search_companies` | 发现候选项，或按精确 canonical issuer、ticker、CIK、KRX 代码、DART 代码、typed identifier 解析 |
 | | `get_company_info` | 精确解析一个 issuer，并列出 SEC/DART filings、研报、transcript 和财务字段 |
 | | `get_company_report_text` | 按稳定 report ID/type 获取某个 issuer 绑定的 filing、研报或 transcript |
@@ -282,17 +284,60 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ---
 
+## 策略历史查询工具
+
+需要 OpenNews API Token 和对应订阅。在 [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy) 创建和管理策略。每次 REST/MCP 调用消耗 1 额度。
+
+- `get_strategy_list(limit=20, page=1)`：返回策略 `id`、`name`、`description`、`enabled`、`createdAt`。
+- `get_strategy_hits(strategy_id=42, limit=20, page=1)`：按策略 ID 返回历史命中数据。命中项结构与 `strategy.triggered` 推送一致，包含嵌套 `strategy`、`coins`、`aiRating`、`source`、`description`、`relatedAddress` 和指标字段（如有）。
+
+原始 HTTP 调用：
+
+```bash
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_list?page=1&limit=20"
+
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_hits?strategyId=42&page=1&limit=20"
+```
+
+---
+
 ## WebSocket 实时订阅
 
 **端点**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
 
-订阅实时加密货币新闻更新。
+`news_wss` 是带鉴权的 WebSocket 实时流。它支持 3 个客户端主动动作和 3 类服务端推送。
+
+| 方向 | 消息 | 用途 |
+|------|------|------|
+| 客户端 -> 服务端 | `ping` | 保持连接活跃 |
+| 客户端 -> 服务端 | `news.subscribe` | 订阅新闻推送，可带过滤条件 |
+| 客户端 -> 服务端 | `news.unsubscribe` | 停止当前连接的新闻推送 |
+| 服务端 -> 客户端 | `pong` | 心跳响应 |
+| 服务端 -> 客户端 | `news.update` | 新的匹配新闻 |
+| 服务端 -> 客户端 | `news.ai_update` | 带 AI 评分字段的新匹配新闻 |
+| 服务端 -> 客户端 | `strategy.triggered` | 用户策略命中，推送给策略所属用户 |
+
+`news.subscribe` 控制 `news.update` 和 `news.ai_update`。`strategy.triggered` 会按已鉴权用户自动推送，不需要单独订阅方法。
 
 ### 心跳
 
-为了保持连接活跃，客户端可以发送 `ping`，服务端会响应 `pong`。
+客户端发送文本帧：
+
+```text
+ping
+```
+
+服务端返回文本帧：
+
+```text
+pong
+```
 
 ### 订阅新闻
+
+客户端发送：
 
 ```json
 {
@@ -310,7 +355,8 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 }
 ```
 
-**响应**:
+服务端返回：
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -339,11 +385,25 @@ $env:OPENNEWS_TOKEN = "<your-token>"
 
 ### 取消订阅
 
+客户端发送：
+
 ```json
 {
   "jsonrpc": "2.0",
   "id": 2,
   "method": "news.unsubscribe"
+}
+```
+
+服务端返回：
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "success": true
+  }
 }
 ```
 

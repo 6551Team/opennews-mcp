@@ -143,6 +143,12 @@ AI-powered prediction and correlation signals:
 - **get_high_score_news**: Articles with high AI impact scores (0-100 scale)
 - **get_news_by_signal**: Filter by AI trading signal — "long" (bullish), "short" (bearish), or "neutral"
 
+### Strategy History
+- **get_strategy_list**: List the authenticated user's strategies; each item includes only `id`, `name`, `description`, `enabled`, and `createdAt`
+- **get_strategy_hits**: Query triggered event history for one `strategy_id`; returned items match the `strategy.triggered` payload shape
+
+Each strategy history tool call consumes 1 quota. Use `get_strategy_list` first, then pass the returned `id` to `get_strategy_hits`.
+
 ### Finance Enhancement
 - **search_companies**: Discover company candidates or resolve one exact ticker, CIK, KRX code, DART code, generic typed identifier, or canonical issuer ID
 - **get_company_info**: Resolve exactly one issuer and list its SEC/DART filings, research reports, earnings-call transcripts, report forms, and financial item names
@@ -162,6 +168,13 @@ For the MCP tool, pass `change_types` as a comma-separated string such as `"incr
 ### Real-time
 - **subscribe_latest_news**: WebSocket live feed with optional filters by coins, engine types
 
+Raw `news_wss` protocol summary:
+- Connect to `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`.
+- Client may send text frame `ping`; server returns text frame `pong`.
+- Client may send JSON-RPC `news.subscribe` with optional `engineTypes`, `coins`, and `hasCoin`; server confirms with the same request `id`.
+- Client may send JSON-RPC `news.unsubscribe`; server confirms success for that request `id`.
+- Server pushes `news.update` for matched news, `news.ai_update` for matched news with AI rating fields, and `strategy.triggered` for strategy hits owned by the authenticated user. `strategy.triggered` does not require a separate subscribe method.
+
 ## Workflow Examples
 
 1. **Breaking news scan**: `get_latest_news(limit=20)` — see what's happening right now across all 85+ sources
@@ -174,11 +187,12 @@ For the MCP tool, pass `change_types` as a comma-separated string such as `"incr
 8. **Bullish signals**: `get_news_by_signal(signal="long")` — AI-detected bullish catalysts
 9. **Multi-filter power search**: `search_news_advanced(coins="BTC,ETH", engine_types="news:Bloomberg,Reuters;market:", keyword="ETF")` — Bloomberg & Reuters ETF news for BTC/ETH plus all market signals
 10. **Live monitoring**: `subscribe_latest_news(wait_seconds=15, coins="BTC", engine_types="news:;market:")` — real-time BTC news + market anomalies
-11. **Company filings workflow**: `search_companies(keyword="Hynix")`, choose one candidate, call `get_company_info(canonical_issuer_id="SEC:0002120882")`, then call `get_company_report_text(canonical_issuer_id="SEC:0002120882", report_id="<catalog id>", report_type="SEC")`
-12. **Market event calendar**: `get_key_market_events(start_date="2026-07-21", end_date="2026-08-31", importance="high", limit=10)` — inspect macro and focus-company earnings dates
-13. **House PTR activity**: `get_politician_stock_activity(source_year=2026, ticker="AAPL", transaction_codes="P,S", limit=25)` — inspect official House transaction disclosures
-14. **13F holdings evidence**: `get_institution_stock_holdings(stock="AAPL", institution="0001067983", limit=25)` — inspect delayed SEC manager filing evidence
-15. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
+11. **Strategy hit review**: `get_strategy_list(limit=20)`, then `get_strategy_hits(strategy_id=42, limit=20)` — inspect historical events that matched a user strategy
+12. **Company filings workflow**: `search_companies(keyword="Hynix")`, choose one candidate, call `get_company_info(canonical_issuer_id="SEC:0002120882")`, then call `get_company_report_text(canonical_issuer_id="SEC:0002120882", report_id="<catalog id>", report_type="SEC")`
+13. **Market event calendar**: `get_key_market_events(start_date="2026-07-21", end_date="2026-08-31", importance="high", limit=10)` — inspect macro and focus-company earnings dates
+14. **House PTR activity**: `get_politician_stock_activity(source_year=2026, ticker="AAPL", transaction_codes="P,S", limit=25)` — inspect official House transaction disclosures
+15. **13F holdings evidence**: `get_institution_stock_holdings(stock="AAPL", institution="0001067983", limit=25)` — inspect delayed SEC manager filing evidence
+16. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
 
 ## Data Structure
 

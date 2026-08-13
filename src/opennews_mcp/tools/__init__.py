@@ -8,3 +8,4 @@ from opennews_mcp.tools import finance    # noqa: F401
 from opennews_mcp.tools import free       # noqa: F401
 from opennews_mcp.tools import news       # noqa: F401
 from opennews_mcp.tools import realtime   # noqa: F401
+from opennews_mcp.tools import strategy   # noqa: F401

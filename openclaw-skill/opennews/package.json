@@ -1,6 +1,6 @@
 {
   "name": "opennews",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "85+ real-time crypto & financial news sources across 6 categories (News, Listing, OnChain, Meme, Market, Prediction) with AI ratings, trading signals, and bilingual summaries via the OpenNews 6551 API",
   "author": "0xfaskety",
   "license": "MIT",

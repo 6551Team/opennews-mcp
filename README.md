@@ -230,6 +230,8 @@ After connecting, just tell your AI assistant:
 | | `search_news_advanced` | Multi-filter: coins + keywords + engine types combined |
 | AI | `get_high_score_news` | High AI impact score articles (0-100 scale) |
 | | `get_news_by_signal` | By AI trading signal: long / short / neutral |
+| Strategy | `get_strategy_list` | List the authenticated user's strategies: id, name, description, enabled, createdAt |
+| | `get_strategy_hits` | Query triggered event history by strategy ID |
 | Finance | `search_companies` | Discover candidates or resolve an exact canonical issuer, ticker, CIK, KRX code, DART code, or typed identifier |
 | | `get_company_info` | Resolve exactly one issuer and list its SEC/DART filings, research reports, transcripts, and financial fields |
 | | `get_company_report_text` | Fetch one issuer-bound filing, research report, or transcript by stable report ID/type |
@@ -280,17 +282,60 @@ Also supports `config.json` in project root (env vars take precedence):
 
 ---
 
+## Strategy History Tools
+
+Requires an OpenNews API token and an eligible subscription. Create and manage strategies at [https://www.newsliquid.com/strategy](https://www.newsliquid.com/strategy). Each REST/MCP call consumes 1 quota.
+
+- `get_strategy_list(limit=20, page=1)`: returns strategy `id`, `name`, `description`, `enabled`, and `createdAt`.
+- `get_strategy_hits(strategy_id=42, limit=20, page=1)`: returns historical triggered events for that strategy. Hit items use the same news-like payload shape as `strategy.triggered`, including nested `strategy`, `coins`, `aiRating`, `source`, `description`, `relatedAddress`, and metric fields when available.
+
+Raw HTTP equivalents:
+
+```bash
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_list?page=1&limit=20"
+
+curl -s -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  "https://ai.6551.io/open/strategy_hits?strategyId=42&page=1&limit=20"
+```
+
+---
+
 ## WebSocket Real-time Subscriptions
 
 **Endpoint**: `wss://ai.6551.io/open/news_wss?token=YOUR_TOKEN`
 
-Subscribe to real-time crypto news updates.
+The `news_wss` endpoint is an authenticated WebSocket stream. It supports three client-initiated actions and three server-pushed event types.
+
+| Direction | Message | Purpose |
+|-----------|---------|---------|
+| Client -> Server | `ping` | Keep the connection alive |
+| Client -> Server | `news.subscribe` | Subscribe to news updates with optional filters |
+| Client -> Server | `news.unsubscribe` | Stop news updates for the current connection |
+| Server -> Client | `pong` | Heartbeat response |
+| Server -> Client | `news.update` | New matched news item |
+| Server -> Client | `news.ai_update` | New matched news item with AI rating fields |
+| Server -> Client | `strategy.triggered` | User strategy hit pushed to the strategy owner |
+
+`news.subscribe` controls `news.update` and `news.ai_update`. `strategy.triggered` is delivered automatically to the authenticated user who owns the strategy; it does not require a separate subscribe method.
 
 ### Heartbeat
 
-To keep the connection alive, the client can send `ping`, and the server responds with `pong`.
+Client sends a text frame:
+
+```text
+ping
+```
+
+Server returns a text frame:
+
+```text
+pong
+```
 
 ### Subscribe to News
+
+Client sends:
 
 ```json
 {
@@ -308,7 +353,8 @@ To keep the connection alive, the client can send `ping`, and the server respond
 }
 ```
 
-**Response**:
+Server returns:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -337,11 +383,25 @@ To keep the connection alive, the client can send `ping`, and the server respond
 
 ### Unsubscribe
 
+Client sends:
+
 ```json
 {
   "jsonrpc": "2.0",
   "id": 2,
   "method": "news.unsubscribe"
+}
+```
+
+Server returns:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "success": true
+  }
 }
 ```
 
