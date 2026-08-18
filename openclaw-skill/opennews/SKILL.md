@@ -324,15 +324,26 @@ curl -s -X POST "https://ai.6551.io/open/finance-enhance/politician-stock-activi
 
 The MCP tool accepts `transaction_codes` and `owner_codes` as comma-separated strings, for example `P,S` and `SP,JT`.
 
+### Institution Managers
+
+Returns staged SEC Form 13F manager identity and filing coverage metadata only. Use this before holdings when the user gives a fuzzy institution name; pass a returned `manager_cik` or exact staged manager name to the holdings endpoint.
+
+```bash
+curl -s -X POST "https://ai.6551.io/open/finance-enhance/institution-managers" \
+  -H "Authorization: Bearer $OPENNEWS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"search":"Berkshire","limit":5}'
+```
+
 ### Institution Stock Holdings
 
-Returns latest-per-manager SEC Form 13F stock holding disclosure evidence from the staged manager universe. `stock` accepts a staged ticker, issuer name, or CUSIP; `institution` accepts a staged manager name or exact SEC manager CIK. Results are delayed quarter-end filings, not real-time holdings or complete economic exposure.
+Returns one manager's latest SEC Form 13F stock holding disclosure evidence from the staged manager universe. `institution` is required and accepts a staged manager name or exact SEC manager CIK. Results are delayed quarter-end filings, not real-time holdings or complete economic exposure.
 
 ```bash
 curl -s -X POST "https://ai.6551.io/open/finance-enhance/institution-stock-holdings" \
   -H "Authorization: Bearer $OPENNEWS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"stock":"AAPL","institution":"0001067983","sort_by":"value","limit":25}'
+  -d '{"institution":"0001067983","sort_by":"value","limit":25}'
 ```
 
 ### Crypto Holdings Evidence

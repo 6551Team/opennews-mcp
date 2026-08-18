@@ -237,7 +237,8 @@ After connecting, just tell your AI assistant:
 | | `get_company_report_text` | Fetch one issuer-bound filing, research report, or transcript by stable report ID/type |
 | | `get_key_market_events` | Query key macro dates and configured focus-company earnings events |
 | | `get_politician_stock_activity` | Query official U.S. House PTR stock transaction disclosures |
-| | `get_institution_stock_holdings` | Query delayed SEC Form 13F institution stock holding disclosures |
+| | `list_institution_managers` | List staged SEC Form 13F manager identities and filing coverage without holdings |
+| | `get_institution_stock_holdings` | Query one manager's delayed SEC Form 13F stock holding disclosures |
 | | `get_crypto_holdings` | Query wallet-visible on-chain holdings evidence for an institution or address |
 | | `get_crypto_holding_changes` | Query adjacent-snapshot on-chain holdings changes |
 | Real-time | `subscribe_latest_news` | WebSocket live feed with coin & engine type filters |

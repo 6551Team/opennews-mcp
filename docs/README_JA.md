@@ -237,7 +237,8 @@ opennews-mcp という MCP サーバーをレビューしてインストール�
 | | `get_company_report_text` | 安定した report ID/type で、issuer に紐づく filing、リサーチレポート、transcript を取得 |
 | | `get_key_market_events` | 主要マクロ日程と設定済み重点企業の決算イベントを照会 |
 | | `get_politician_stock_activity` | 米国下院 PTR の公式株式取引開示を照会 |
-| | `get_institution_stock_holdings` | 遅延 SEC Form 13F 機関株式保有開示を照会 |
+| | `list_institution_managers` | 登録済み SEC Form 13F manager の識別情報と filing カバレッジを照会、保有明細は返さない |
+| | `get_institution_stock_holdings` | 1つの manager の遅延 SEC Form 13F 株式保有開示を照会 |
 | | `get_crypto_holdings` | 機関またはアドレスのウォレット可視オンチェーン保有証拠を照会 |
 | | `get_crypto_holding_changes` | 隣接スナップショット間のオンチェーン保有変化を照会 |
 | リアルタイム | `subscribe_latest_news` | WebSocket ライブフィード、通貨・エンジンタイプフィルタ対応 |

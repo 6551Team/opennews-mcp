@@ -653,45 +653,50 @@ async def get_politician_stock_activity(
 @mcp.tool()
 async def get_institution_stock_holdings(
     ctx: Context,
-    stock: str = "",
     institution: str = "",
     as_of: str = "",
     changed_only: bool = False,
     include_options: bool = False,
     include_exited: bool = False,
     sort_by: InstitutionStockSort = "value",
-    auto_collect: bool = False,
+    auto_collect: bool = True,
     force_collect: bool = False,
     limit: int = 100,
     offset: int = 0,
 ) -> dict:
     """Query SEC Form 13F institution stock holding disclosures.
 
-    Returns latest-per-manager quarter-end 13F evidence from the staged manager
-    universe. It is delayed filing evidence, not real-time ownership or a complete
-    view of economic exposure.
+    Returns one manager's latest quarter-end 13F evidence from the staged manager
+    universe. It is delayed filing evidence, not real-time ownership or complete
+    economic exposure. Use list_institution_managers first when the manager CIK
+    or exact staged manager name is unknown.
 
     Args:
-        stock: Optional staged ticker, issuer name, or CUSIP.
-        institution: Optional staged manager name or exact SEC manager CIK.
+        institution: Required staged manager name or exact SEC manager CIK.
         as_of: Optional report-period cutoff in YYYY-MM-DD format.
         changed_only: Whether to exclude unchanged positions.
         include_options: Whether to include put/call option rows.
         include_exited: Whether to include exited positions.
         sort_by: value, shares, change, or institution.
-        auto_collect: Whether to trigger one bounded manager 13F collection on cache miss.
-        force_collect: Whether to force collection for the resolved manager.
+        auto_collect: Whether Finance Enhance should check and refresh the resolved
+            manager within its SEC refresh TTL.
+        force_collect: Compatibility flag; the backend still honors its SEC refresh TTL.
         limit: Maximum returned holding rows (default 100, max 500).
         offset: Pagination offset.
     """
     if (err := require_token()):
         return err
+    if not institution.strip():
+        return {
+            "success": False,
+            "status": "invalid_input",
+            "error": "institution is required. Use list_institution_managers to find a manager CIK.",
+        }
     api = ctx.request_context.lifespan_context.api
     limit = _clamp(limit, 1, 500)
     try:
         result = await api.get_institution_stock_holdings(
-            stock=stock or None,
-            institution=institution or None,
+            institution=institution,
             as_of=as_of or None,
             changed_only=changed_only,
             include_options=include_options,
@@ -699,6 +704,42 @@ async def get_institution_stock_holdings(
             sort_by=sort_by,
             auto_collect=auto_collect,
             force_collect=force_collect,
+            limit=limit,
+            offset=max(0, int(offset)),
+        )
+        return make_serializable(result)
+    except Exception as e:
+        return _upstream_error(e)
+
+
+@mcp.tool()
+async def list_institution_managers(
+    ctx: Context,
+    search: str = "",
+    as_of: str = "",
+    limit: int = 100,
+    offset: int = 0,
+) -> dict:
+    """List staged SEC Form 13F managers without returning holdings.
+
+    Use this first when a user gives a fuzzy institution name. The response
+    includes manager CIKs and filing coverage metadata; pass one returned
+    manager CIK or exact name to get_institution_stock_holdings for positions.
+
+    Args:
+        search: Optional institution name or exact SEC manager CIK filter.
+        as_of: Optional filing/report-period cutoff in YYYY-MM-DD format.
+        limit: Maximum returned manager rows (default 100, max 500).
+        offset: Pagination offset.
+    """
+    if (err := require_token()):
+        return err
+    api = ctx.request_context.lifespan_context.api
+    limit = _clamp(limit, 1, 500)
+    try:
+        result = await api.list_institution_managers(
+            search=search or None,
+            as_of=as_of or None,
             limit=limit,
             offset=max(0, int(offset)),
         )

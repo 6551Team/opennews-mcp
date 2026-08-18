@@ -155,13 +155,14 @@ Each strategy history tool call consumes 1 quota. Use `get_strategy_list` first,
 - **get_company_report_text**: Fetch one issuer-bound SEC, DART, research, or transcript report by stable `report_id` and `report_type`
 - **get_key_market_events**: Query important macro events and configured focus-company earnings dates; estimated schedule rows should be confirmed before alerting or trading
 - **get_politician_stock_activity**: Query official U.S. House PTR stock transaction disclosures by ticker, filer, district, date, transaction code, owner code, or disclosed amount bucket; these are disclosure rows, not current holdings
-- **get_institution_stock_holdings**: Query latest-per-manager SEC Form 13F stock holdings by ticker, issuer name, CUSIP, manager name, or manager CIK; these are delayed quarter-end filings from the staged manager universe
+- **list_institution_managers**: List staged SEC Form 13F manager identities and filing coverage metadata without position details; use this before 13F holdings when the manager CIK or exact staged name is unknown
+- **get_institution_stock_holdings**: Query one manager's latest SEC Form 13F stock holdings by manager name or manager CIK; these are delayed quarter-end filings from the staged manager universe
 - **get_crypto_holdings**: Query wallet-visible on-chain holdings evidence for an institution or address; results are Blockscout address-balance evidence, not proof of beneficial ownership or a trading signal
 - **get_crypto_holding_changes**: Query on-chain holdings changes between adjacent snapshots, with optional token, date, and change-type filters
 
 For multi-market issuers, first inspect `ambiguity_candidates[]`, then retry with exactly one exact selector. The MCP tools accept `canonical_issuer_id`, `ticker`, `cik`, `krx_stock_code`, `dart_corp_code`, or `identifier` plus `identifier_type` and `market`. Raw HTTP callers must use the generic `identifier` form. For example, `SEC:0002120882` maps to `identifier=0002120882, identifier_type=cik, market=US`, while `DART:00164779` maps to `identifier=00164779, identifier_type=dart_corp_code, market=KR`.
 
-For stock-disclosure tools, preserve evidence boundaries in answers. House PTR amounts are disclosure buckets and Senate is not supported. Form 13F holdings are delayed reporting-period evidence and only cover managers staged in Finance Enhance.
+For stock-disclosure tools, preserve evidence boundaries in answers. House PTR amounts are disclosure buckets and Senate is not supported. Form 13F manager directory results contain identity and filing coverage only; Form 13F holdings are delayed reporting-period evidence and only cover managers staged in Finance Enhance.
 
 For the MCP tool, pass `change_types` as a comma-separated string such as `"increase,decrease"`. `get_crypto_holding_changes` defaults `auto_collect` to false; call `get_crypto_holdings` first with `auto_collect=true` or `force_collect=true` when you need to populate a fresh wallet snapshot.
 
@@ -191,8 +192,9 @@ Raw `news_wss` protocol summary:
 12. **Company filings workflow**: `search_companies(keyword="Hynix")`, choose one candidate, call `get_company_info(canonical_issuer_id="SEC:0002120882")`, then call `get_company_report_text(canonical_issuer_id="SEC:0002120882", report_id="<catalog id>", report_type="SEC")`
 13. **Market event calendar**: `get_key_market_events(start_date="2026-07-21", end_date="2026-08-31", importance="high", limit=10)` — inspect macro and focus-company earnings dates
 14. **House PTR activity**: `get_politician_stock_activity(source_year=2026, ticker="AAPL", transaction_codes="P,S", limit=25)` — inspect official House transaction disclosures
-15. **13F holdings evidence**: `get_institution_stock_holdings(stock="AAPL", institution="0001067983", limit=25)` — inspect delayed SEC manager filing evidence
-16. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
+15. **13F manager directory**: `list_institution_managers(search="Berkshire", limit=5)` — find staged manager CIKs and filing coverage
+16. **13F holdings evidence**: `get_institution_stock_holdings(institution="0001067983", limit=25)` — inspect delayed SEC manager filing evidence
+17. **On-chain holdings evidence**: `get_crypto_holdings(address="0x...", chain="ethereum", token_symbol="ETH")` — inspect visible wallet-balance evidence
 
 ## Data Structure
 

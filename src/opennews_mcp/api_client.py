@@ -396,14 +396,13 @@ class NewsAPIClient:
 
     async def get_institution_stock_holdings(
         self,
-        stock: Optional[str] = None,
-        institution: Optional[str] = None,
+        institution: str,
         as_of: Optional[str] = None,
         changed_only: bool = False,
         include_options: bool = False,
         include_exited: bool = False,
         sort_by: str = "value",
-        auto_collect: bool = False,
+        auto_collect: bool = True,
         force_collect: bool = False,
         limit: int = 100,
         offset: int = 0,
@@ -420,7 +419,6 @@ class NewsAPIClient:
             "offset": offset,
         }
         optional_fields = {
-            "stock": stock,
             "institution": institution,
             "as_of": as_of,
         }
@@ -431,6 +429,33 @@ class NewsAPIClient:
         resp = await self._request(
             "POST",
             f"{self.base_url}/open/finance-enhance/institution-stock-holdings",
+            json=body,
+        )
+        return resp.json()
+
+    async def list_institution_managers(
+        self,
+        search: Optional[str] = None,
+        as_of: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> dict:
+        """POST /open/finance-enhance/institution-managers — list SEC 13F managers."""
+        body: dict[str, Any] = {
+            "limit": limit,
+            "offset": offset,
+        }
+        optional_fields = {
+            "search": search,
+            "as_of": as_of,
+        }
+        body.update({
+            key: value for key, value in optional_fields.items()
+            if value is not None and value != ""
+        })
+        resp = await self._request(
+            "POST",
+            f"{self.base_url}/open/finance-enhance/institution-managers",
             json=body,
         )
         return resp.json()
