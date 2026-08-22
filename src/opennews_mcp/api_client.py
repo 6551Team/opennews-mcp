@@ -584,9 +584,14 @@ class NewsWSClient:
             params["coins"] = coins
         if has_coin:
             params["hasCoin"] = has_coin
-        msg = {"method": "news.subscribe", "id": req_id, "params": params}
+        msg = {
+            "jsonrpc": "2.0",
+            "method": "news.subscribe",
+            "id": req_id,
+            "params": params,
+        }
         await self._ws.send(json.dumps(msg))
-        resp = await self._ws.recv()
+        resp = await asyncio.wait_for(self._ws.recv(), timeout=15.0)
         return json.loads(resp)
 
     async def receive_news(self, timeout: float = 10.0) -> Optional[dict]:

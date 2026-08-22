@@ -2,12 +2,11 @@
 
 import sys
 
-# psycopg3 async requires SelectorEventLoop on Windows (ProactorEventLoop is unsupported).
+# MCP stdio on Windows requires SelectorEventLoop: ProactorEventLoop does not
+# support add_reader(), which the stdio transport relies on.
 if sys.platform == "win32":
-    import asyncio, selectors  # noqa: E401
-    asyncio.set_event_loop_policy(
-        asyncio.WindowsSelectorEventLoopPolicy()
-    )
+    import asyncio
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 from opennews_mcp.app import mcp
 

@@ -45,13 +45,13 @@ async def get_news_sources(ctx: Context) -> dict:
 
     try:
         result = await api.get_engine_tree()
-        data = result.get("data", [])
+        data = result.get("data") or []
 
         # Build a simplified summary
         sources = []
         for engine in data:
             categories = []
-            for cat in engine.get("categories", []):
+            for cat in engine.get("categories") or []:
                 categories.append({
                     "code": cat.get("code"),
                     "name": cat.get("name"),
@@ -79,8 +79,9 @@ async def get_news_sources(ctx: Context) -> dict:
 async def list_news_types(ctx: Context) -> dict:
     """List all available market news type codes for filtering.
 
-    Returns a flat list of news source codes that can be used with
-    the newsType parameter in search_news.
+    Returns a flat list of news source codes that can be used with the
+    news_type parameter of get_news_by_source or inside the engineTypes
+    filter of search_news / search_news_advanced.
     """
     if (err := require_token()):
         return err
@@ -89,11 +90,11 @@ async def list_news_types(ctx: Context) -> dict:
 
     try:
         result = await api.get_engine_tree()
-        data = result.get("data", [])
+        data = result.get("data") or []
 
         types = []
         for engine in data:
-            for cat in engine.get("categories", []):
+            for cat in engine.get("categories") or []:
                 types.append({
                     "code": cat.get("code"),
                     "engineType": engine.get("code"),

@@ -571,7 +571,7 @@ async def get_key_market_events(
         )
         return make_serializable(result)
     except Exception as e:
-        return {"success": False, "error": str(e) or repr(e)}
+        return _upstream_error(e)
 
 
 @mcp.tool()
@@ -799,7 +799,7 @@ async def get_crypto_holdings(
         )
         return make_serializable(result)
     except Exception as e:
-        return {"success": False, "error": str(e) or repr(e)}
+        return _upstream_error(e)
 
 
 @mcp.tool()
@@ -862,4 +862,4 @@ async def get_crypto_holding_changes(
         )
         return make_serializable(result)
     except Exception as e:
-        return {"success": False, "error": str(e) or repr(e)}
+        return _upstream_error(e)
